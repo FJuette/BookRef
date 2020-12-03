@@ -9,6 +9,7 @@ using Microsoft.Extensions.Hosting;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Models;
 using BookRef.Api.Models.Relations;
+using BookRef.Api.Models.ValueObjects;
 
 namespace BookRef.Api.Persistence
 {
@@ -28,8 +29,15 @@ namespace BookRef.Api.Persistence
         }
 
         public DbSet<Book> Books { get; set; }
-        public DbSet<Recommedation> Recommedations { get; set; }
+        // public DbSet<Recommedation> Recommedations { get; set; }
         public DbSet<User> Users { get; set; }
+        // public DbSet<BookAuthor> BookAuthors { get; set; }
+        // public DbSet<BookCategory> BookCategories { get; set; }
+        // public DbSet<UserBooks> UserBooks { get; set; }
+        public DbSet<Author> Authors { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<Speaker> Speakers { get; set; }
 
         protected override void OnConfiguring(
             DbContextOptionsBuilder optionsBuilder)
@@ -50,6 +58,26 @@ namespace BookRef.Api.Persistence
         protected override void OnModelCreating(
             ModelBuilder builder)
         {
+            builder?.Entity<Author>(b =>
+            {
+                b.Property(e => e.Name)
+                    .IsRequired(true);
+            });
+            builder?.Entity<Category>(b =>
+            {
+                b.Property(e => e.Name)
+                    .IsRequired(true);
+            });
+            builder?.Entity<Person>(b =>
+            {
+                b.Property(e => e.Name)
+                    .IsRequired(true);
+            });
+            builder?.Entity<Speaker>(b =>
+            {
+                b.Property(e => e.Name)
+                    .IsRequired(true);
+            });
             builder?.Entity<Book>(b =>
             {
                 b.HasKey(e => e.Id);
@@ -118,20 +146,19 @@ namespace BookRef.Api.Persistence
 
             builder?.Entity<User>(b =>
             {
-                b.HasKey(e => e.Id);
-                b.HasMany(e => e.MyRecommendations)
-                    .WithOne(e => e.Owner);
+                // b.HasMany(e => e.MyRecommendations)
+                //     .WithOne(e => e.Owner);
             });
 
-            builder?.Entity<Friends>(b =>
-            {
-                b.HasOne(e => e.SourceUser)
-                    .WithMany()
-                    .HasForeignKey(e => e.SourceUserId);
-                b.HasOne(e => e.FriendUser)
-                    .WithMany()
-                    .HasForeignKey(e => e.FriendUserId);
-            });
+            // builder?.Entity<Friends>(b =>
+            // {
+            //     b.HasOne(e => e.SourceUser)
+            //         .WithMany()
+            //         .HasForeignKey(e => e.SourceUserId);
+            //     b.HasOne(e => e.FriendUser)
+            //         .WithMany()
+            //         .HasForeignKey(e => e.FriendUserId);
+            // });
         }
 
         public override Task<int> SaveChangesAsync(

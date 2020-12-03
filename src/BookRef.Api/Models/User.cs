@@ -15,5 +15,37 @@ namespace BookRef.Api.Models
 
         private List<UserBooks> _myBooks = new List<UserBooks>();
         public IReadOnlyList<UserBooks> MyBooks => _myBooks.ToList();
+
+        public void AddNewBook(Book book)
+        {
+            var ub = new UserBooks
+            {
+                Book = book,
+                User = this
+            };
+            _myBooks.Add(ub);
+        }
+
+        public void AddBookRecommendation(Book sourceBook, Book recommendedBook, string note = "")
+        {
+            var rec = new Recommedation
+            {
+                Owner = this,
+                SourceBook = sourceBook,
+                RecommendedBook = recommendedBook,
+                Note = new Note
+                {
+                    Content = note
+                }
+            };
+            _myRecommendations.Add(rec);
+        }
+
+        public override string ToString()
+        {
+            var myBooks = string.Join("|", _myBooks.Select(e => e.Book.Title));
+            var allMyRec = string.Join("|", _myRecommendations.Select(e => $"From ‘{e.SourceBook.Title}‘ for ‘{e.RecommendedBook.Title}‘ with note ‘{e.Note.Content}‘"));
+            return $"Person {{ Id = {Id}, Username = {Username}, Password = {Password}, EMail = {EMail}, MyBooks = {myBooks}, MyRecommendations = {allMyRec} }}";
+        }
     }
 }

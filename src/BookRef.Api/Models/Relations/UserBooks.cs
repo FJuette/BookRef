@@ -8,6 +8,7 @@ namespace BookRef.Api.Models.Relations
         public long UserBooksId { get; set; }
         public DateTime? StartDate { get; set; }
         public int CurrentPage { get; set; }
+        public bool Wishlist { get; set; }
 
         public BookStatus Status { get; set; }
         public BookType Type { get; set; }
@@ -19,7 +20,6 @@ namespace BookRef.Api.Models.Relations
         public long BookId { get; set; }
 
         public Speaker? Speaker { get; set; }
-
     }
 
     public enum BookStatus

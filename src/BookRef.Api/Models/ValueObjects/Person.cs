@@ -3,23 +3,18 @@ using CSharpFunctionalExtensions;
 
 namespace BookRef.Api.Models.ValueObjects
 {
-    public class Person : ValueObject
+    public record Person
     {
-        private Person(
-            string value) =>
-            Name = value;
-        public string Name { get; }
-
-        public static Result<Person> Create(
-            string name) =>
-            // Make validation checks and return
-            name != ""
-                ? Result.Failure<Person>("Must contain a value")
-                : Result.Success(new Person(name));
-
-        protected override IEnumerable<object> GetEqualityComponents()
+        protected Person()
         {
-            yield return Name;
+
         }
+        public Person(string name)
+        {
+            Name = name;
+        }
+        public long Id { get; init; }
+        public string Name { get; init; }
     }
+    // Whishlist?
 }

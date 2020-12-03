@@ -4,6 +4,20 @@ namespace BookRef.Api.Models.Relations
 {
     public class BookCategory
     {
+        protected BookCategory() {}
+
+        public BookCategory(Book book, Category category)
+        {
+            Book = book;
+            Category = category;
+        }
+
+        public BookCategory(int bookId, int categoryId)
+        {
+            BookId = bookId;
+            CategoryId = categoryId;
+        }
+
         public Book Book { get; set; }
         public long BookId { get; set; }
 

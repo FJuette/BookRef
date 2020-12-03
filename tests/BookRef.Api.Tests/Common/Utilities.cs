@@ -26,14 +26,7 @@ namespace BookRef.Api.Tests.Common
         public static void InitializeDbForTests(
             BookRefDbContext context)
         {
-            context.Stories.Add(
-                new UserStory(
-                    "My demo user story",
-                    Priority.Create(1).Value,
-                    "Info",
-                    "Provide long text here",
-                    BusinessValue.BV900));
-            context.SaveChanges();
+
         }
     }
 }
