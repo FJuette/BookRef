@@ -16,12 +16,13 @@ namespace BookRef.Api.Infrastructure
         public GetClaimsFromUser(
             IHttpContextAccessor accessor)
         {
-            var username = accessor.HttpContext?
-                .User.Claims
-                .SingleOrDefault(x => x.Type == ClaimTypes.Name)
-                ?.Value;
+            // var username = accessor.HttpContext?
+            //     .User.Claims
+            //     .SingleOrDefault(x => x.Type == ClaimTypes.Name)
+            //     ?.Value;
 
-            UserId = string.IsNullOrEmpty(username) ? "Admin" : username;
+            // UserId = string.IsNullOrEmpty(username) ? "Admin" : username;
+            UserId = "Admin";
         }
 
         public string UserId { get; }

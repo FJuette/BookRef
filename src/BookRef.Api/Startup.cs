@@ -38,24 +38,24 @@ namespace BookRef.Api
             // Add MediatR - must be first
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = EnvFactory.GetJwtIssuer(),
-                        ValidAudience = EnvFactory.GetJwtIssuer(),
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvFactory.GetJwtKey()))
-                    });
+            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            //     .AddJwtBearer(options =>
+            //         options.TokenValidationParameters = new TokenValidationParameters
+            //         {
+            //             ValidateIssuer = true,
+            //             ValidateAudience = true,
+            //             ValidateLifetime = true,
+            //             ValidateIssuerSigningKey = true,
+            //             ValidIssuer = EnvFactory.GetJwtIssuer(),
+            //             ValidAudience = EnvFactory.GetJwtIssuer(),
+            //             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvFactory.GetJwtKey()))
+            //         });
 
-            // At least a module claim is required to use any protected endpoint
-            services.AddAuthorization(
-                auth => auth.DefaultPolicy = new AuthorizationPolicyBuilder()
-                    .RequireClaim("modules", "claim-module-name")
-                    .Build());
+            // // At least a module claim is required to use any protected endpoint
+            // services.AddAuthorization(
+            //     auth => auth.DefaultPolicy = new AuthorizationPolicyBuilder()
+            //         .RequireClaim("modules", "claim-module-name")
+            //         .Build());
 
             services.AddCors(options =>
                 options.AddPolicy("Locations",
