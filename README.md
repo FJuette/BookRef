@@ -30,6 +30,10 @@ Create a new project from the template
 Remove the template
 > dotnet new -u FJuette.Template.WebApi
 
+## EventStore
+
+> docker run --name esdb-node -it -p 2113:2113 -p 1113:1113 eventstore/eventstore:latest --insecure --run-projections=All
+
 ## Remarks
 
 I did not added a respository / UoW pattern because in my opinion its to heavy for microservices.

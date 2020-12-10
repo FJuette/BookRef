@@ -29,7 +29,7 @@ namespace BookRef.Api.Persistence
         }
 
         public DbSet<Book> Books { get; set; }
-        // public DbSet<Recommedation> Recommedations { get; set; }
+        public DbSet<Recommedation> Recommedations { get; set; }
         public DbSet<User> Users { get; set; }
         // public DbSet<BookAuthor> BookAuthors { get; set; }
         // public DbSet<BookCategory> BookCategories { get; set; }
