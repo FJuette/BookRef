@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using BookRef.Api.Authors.Commands;
 using BookRef.Api.Authors.Queries;
 using BookRef.Api.Books.Queries;
 using BookRef.Api.Categories.Queries;
@@ -10,6 +11,8 @@ namespace BookRef.Api.Controllers
 {
     public class BooksController : BaseController
     {
+        #region Queries
+
         [HttpGet("api/books")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<BooksViewModel>> GetAllBooks() =>
@@ -49,5 +52,22 @@ namespace BookRef.Api.Controllers
         [ProducesResponseType(200)]
         public async Task<ActionResult<SpeakersViewModel>> GetAllSpeaker() =>
             Ok(await Mediator.Send(new GetAllSpeakerQuery()));
+
+        #endregion
+
+        #region Commands
+
+        [HttpPost("api/authors")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        public async Task<ActionResult<long>> AddAuthor(
+            [FromBody] AddAuthorCommand command)
+        {
+            var id = await Mediator.Send(command);
+            return CreatedAtAction(
+                "GetAllAuthors",
+                id);
+        }
+        #endregion
     }
 }
