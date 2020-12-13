@@ -25,13 +25,13 @@ namespace BookRef.Api.Books.Queries
             GetAllBooksQuery request,
             CancellationToken cancellationToken)
         {
-            var stories = await _ctx.Books
+            var books = await _ctx.Books
                 .Include(e => e.BookAuthors)
                 .Include(e => e.BookCategories)
                 .AsNoTracking()
                 .ToListAsync(cancellationToken);
 
-            return new BooksViewModel(stories);
+            return new BooksViewModel(books);
         }
     }
 }

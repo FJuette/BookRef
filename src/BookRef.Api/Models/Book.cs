@@ -35,6 +35,11 @@ namespace BookRef.Api.Models
             _bookCategories = categories.Select(e => new BookCategory(this, e)).ToList();
         }
 
+        public List<string> GetAuthors()
+        {
+            return _bookAuthors.Where(e => e.Author.Name != null).Select(e => e.Author.Name).ToList();
+        }
+
         public override string ToString()
         {
             var authors = string.Join("|", _bookAuthors.Select(e => e.Author.Name));

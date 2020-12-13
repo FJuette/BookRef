@@ -89,6 +89,7 @@ namespace BookRef.Api
 
             // Add my own services here
             services.AddScoped<IGetClaimsProvider, GetClaimsFromUser>();
+            services.AddScoped<IUserService, UserService>();
             services.AddSingleton<IDateTime, MachineDateTime>();
 
             services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilter)))

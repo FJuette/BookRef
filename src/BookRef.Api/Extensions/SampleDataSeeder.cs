@@ -47,10 +47,9 @@ namespace BookRef.Api.Extensions
             var user = new User
             {
                 EMail = "fabian.j@test.de",
-                Username = "fabian",
+                Username = "Admin",
                 Password = "dasistzueinfach"
             };
-            _context.Add(user);
 
             var book = new Book
             {
@@ -82,6 +81,7 @@ namespace BookRef.Api.Extensions
             _context.Add(book2);
             user.AddNewBook(book2);
             user.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
+            user.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
 
             var book3 = new Book
             {
@@ -126,7 +126,7 @@ namespace BookRef.Api.Extensions
             book5.SetAuthors(new List<Author> { freudAuthor });
             book5.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book5);
-            user.AddNewBook(book5);
+            user.AddNewBook(book5, BookStatus.Wish);
 
             var book6 = new Book
             {
@@ -141,7 +141,9 @@ namespace BookRef.Api.Extensions
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book6);
-            user.AddNewBook(book6);
+            user.AddNewBook(book6, BookStatus.Done);
+
+            _context.Add(user);
 
             _context.SaveChanges();
             TestSeededData();

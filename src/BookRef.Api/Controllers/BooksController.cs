@@ -15,6 +15,21 @@ namespace BookRef.Api.Controllers
         public async Task<ActionResult<BooksViewModel>> GetAllBooks() =>
             Ok(await Mediator.Send(new GetAllBooksQuery()));
 
+        [HttpGet("api/books/active")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<ActiveBooksViewModel>> GetAllActiveBooks() =>
+            Ok(await Mediator.Send(new GetAllActiveBooksQuery()));
+
+        [HttpGet("api/books/wishlist")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<WishlistViewModel>> GetWishlist() =>
+            Ok(await Mediator.Send(new GetWishlistQuery()));
+
+        [HttpGet("api/books/done")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<DoneViewModel>> GetDone() =>
+            Ok(await Mediator.Send(new GetDoneQuery()));
+
         [HttpGet("api/authors")]
         [ProducesResponseType(200)]
         public async Task<ActionResult<AuthorsViewModel>> GetAllAuthors() =>

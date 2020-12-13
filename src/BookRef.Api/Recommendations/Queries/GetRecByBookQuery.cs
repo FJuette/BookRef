@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore;
 namespace BookRef.Api.Recommandations.Queries
 {
     public record GetRecByBookQuery(long SourceBook) : IRequest<BookRecViewModel>;
-    public record BookRecViewModel(IEnumerable<MyRecDto> Data);
+    public record BookRecViewModel(MyRecsDto Data);
 
     public class GetRecByBookQueryHandler : IRequestHandler<GetRecByBookQuery, BookRecViewModel>
     {
@@ -30,20 +30,44 @@ namespace BookRef.Api.Recommandations.Queries
                 .AsNoTracking()
                 .Include(e => e.RecommendedBook)
                 .Include(e => e.SourceBook)
+                .Include(e => e.RecommendedPerson)
+                .Include(e => e.Note)
                 .Where(e => e.SourceBookId == request.SourceBook)
                 .ToListAsync(cancellationToken);
 
-            var books = data.Select(e => new MyRecDto
-            {
-                Book = e.RecommendedBook
-            }).ToList();
+            var books = data.Where(e => e.RecommendedBook != null)
+                            .Select(e => new MyBookRecDto { Book = e.RecommendedBook, Note = e.Note.Content } )
+                            .ToList();
+            var people = data.Where(e => e.RecommendedPerson != null)
+                             .Select(e => new MyPersonRecDto { Person = e.RecommendedPerson, Note = e.Note.Content } )
+                             .ToList();
 
-            return new BookRecViewModel(books);
+            var myRecs = new MyRecsDto
+            {
+                Books = books,
+                People = people
+            };
+
+            return new BookRecViewModel(myRecs);
         }
     }
 
-    public record MyRecDto()
+
+    public record MyBookRecDto()
     {
         public Book Book { get; init; }
+        public string Note { get; init; }
     }
+    public record MyPersonRecDto()
+    {
+        public Person Person { get; init; }
+        public string Note { get; init; }
+    }
+
+    public record MyRecsDto()
+    {
+        public List<MyBookRecDto> Books { get; init; }
+        public List<MyPersonRecDto> People { get; init; }
+    }
+
 }

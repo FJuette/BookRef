@@ -6,10 +6,16 @@ namespace BookRef.Api.Controllers
 {
     public class RecommendationController : BaseController
     {
-        [HttpGet("api/recommendations/{id}")]
+        [HttpGet("api/recommendations/{bookId}")]
         [ProducesResponseType(200)]
-        public async Task<ActionResult<BookRecViewModel>> GetAllBooks(long id) =>
-            Ok(await Mediator.Send(new GetRecByBookQuery(id)));
+        public async Task<ActionResult<BookRecViewModel>> GetAllBookRec(long bookId) =>
+            Ok(await Mediator.Send(new GetRecByBookQuery(bookId)));
+
+
+        // [HttpGet("api/recommendations")]
+        // [ProducesResponseType(200)]
+        // public async Task<ActionResult<RecsViewModel>> GetAllBooks(long id) =>
+        //     Ok(await Mediator.Send(new GetRecByBookQuery(id)));
 
     }
 }
