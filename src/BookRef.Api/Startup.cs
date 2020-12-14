@@ -23,9 +23,6 @@ using BookRef.Api.Health;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Persistence;
 using EventStore.ClientAPI;
-using System;
-using EventStore.Client;
-using System.Net.Http;
 
 namespace BookRef.Api
 {
@@ -71,19 +68,15 @@ namespace BookRef.Api
                         builder.AllowAnyOrigin(); //TODO remove in production and add to origin list
                     }));
 
-            services.AddEventStoreClient(settings => {
-                settings.ConnectivitySettings.Address = new Uri("https://localhost:2113");
-                settings.DefaultCredentials = new UserCredentials("admin", "changeit");
+            var eventStoreConnection = EventStoreConnection.Create(
+                connectionString: "ConnectTo=tcp://admin:changeit@localhost:1113; DefaultUserCredentials=admin:changeit;",
+                builder: ConnectionSettings.Create().KeepReconnecting(),
+                connectionName: "User");
 
-                // settings.CreateHttpMessageHandler = () =>
-                //     new SocketsHttpHandler {
-                //         SslOptions = {
-                //             RemoteCertificateValidationCallback = delegate {
-                //                 return true;
-                //             }
-                //         }
-                //     };
-            });
+            eventStoreConnection.ConnectAsync().GetAwaiter().GetResult();
+
+            services.AddSingleton(eventStoreConnection);
+
 
             services.AddTransient<AggregateRepository>();
 

@@ -30,11 +30,8 @@ Create a new project from the template
 Remove the template
 > dotnet new -u FJuette.Template.WebApi
 
-## EventStore
+## EventStore 20.6 - NOT WORKING atm
 
-> docker run --name esdb-node -it -p 2113:2113 -p 1113:1113 \
-    eventstore/eventstore:latest --insecure --run-projections=All \
-    --enable-external-tcp --enable-atom-pub-over-http
 
 DI Injection
 > https://developers.eventstore.com/clients/dotnet/generated/v20.6.1/connecting/di-extensions.html

@@ -5,16 +5,15 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using BookRef.Api.Models.Framework;
-using BookRef.Api.Users.Events;
-using EventStore.Client;
+using EventStore.ClientAPI;
 
 namespace BookRef.Api.Persistence
 {
     public class AggregateRepository
     {
-        private readonly EventStoreClient _eventStore;
+        private readonly IEventStoreConnection _eventStore;
 
-        public AggregateRepository(EventStoreClient eventStore)
+        public AggregateRepository(IEventStoreConnection eventStore)
         {
             _eventStore = eventStore;
         }
@@ -23,9 +22,11 @@ namespace BookRef.Api.Persistence
         {
             var events = aggregate.GetChanges()
                 .Select(@event => new EventData(
-                    Uuid.NewUuid(),
+                    Guid.NewGuid(),
                     @event.GetType().Name,
-                    Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event))))
+                    true,
+                    Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event)),
+                    Encoding.UTF8.GetBytes(@event.GetType().FullName)))
                 .ToArray();
 
             if (!events.Any())
@@ -35,7 +36,7 @@ namespace BookRef.Api.Persistence
 
             var streamName = GetStreamName(aggregate, aggregate.Id);
 
-            var result = await _eventStore.AppendToStreamAsync(streamName, StreamState.NoStream, events);
+            var result = await _eventStore.AppendToStreamAsync(streamName, ExpectedVersion.Any, events);
         }
 
         public async Task<T> LoadAsync<T>(Guid aggregateId) where T : Aggregate, new()
@@ -46,17 +47,23 @@ namespace BookRef.Api.Persistence
             var aggregate = new T();
             var streamName = GetStreamName(aggregate, aggregateId);
 
-            var events = _eventStore.ReadStreamAsync(
-                    Direction.Forwards, streamName, StreamPosition.Start);
+            var nextPageStart = 0L;
 
-            var eventsList = new List<object>();
-            var last = await events.LastAsync();
-            await foreach (var e in events) {
-                var data = Encoding.UTF8.GetString(e.Event.Data.ToArray());
-                var obj = JsonSerializer.Deserialize<UserCreated>(data);
-                eventsList.Add(obj);
-            }
-            aggregate.Load(last.Event.EventNumber.ToInt64(), eventsList);
+            do
+            {
+                var page = await _eventStore.ReadStreamEventsForwardAsync(
+                    streamName, nextPageStart, 4096, false);
+
+                if (page.Events.Length > 0)
+                {
+                    aggregate.Load(
+                        page.Events.Last().Event.EventNumber,
+                        page.Events.Select(@event => JsonSerializer.Deserialize(Encoding.UTF8.GetString(@event.OriginalEvent.Data), Type.GetType(Encoding.UTF8.GetString(@event.OriginalEvent.Metadata)))
+                        ).ToArray());
+                }
+
+                nextPageStart = !page.IsEndOfStream ? page.NextEventNumber : -1;
+            } while (nextPageStart != -1);
 
             return aggregate;
         }
