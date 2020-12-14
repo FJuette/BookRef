@@ -32,7 +32,12 @@ Remove the template
 
 ## EventStore
 
-> docker run --name esdb-node -it -p 2113:2113 -p 1113:1113 eventstore/eventstore:latest --insecure --run-projections=All
+> docker run --name esdb-node -it -p 2113:2113 -p 1113:1113 \
+    eventstore/eventstore:latest --insecure --run-projections=All \
+    --enable-external-tcp --enable-atom-pub-over-http
+
+DI Injection
+> https://developers.eventstore.com/clients/dotnet/generated/v20.6.1/connecting/di-extensions.html
 
 ## Remarks
 

@@ -1,12 +1,18 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using BookRef.Api.Authors.Commands;
+using BookRef.Api.Models.Framework;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
+using BookRef.Api.Users.Commands;
+using BookRef.Api.Users.Events;
 
 namespace BookRef.Api.Models
 {
-    public class User : EntityBase
+    public class User : Aggregate
     {
+        public Guid Id { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
         public string EMail { get; set; }
@@ -65,6 +71,30 @@ namespace BookRef.Api.Models
                                                 .Where(e => e.RecommendedBook != null)
                                                 .Select(e => $"From ‘{e.SourceBook.Title}‘ for ‘{e.RecommendedBook.Title}‘ with note ‘{e.Note.Content}‘"));
             return $"Person {{ Id = {Id}, Username = {Username}, Password = {Password}, EMail = {EMail}, MyBooks = {myBooks}, MyRecommendations = {allMyRec} }}";
+        }
+
+        protected override void When(object @event)
+        {
+            switch (@event)
+            {
+                case UserCreated x: OnCreated(x); break;
+            }
+        }
+
+        public void Create(Guid id, string username)
+        {
+            if (Version >= 0)
+            {
+                //throw new UserAlreadyCreatedException();
+            }
+
+            Apply(new UserCreated() { Id = id, Username = username });
+        }
+
+        private void OnCreated(UserCreated @event)
+        {
+            Username = @event.Username;
+            Id = @event.Id;
         }
     }
 }

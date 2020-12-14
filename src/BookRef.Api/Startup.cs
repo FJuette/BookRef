@@ -22,6 +22,10 @@ using BookRef.Api.Filters;
 using BookRef.Api.Health;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Persistence;
+using EventStore.ClientAPI;
+using System;
+using EventStore.Client;
+using System.Net.Http;
 
 namespace BookRef.Api
 {
@@ -66,6 +70,22 @@ namespace BookRef.Api
                         builder.AllowAnyHeader();
                         builder.AllowAnyOrigin(); //TODO remove in production and add to origin list
                     }));
+
+            services.AddEventStoreClient(settings => {
+                settings.ConnectivitySettings.Address = new Uri("https://localhost:2113");
+                settings.DefaultCredentials = new UserCredentials("admin", "changeit");
+
+                // settings.CreateHttpMessageHandler = () =>
+                //     new SocketsHttpHandler {
+                //         SslOptions = {
+                //             RemoteCertificateValidationCallback = delegate {
+                //                 return true;
+                //             }
+                //         }
+                //     };
+            });
+
+            services.AddTransient<AggregateRepository>();
 
             // Add Swagger
             services.AddSwaggerDocumentation();

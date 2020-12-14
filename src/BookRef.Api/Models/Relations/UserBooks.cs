@@ -14,7 +14,7 @@ namespace BookRef.Api.Models.Relations
         public BookType Type { get; set; }
 
         public User User { get; set; }
-        public long UserId { get; set; }
+        public Guid UserId { get; set; }
 
         public Book Book { get; set; }
         public long BookId { get; set; }

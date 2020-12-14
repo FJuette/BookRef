@@ -48,7 +48,8 @@ namespace BookRef.Api.Extensions
             {
                 EMail = "fabian.j@test.de",
                 Username = "Admin",
-                Password = "dasistzueinfach"
+                Password = "dasistzueinfach",
+                Id = new System.Guid()
             };
 
             var book = new Book

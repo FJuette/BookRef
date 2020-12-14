@@ -146,8 +146,8 @@ namespace BookRef.Api.Persistence
 
             builder?.Entity<User>(b =>
             {
-                // b.HasMany(e => e.MyRecommendations)
-                //     .WithOne(e => e.Owner);
+                b.HasKey(e => e.Id);
+                //b.Property(e => e.Id)
             });
 
             // builder?.Entity<Friends>(b =>
