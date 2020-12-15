@@ -23,6 +23,11 @@ using BookRef.Api.Health;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Persistence;
 using EventStore.ClientAPI;
+using GraphiQl;
+using BookRef.Api.Models.Schemas;
+using GraphQL.Server;
+using Microsoft.Extensions.Logging;
+using GraphQL.Server.Ui.Playground;
 
 namespace BookRef.Api
 {
@@ -72,13 +77,23 @@ namespace BookRef.Api
                 connectionString: "ConnectTo=tcp://admin:changeit@localhost:1113; DefaultUserCredentials=admin:changeit;",
                 builder: ConnectionSettings.Create().KeepReconnecting(),
                 connectionName: "User");
-
             eventStoreConnection.ConnectAsync().GetAwaiter().GetResult();
-
             services.AddSingleton(eventStoreConnection);
-
-
             services.AddTransient<AggregateRepository>();
+
+            services
+                .AddScoped<BookSchema>()
+                .AddGraphQL((options, provider) =>
+                {
+                    options.EnableMetrics = true;
+                    var logger = provider.GetRequiredService<ILogger<Startup>>();
+                    options.UnhandledExceptionDelegate = ctx => logger.LogError("{Error} occurred", ctx.OriginalException.Message);
+                })
+                // Add required services for GraphQL request/response de/serialization
+                .AddSystemTextJson() // For .NET Core 3+
+                .AddErrorInfoProvider(opt => opt.ExposeExceptionStackTrace = true)
+                .AddDataLoader() // Add required services for DataLoader support
+                .AddGraphTypes(ServiceLifetime.Scoped); // Add all IGraphType implementors in assembly which ChatSchema exists
 
             // Add Swagger
             services.AddSwaggerDocumentation();
@@ -120,6 +135,10 @@ namespace BookRef.Api
         {
             app.UseCors("Locations");
             app.UseSwaggerDocumentation();
+            app.UseGraphQL<BookSchema>();
+            // app.UseGraphiQl();
+            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+            //to explorer API navigate https://*DOMAIN*/ui/playground
 
             app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthCheckResponse});
 

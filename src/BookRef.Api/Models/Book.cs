@@ -15,7 +15,7 @@ namespace BookRef.Api.Models
         public string Auflage { get; set; }
         public DateTime Created { get; set; }
 
-        public Language Language { get; set; }
+        public string Language { get; set; }
 
         public User Creator { get; set; }
 
