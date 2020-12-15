@@ -2,24 +2,26 @@ using GraphQL.Types;
 
 namespace BookRef.Api.Models.Types
 {
+    public class LanguageType: EnumerationGraphType<Language>
+    {
+        public LanguageType()
+        {
+            Description = "Language from the book";
+        }
+    }
     public class BookType : ObjectGraphType<Book>
     {
         public BookType()
         {
             Field(x => x.Id);
-            Field(x => x.ISBN);
+            Field(x => x.Isbn);
             Field(x => x.Title);
             Field(x => x.Link);
             Field(x => x.Auflage);
             Field(x => x.Created);
-            Field(x => x.Language);
-            //Field<LanguageType>(nameof(Book.Language));
+            Field<LanguageType>(nameof(Book.Language));
         }
 
-        // public class LanguageType: EnumerationGraphType<Language>
-        // {
-
-        // }
 
         /*
         public string ISBN { get; set; }

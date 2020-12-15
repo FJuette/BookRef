@@ -54,9 +54,9 @@ namespace BookRef.Api.Extensions
 
             var book = new Book
             {
-                ISBN = "978-3426300886",
+                Isbn = "978-3426300886",
                 Title = "Denken hilft zwar, nützt aber nichts: Warum wir immer wieder unvernünftige Entscheidungen",
-                //Language = Language.German,
+                Language = Language.German,
                 Link = "https://www.amazon.de/Denken-hilft-zwar-n%C3%BCtzt-nichts/dp/3426300885",
                 Created = new System.DateTime(2020, 05, 11),
                 Auflage = "Sechste",
@@ -69,9 +69,9 @@ namespace BookRef.Api.Extensions
 
             var book2 = new Book
             {
-                ISBN = "978-3453604483",
+                Isbn = "978-3453604483",
                 Title = "Das trügerische Gedächtnis: Wie unser Gehirn Erinnerungen fälscht",
-                //Language = Language.German,
+                Language = Language.German,
                 Link = "https://www.amazon.de/Das-tr%C3%BCgerische-Ged%C3%A4chtnis-Erinnerungen-f%C3%A4lscht/dp/3453604482",
                 Created = new System.DateTime(2020, 06, 12),
                 Auflage = "Erste",
@@ -86,9 +86,9 @@ namespace BookRef.Api.Extensions
 
             var book3 = new Book
             {
-                ISBN = "978-3446260290",
+                Isbn = "978-3446260290",
                 Title = "Böse: Die Psychologie unserer Abgründe",
-                //Language = Language.German,
+                Language = Language.German,
                 Link = "https://www.amazon.de/B%C3%B6se-Die-Psychologie-unserer-Abgr%C3%BCnde/dp/3446260293",
                 Created = new System.DateTime(2020, 07, 15),
                 Auflage = "Dritte",
@@ -101,9 +101,9 @@ namespace BookRef.Api.Extensions
 
             var book4 = new Book
             {
-                ISBN = "978-3662533253",
+                Isbn = "978-3662533253",
                 Title = "Der Luzifer-Effekt: Die Macht der Umstände und die Psychologie des Bösen",
-                //Language = Language.German,
+                Language = Language.German,
                 Link = "https://www.amazon.de/B%C3%B6se-Die-Psychologie-unserer-Abgr%C3%BCnde/dp/3446260293",
                 Created = new System.DateTime(2020, 07, 18),
                 Auflage = "Erste",
@@ -116,9 +116,9 @@ namespace BookRef.Api.Extensions
 
             var book5 = new Book
             {
-                ISBN = "978-3730604540",
+                Isbn = "978-3730604540",
                 Title = "Massenpsychologie und Ich-Analyse",
-                //Language = Language.German,
+                Language = Language.English,
                 Link = "https://www.amazon.de/Massenpsychologie-Ich-Analyse-Sigmund-Freud/dp/3730604546",
                 Created = new System.DateTime(2020, 08, 20),
                 Auflage = "Erste",
@@ -131,9 +131,9 @@ namespace BookRef.Api.Extensions
 
             var book6 = new Book
             {
-                ISBN = "978-3936086355",
+                Isbn = "978-3936086355",
                 Title = "Propaganda: Die Kunst der Public Relations",
-                //Language = Language.German,
+                Language = Language.English,
                 Link = "https://www.amazon.de/Propaganda-Die-Kunst-Public-Relations/dp/3936086354",
                 Created = new System.DateTime(2020, 09, 1),
                 Auflage = "Dritte",

@@ -8,14 +8,14 @@ namespace BookRef.Api.Models
 {
     public class Book : EntityBase
     {
-        public string ISBN { get; set; }
+        public string Isbn { get; set; }
         public string Title { get; set; }
         public string Link { get; set; }
         //public byte[] Image { get; set; }
         public string Auflage { get; set; }
         public DateTime Created { get; set; }
 
-        public string Language { get; set; }
+        public Language Language { get; set; }
 
         public User Creator { get; set; }
 
@@ -44,7 +44,7 @@ namespace BookRef.Api.Models
         {
             var authors = string.Join("|", _bookAuthors.Select(e => e.Author.Name));
             var categories = string.Join('|', _bookCategories.Select(e => e.Category.Name));
-            return $"Book {{ Id = {Id}, ISBN = {ISBN}, Title = {Title}, Auflage = {Auflage}, Language = {Language}, Creator = {Creator}, Authors = {authors}, Categories = {categories} }}";
+            return $"Book {{ Id = {Id}, ISBN = {Isbn}, Title = {Title}, Auflage = {Auflage}, Language = {Language}, Creator = {Creator}, Authors = {authors}, Categories = {categories} }}";
         }
     }
 

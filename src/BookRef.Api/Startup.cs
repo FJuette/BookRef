@@ -23,7 +23,6 @@ using BookRef.Api.Health;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Persistence;
 using EventStore.ClientAPI;
-using GraphiQl;
 using BookRef.Api.Models.Schemas;
 using GraphQL.Server;
 using Microsoft.Extensions.Logging;
