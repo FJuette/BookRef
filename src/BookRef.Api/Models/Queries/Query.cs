@@ -4,6 +4,7 @@ using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
 using HotChocolate;
+using HotChocolate.Data;
 using HotChocolate.Types;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,7 +22,7 @@ namespace BookRef.Api.Models.Queries
         /// <summary>
         /// Gets all books.
         /// </summary>
-        //[UseSelection]
+        [UseFiltering]
         public IQueryable<UserBooks> GetBooks([Service]IUserService context)
         {
             var user = context.GetCurrentUser();

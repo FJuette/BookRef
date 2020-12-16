@@ -109,6 +109,7 @@ namespace BookRef.Api
 
             services
                 .AddGraphQLServer()
+                .AddFiltering()
                 .AddQueryType<Query>();
 
             services.AddAutoMapper(typeof(Startup));

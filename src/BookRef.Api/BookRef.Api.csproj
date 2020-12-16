@@ -23,6 +23,7 @@
     <PackageReference Include="GraphQL.Server.Ui.Playground" Version="4.4.0" /> -->
     <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.3" />
     <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.5" />
+    <PackageReference Include="HotChocolate.Data" Version="11.0.3" />
     <PackageReference Include="HotChocolate.Types" Version="11.0.3" />
     <PackageReference Include="LanguageExt.Core" Version="3.4.15" />
     <PackageReference Include="MediatR" Version="9.0.0" />
