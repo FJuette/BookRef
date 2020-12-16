@@ -1,3 +1,4 @@
+using System;
 using BookRef.Api.Models.ValueObjects;
 
 namespace BookRef.Api.Models
@@ -6,7 +7,7 @@ namespace BookRef.Api.Models
     {
         public RecommedationType Type { get; set; }
 
-        public User Owner { get; set; }
+        public Guid OwnerId { get; set; }
         public Note Note { get; set; }
 
         public Book SourceBook { get; set; }

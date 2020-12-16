@@ -147,7 +147,9 @@ namespace BookRef.Api.Persistence
             builder?.Entity<User>(b =>
             {
                 b.HasKey(e => e.Id);
-                //b.Property(e => e.Id)
+                b.HasMany(e => e.MyRecommendations)
+                    .WithOne()
+                    .HasForeignKey(e => e.OwnerId);
             });
 
             // builder?.Entity<Friends>(b =>

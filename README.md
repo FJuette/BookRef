@@ -1,11 +1,9 @@
-# C# Web-Api template in DDD-Style for Microservices
-
-My template for new REST-API projects in a microservice style.
+# BookRef API
 
 ## Technologies
 
-* .Net Core 3.1
-* EF Core 3.1
+* .Net 5.0
+* EF Core 5
 * FluentValidation and .Net Core default validation disabled
 * AutoMapper
 * MediatR for CQRS
@@ -13,34 +11,9 @@ My template for new REST-API projects in a microservice style.
 * Serilog with default console output
 * Unit and Integration Tests with XUnit
 * DDD-Style Model Classes and Onion Architecture
-* C# 8 Features enabled with nullable compiler checks
+* C# 9 Features enabled with nullable compiler checks
 
-Mainly inspired by <https://github.com/JasonGT/NorthwindTraders> and Vladimir Khorikov (<https://github.com/vkhorikov>)
-
-## Usage
-
-Nuget Package: <https://www.nuget.org/packages/FJuette.Template.WebApi/>
-
-Install the template from nuget
-> dotnet new --install FJuette.Template.WebApi
-
-Create a new project from the template
-> dotnet new ddd-webapi -n Magnus
-
-Remove the template
-> dotnet new -u FJuette.Template.WebApi
-
-## EventStore 20.6 - NOT WORKING atm
-
-
-DI Injection
-> https://developers.eventstore.com/clients/dotnet/generated/v20.6.1/connecting/di-extensions.html
-
-## Remarks
-
-I did not added a respository / UoW pattern because in my opinion its to heavy for microservices.
-
-## References
+## General References
 
 * <https://medium.com/agilix/entity-framework-core-enums-ee0f8f4063f2>
 * <https://code-maze.com/migrations-and-seed-data-efcore/>
@@ -50,6 +23,10 @@ I did not added a respository / UoW pattern because in my opinion its to heavy f
 * <https://herbertograca.com/2017/10/19/from-cqs-to-cqrs/>
 * <http://docs.automapper.org/en/stable/Queryable-Extensions.html>
 * <https://herbertograca.com/2017/11/16/explicit-architecture-01-ddd-hexagonal-onion-clean-cqrs-how-i-put-it-all-together/>
+
+## Flutter APP
+
+- <https://github.com/beno531/BookrefFlutter/releases>
 
 ## License
 

@@ -38,7 +38,7 @@ namespace BookRef.Api.Models
         {
             var rec = new Recommedation
             {
-                Owner = this,
+                OwnerId = this.Id,
                 SourceBook = sourceBook,
                 RecommendedBook = recommendedBook,
                 Note = new Note
@@ -53,7 +53,7 @@ namespace BookRef.Api.Models
         {
             var rec = new Recommedation
             {
-                Owner = this,
+                OwnerId = this.Id,
                 SourceBook = sourceBook,
                 RecommendedPerson = recommendedPerson,
                 Note = new Note
