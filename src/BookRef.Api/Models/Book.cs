@@ -17,7 +17,7 @@ namespace BookRef.Api.Models
 
         public BookLanguage Language { get; set; }
 
-        public User Creator { get; set; }
+        //public User Creator { get; set; }
 
         private List<BookCategory> _bookCategories = new List<BookCategory>();
         public IReadOnlyList<BookCategory> BookCategories => _bookCategories.ToList();
@@ -44,7 +44,7 @@ namespace BookRef.Api.Models
         {
             var authors = string.Join("|", _bookAuthors.Select(e => e.Author.Name));
             var categories = string.Join('|', _bookCategories.Select(e => e.Category.Name));
-            return $"Book {{ Id = {Id}, ISBN = {Isbn}, Title = {Title}, Auflage = {Auflage}, Language = {Language}, Creator = {Creator}, Authors = {authors}, Categories = {categories} }}";
+            return $"Book {{ Id = {Id}, ISBN = {Isbn}, Title = {Title}, Auflage = {Auflage}, Language = {Language}, Authors = {authors}, Categories = {categories} }}";
         }
     }
 

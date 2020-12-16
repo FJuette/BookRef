@@ -83,8 +83,8 @@ namespace BookRef.Api.Persistence
                 b.HasKey(e => e.Id);
                 b.Property(c => c.Language)
                     .HasConversion<string>();
-                b.HasOne(e => e.Creator)
-                    .WithMany();
+                // b.HasOne(e => e.Creator)
+                //     .WithMany();
             });
 
             // Book to Author n...m
@@ -115,7 +115,7 @@ namespace BookRef.Api.Persistence
             builder?.Entity<UserBooks>(b =>
             {
                 b.HasKey(e => new { e.BookId, e.UserId } );
-                b.HasOne(e => e.User)
+                b.HasOne<User>()
                     .WithMany(e => e.MyBooks)
                     .HasForeignKey(e => e.UserId);
                 b.HasOne(e => e.Book)

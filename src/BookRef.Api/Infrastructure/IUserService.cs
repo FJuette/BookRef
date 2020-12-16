@@ -29,6 +29,10 @@ namespace BookRef.Api.Infrastructure
                                 .ThenInclude(e => e.BookAuthors)
                                 .ThenInclude(e => e.Author)
                             .Include(e => e.MyRecommendations)
+                            .Include(e => e.MyBooks)
+                                .ThenInclude(e => e.Book)
+                                .ThenInclude(e => e.BookCategories)
+                                .ThenInclude(e => e.Category)
                             .FirstOrDefault(e => e.Username == _provider.UserId);
             return user != null ? user : throw new BadUserException(_provider.UserId);
         }

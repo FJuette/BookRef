@@ -13,7 +13,7 @@ namespace BookRef.Api.Models.Relations
         public BookStatus Status { get; set; }
         public BookType Type { get; set; }
 
-        public User User { get; set; }
+        //public User User { get; set; }
         public Guid UserId { get; set; }
 
         public Book Book { get; set; }

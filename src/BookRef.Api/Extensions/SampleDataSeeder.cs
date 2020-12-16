@@ -60,7 +60,7 @@ namespace BookRef.Api.Extensions
                 Link = "https://www.amazon.de/Denken-hilft-zwar-n%C3%BCtzt-nichts/dp/3426300885",
                 Created = new System.DateTime(2020, 05, 11),
                 Auflage = "Sechste",
-                Creator = user
+                //Creator = user
             };
             book.SetAuthors(new List<Author> { danAuthor });
             book.SetCategories(new List<Category> { categoryBoerse, categoryPsyche });
@@ -75,7 +75,7 @@ namespace BookRef.Api.Extensions
                 Link = "https://www.amazon.de/Das-tr%C3%BCgerische-Ged%C3%A4chtnis-Erinnerungen-f%C3%A4lscht/dp/3453604482",
                 Created = new System.DateTime(2020, 06, 12),
                 Auflage = "Erste",
-                Creator = user
+                //Creator = user
             };
             book2.SetAuthors(new List<Author> { juliaAuthor, hansAuthor });
             book2.SetCategories(new List<Category> { categoryGehirn });
@@ -92,7 +92,7 @@ namespace BookRef.Api.Extensions
                 Link = "https://www.amazon.de/B%C3%B6se-Die-Psychologie-unserer-Abgr%C3%BCnde/dp/3446260293",
                 Created = new System.DateTime(2020, 07, 15),
                 Auflage = "Dritte",
-                Creator = user
+                //Creator = user
             };
             book3.SetAuthors(new List<Author> { juliaAuthor });
             book3.SetCategories(new List<Category> { categoryGehirn });
@@ -107,7 +107,7 @@ namespace BookRef.Api.Extensions
                 Link = "https://www.amazon.de/B%C3%B6se-Die-Psychologie-unserer-Abgr%C3%BCnde/dp/3446260293",
                 Created = new System.DateTime(2020, 07, 18),
                 Auflage = "Erste",
-                Creator = user
+                //Creator = user
             };
             book4.SetAuthors(new List<Author> { zimbardoAuthor });
             book4.SetCategories(new List<Category> { categoryGehirn });
@@ -122,7 +122,7 @@ namespace BookRef.Api.Extensions
                 Link = "https://www.amazon.de/Massenpsychologie-Ich-Analyse-Sigmund-Freud/dp/3730604546",
                 Created = new System.DateTime(2020, 08, 20),
                 Auflage = "Erste",
-                Creator = user
+                //Creator = user
             };
             book5.SetAuthors(new List<Author> { freudAuthor });
             book5.SetCategories(new List<Category> { categoryGehirn });
@@ -137,7 +137,7 @@ namespace BookRef.Api.Extensions
                 Link = "https://www.amazon.de/Propaganda-Die-Kunst-Public-Relations/dp/3936086354",
                 Created = new System.DateTime(2020, 09, 1),
                 Auflage = "Dritte",
-                Creator = user
+                //Creator = user
             };
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });

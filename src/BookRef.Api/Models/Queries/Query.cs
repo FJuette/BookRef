@@ -1,4 +1,6 @@
 using System.Linq;
+using BookRef.Api.Infrastructure;
+using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
 using HotChocolate;
@@ -16,7 +18,14 @@ namespace BookRef.Api.Models.Queries
         public IQueryable<Author> GetAuthors([Service]BookRefDbContext context) =>
             context.Authors;
 
-        // public IQueryable<User> GetUsers([Service]BookRefDbContext context) =>
-        //     context.Users;
+        /// <summary>
+        /// Gets all books.
+        /// </summary>
+        //[UseSelection]
+        public IQueryable<UserBooks> GetBooks([Service]IUserService context)
+        {
+            var user = context.GetCurrentUser();
+            return user.MyBooks.AsQueryable();
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace BookRef.Api.Models
             var ub = new UserBooks
             {
                 Book = book,
-                User = this,
+                UserId = this.Id,
                 Status = status
             };
             _myBooks.Add(ub);
