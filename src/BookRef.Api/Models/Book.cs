@@ -15,7 +15,7 @@ namespace BookRef.Api.Models
         public string Auflage { get; set; }
         public DateTime Created { get; set; }
 
-        public Language Language { get; set; }
+        public BookLanguage Language { get; set; }
 
         public User Creator { get; set; }
 
@@ -48,7 +48,7 @@ namespace BookRef.Api.Models
         }
     }
 
-    public enum Language
+    public enum BookLanguage
     {
         German,
         English

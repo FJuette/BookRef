@@ -24,9 +24,11 @@ using BookRef.Api.Infrastructure;
 using BookRef.Api.Persistence;
 using EventStore.ClientAPI;
 using BookRef.Api.Models.Schemas;
-using GraphQL.Server;
-using Microsoft.Extensions.Logging;
-using GraphQL.Server.Ui.Playground;
+//using GraphQL.Server;
+using HotChocolate;
+using HotChocolate.Execution.Configuration;
+using BookRef.Api.Models.Queries;
+using HotChocolate.AspNetCore;
 
 namespace BookRef.Api
 {
@@ -80,19 +82,20 @@ namespace BookRef.Api
             services.AddSingleton(eventStoreConnection);
             services.AddTransient<AggregateRepository>();
 
-            services
-                .AddScoped<BookSchema>()
-                .AddGraphQL((options, provider) =>
-                {
-                    options.EnableMetrics = true;
-                    var logger = provider.GetRequiredService<ILogger<Startup>>();
-                    options.UnhandledExceptionDelegate = ctx => logger.LogError("{Error} occurred", ctx.OriginalException.Message);
-                })
-                // Add required services for GraphQL request/response de/serialization
-                .AddSystemTextJson() // For .NET Core 3+
-                .AddErrorInfoProvider(opt => opt.ExposeExceptionStackTrace = true)
-                .AddDataLoader() // Add required services for DataLoader support
-                .AddGraphTypes(ServiceLifetime.Scoped); // Add all IGraphType implementors in assembly which ChatSchema exists
+            // services
+            //     .AddScoped<BookSchema>()
+            //     .AddGraphQL((options, provider) =>
+            //     {
+            //         options.EnableMetrics = true;
+            //         var logger = provider.GetRequiredService<ILogger<Startup>>();
+            //         options.UnhandledExceptionDelegate = ctx => logger.LogError("{Error} occurred", ctx.OriginalException.Message);
+            //     })
+            //     // Add required services for GraphQL request/response de/serialization
+            //     .AddSystemTextJson() // For .NET Core 3+
+            //     .AddErrorInfoProvider(opt => opt.ExposeExceptionStackTrace = true)
+            //     .AddDataLoader() // Add required services for DataLoader support
+            //     .AddGraphTypes(ServiceLifetime.Scoped); // Add all IGraphType implementors in assembly which ChatSchema exists
+
 
             // Add Swagger
             services.AddSwaggerDocumentation();
@@ -103,6 +106,10 @@ namespace BookRef.Api
                 .AddCheck<ApiHealthCheck>("api");
 
             services.AddScoped<BookRefDbContext>();
+
+            services
+                .AddGraphQLServer()
+                .AddQueryType<Query>();
 
             services.AddAutoMapper(typeof(Startup));
 
@@ -134,9 +141,9 @@ namespace BookRef.Api
         {
             app.UseCors("Locations");
             app.UseSwaggerDocumentation();
-            app.UseGraphQL<BookSchema>();
+            //app.UseGraphQL<BookSchema>();
             // app.UseGraphiQl();
-            app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
+            //app.UseGraphQLPlayground(new GraphQLPlaygroundOptions());
             //to explorer API navigate https://*DOMAIN*/ui/playground
 
             app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthCheckResponse});
@@ -144,7 +151,13 @@ namespace BookRef.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints => endpoints.MapControllers());
+
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapGraphQL();
+            });
         }
 
         private static Task WriteHealthCheckResponse(
