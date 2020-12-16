@@ -18,3 +18,7 @@
 - https://fiyazhasan.me/graphql-with-net-core-part-v-fields-arguments-variables/
 - https://graphql-dotnet.github.io/docs/getting-started/databases
 - https://github.com/SimonCropp/GraphQL.EntityFramework/blob/master/docs/configuration.md#register-in-container
+
+## APP
+
+- https://github.com/beno531/BookrefFlutter/releases
