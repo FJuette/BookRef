@@ -156,6 +156,9 @@ namespace BookRef.Api.Persistence
             builder?.Entity<User>(b =>
             {
                 b.HasKey(e => e.Id);
+                b.HasOne(e => e.Library)
+                    .WithOne()
+                    .HasForeignKey<PersonalLibrary>(e => e.UserId);
             });
 
             // builder?.Entity<Friends>(b =>

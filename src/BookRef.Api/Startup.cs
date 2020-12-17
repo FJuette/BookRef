@@ -69,7 +69,7 @@ namespace BookRef.Api
             var eventStoreConnection = EventStoreConnection.Create(
                 connectionString: "ConnectTo=tcp://admin:changeit@localhost:1113; DefaultUserCredentials=admin:changeit;",
                 builder: ConnectionSettings.Create().KeepReconnecting(),
-                connectionName: "User");
+                connectionName: "Library");
             eventStoreConnection.ConnectAsync().GetAwaiter().GetResult();
             services.AddSingleton(eventStoreConnection);
             services.AddTransient<AggregateRepository>();

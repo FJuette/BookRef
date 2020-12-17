@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BookRef.Api.Exceptions;
 using BookRef.Api.Library.Events;
 using BookRef.Api.Models.Framework;
 using BookRef.Api.Models.Relations;
@@ -11,7 +12,7 @@ namespace BookRef.Api.Models
     public class PersonalLibrary : Aggregate
     {
         public long UserId { get; private set; }
-        protected PersonalLibrary() {}
+        public PersonalLibrary() {}
         public PersonalLibrary(long userId)
         {
             UserId = userId;
@@ -23,16 +24,6 @@ namespace BookRef.Api.Models
         private List<UserBooks> _myBooks = new List<UserBooks>();
         public IReadOnlyList<UserBooks> MyBooks => _myBooks.ToList();
 
-        public void AddNewBook(Book book, BookStatus status = BookStatus.Active)
-        {
-            var ub = new UserBooks
-            {
-                Book = book,
-                UserId = this.UserId,
-                Status = status
-            };
-            _myBooks.Add(ub);
-        }
 
         public void AddBookRecommendation(Book sourceBook, Book recommendedBook, string note = "")
         {
@@ -79,23 +70,66 @@ namespace BookRef.Api.Models
             switch (@event)
             {
                 case LibraryCreated x: OnCreated(x); break;
+                case BookAdded x: OnBookAded(x); break;
             }
         }
 
-        public void Create(Guid id, long userId)
+        public void Create(Guid libraryId, long userId)
         {
             if (Version >= 0)
             {
                 //throw new UserAlreadyCreatedException();
             }
 
-            Apply(new LibraryCreated(id, userId));
+            Apply(new LibraryCreated(libraryId, userId));
         }
 
         private void OnCreated(LibraryCreated @event)
         {
             UserId = @event.UserId;
-            Id = @event.Id;
+            Id = @event.LibraryId;
+        }
+
+        private void OnBookAded(BookAdded @event)
+        {
+            var ub = new UserBooks
+            {
+                BookId = @event.BookId,
+                UserId = this.UserId
+            };
+            _myBooks.Add(ub);
+        }
+
+
+        public void AddNewBook(long bookId)
+        {
+            if (Version == -1)
+            {
+                throw new NotFoundException("No user Library found", null);
+            }
+
+            Apply(new BookAdded(Id, bookId));
+        }
+
+        public void AddNewBook(Book book)
+        {
+            if (Version == -1)
+            {
+                throw new NotFoundException("No user Library found", null);
+            }
+
+            Apply(new BookAdded(Id, book.Id));
+        }
+
+        // Only to seed data, remove in production
+        public void AddBookDataSeeder(Book book)
+        {
+            var ub = new UserBooks
+            {
+                BookId = book.Id,
+                UserId = this.UserId
+            };
+            _myBooks.Add(ub);
         }
     }
 }
