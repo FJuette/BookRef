@@ -25,7 +25,7 @@ namespace BookRef.Api.Persistence
             IGetClaimsProvider userData)
         {
             _env = env;
-            _userId = userData?.UserId;
+            _userId = userData?.UserId.ToString();
         }
 
         public DbSet<Book> Books { get; set; }
@@ -38,6 +38,7 @@ namespace BookRef.Api.Persistence
         public DbSet<Category> Categories { get; set; }
         public DbSet<Person> People { get; set; }
         public DbSet<Speaker> Speakers { get; set; }
+        public DbSet<PersonalLibrary> Libraries { get; set; }
 
         protected override void OnConfiguring(
             DbContextOptionsBuilder optionsBuilder)
@@ -111,13 +112,21 @@ namespace BookRef.Api.Persistence
                     .HasForeignKey(e => e.CategoryId);
             });
 
+            builder?.Entity<PersonalLibrary>(b =>
+            {
+                b.HasKey(e => e.Id);
+                b.HasMany(e => e.MyRecommendations)
+                    .WithOne()
+                    .HasForeignKey(e => e.OwnerId);
+                b.HasMany(e => e.MyBooks)
+                    .WithOne()
+                    .HasForeignKey(e => e.LibraryId);
+            });
+
             // Book to User
             builder?.Entity<UserBooks>(b =>
             {
-                b.HasKey(e => new { e.BookId, e.UserId } );
-                b.HasOne<User>()
-                    .WithMany(e => e.MyBooks)
-                    .HasForeignKey(e => e.UserId);
+                b.HasKey(e => e.UserBooksId);
                 b.HasOne(e => e.Book)
                     .WithMany()
                     .HasForeignKey(e => e.BookId);
@@ -147,9 +156,6 @@ namespace BookRef.Api.Persistence
             builder?.Entity<User>(b =>
             {
                 b.HasKey(e => e.Id);
-                b.HasMany(e => e.MyRecommendations)
-                    .WithOne()
-                    .HasForeignKey(e => e.OwnerId);
             });
 
             // builder?.Entity<Friends>(b =>

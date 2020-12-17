@@ -15,9 +15,9 @@ namespace BookRef.Api.Books.Queries
 
     public class GetWishlistQueryHandler : IRequestHandler<GetWishlistQuery, WishlistViewModel>
     {
-        private readonly IUserService _userService;
+        private readonly ILibraryService _userService;
 
-        public GetWishlistQueryHandler(IUserService userService)
+        public GetWishlistQueryHandler(ILibraryService userService)
         {
             _userService = userService;
         }
@@ -26,7 +26,7 @@ namespace BookRef.Api.Books.Queries
             GetWishlistQuery request,
             CancellationToken cancellationToken)
         {
-            var user = _userService.GetCurrentUser();
+            var user = _userService.GetPersonalLibrary();
             var books = user.MyBooks.Where(e => e.Status == Models.Relations.BookStatus.Wish)
                             .Select(e => new { e.BookId, e.Book.Title, authors = e.Book.GetAuthors(), e.CurrentPage, e.Speaker?.Name, e.Type } );
 

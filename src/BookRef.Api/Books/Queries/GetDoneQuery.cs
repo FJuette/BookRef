@@ -15,9 +15,9 @@ namespace BookRef.Api.Books.Queries
 
     public class GetDoneQueryHandler : IRequestHandler<GetDoneQuery, DoneViewModel>
     {
-        private readonly IUserService _userService;
+        private readonly ILibraryService _userService;
 
-        public GetDoneQueryHandler(IUserService userService)
+        public GetDoneQueryHandler(ILibraryService userService)
         {
             _userService = userService;
         }
@@ -26,7 +26,7 @@ namespace BookRef.Api.Books.Queries
             GetDoneQuery request,
             CancellationToken cancellationToken)
         {
-            var user = _userService.GetCurrentUser();
+            var user = _userService.GetPersonalLibrary();
             var books = user.MyBooks.Where(e => e.Status == Models.Relations.BookStatus.Done)
                             .Select(e => new { e.BookId, e.Book.Title, authors = e.Book.GetAuthors(), e.CurrentPage, e.Speaker?.Name, e.Type } );
 

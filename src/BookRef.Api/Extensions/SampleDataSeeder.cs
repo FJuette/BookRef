@@ -49,8 +49,10 @@ namespace BookRef.Api.Extensions
                 EMail = "fabian.j@test.de",
                 Username = "Admin",
                 Password = "dasistzueinfach",
-                Id = new System.Guid()
+                Id = 1
             };
+
+            var library = new PersonalLibrary(user.Id);
 
             var book = new Book
             {
@@ -65,7 +67,7 @@ namespace BookRef.Api.Extensions
             book.SetAuthors(new List<Author> { danAuthor });
             book.SetCategories(new List<Category> { categoryBoerse, categoryPsyche });
             _context.Add(book);
-            user.AddNewBook(book);
+            library.AddNewBook(book);
 
             var book2 = new Book
             {
@@ -80,9 +82,9 @@ namespace BookRef.Api.Extensions
             book2.SetAuthors(new List<Author> { juliaAuthor, hansAuthor });
             book2.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book2);
-            user.AddNewBook(book2);
-            user.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
-            user.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
+            library.AddNewBook(book2);
+            library.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
+            library.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
 
             var book3 = new Book
             {
@@ -97,7 +99,7 @@ namespace BookRef.Api.Extensions
             book3.SetAuthors(new List<Author> { juliaAuthor });
             book3.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book3);
-            user.AddNewBook(book3);
+            library.AddNewBook(book3);
 
             var book4 = new Book
             {
@@ -112,7 +114,7 @@ namespace BookRef.Api.Extensions
             book4.SetAuthors(new List<Author> { zimbardoAuthor });
             book4.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book4);
-            user.AddNewBook(book4);
+            library.AddNewBook(book4);
 
             var book5 = new Book
             {
@@ -127,7 +129,7 @@ namespace BookRef.Api.Extensions
             book5.SetAuthors(new List<Author> { freudAuthor });
             book5.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book5);
-            user.AddNewBook(book5, BookStatus.Wish);
+            library.AddNewBook(book5, BookStatus.Wish);
 
             var book6 = new Book
             {
@@ -142,9 +144,10 @@ namespace BookRef.Api.Extensions
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book6);
-            user.AddNewBook(book6, BookStatus.Done);
+            library.AddNewBook(book6, BookStatus.Done);
 
             _context.Add(user);
+            _context.Add(library);
 
             _context.SaveChanges();
             //TestSeededData();
@@ -164,6 +167,8 @@ namespace BookRef.Api.Extensions
             Print<User>(users);
             var books = _context.Books.ToList();
             Print<Book>(books);
+            var library = _context.Libraries.ToList();
+            Print<PersonalLibrary>(library);
         }
 
         public void Print<T>(List<T> data)

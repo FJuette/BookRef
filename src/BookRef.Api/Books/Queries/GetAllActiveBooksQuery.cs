@@ -15,9 +15,9 @@ namespace BookRef.Api.Books.Queries
 
     public class GetAllActiveBooksQueryHandler : IRequestHandler<GetAllActiveBooksQuery, ActiveBooksViewModel>
     {
-        private readonly IUserService _userService;
+        private readonly ILibraryService _userService;
 
-        public GetAllActiveBooksQueryHandler(IUserService userService)
+        public GetAllActiveBooksQueryHandler(ILibraryService userService)
         {
             _userService = userService;
         }
@@ -26,7 +26,7 @@ namespace BookRef.Api.Books.Queries
             GetAllActiveBooksQuery request,
             CancellationToken cancellationToken)
         {
-            var user = _userService.GetCurrentUser();
+            var user = _userService.GetPersonalLibrary();
             var books = user.MyBooks.Where(e => e.Status == Models.Relations.BookStatus.Active)
                             .Select(e => new { e.BookId, e.Book.Title, authors = e.Book.GetAuthors(), e.CurrentPage, e.Speaker?.Name, e.Type } );
 

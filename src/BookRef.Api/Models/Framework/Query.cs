@@ -16,9 +16,9 @@ namespace BookRef.Api.Models.Framework
         /// Gets all books.
         /// </summary>
         [UseFiltering]
-        public IQueryable<UserBooks> GetBooks([Service]IUserService context)
+        public IQueryable<UserBooks> GetBooks([Service]ILibraryService context)
         {
-            var user = context.GetCurrentUser();
+            var user = context.GetPersonalLibrary();
             return user.MyBooks.AsQueryable();
         }
 
@@ -26,9 +26,9 @@ namespace BookRef.Api.Models.Framework
         /// Gets all recommendations.
         /// </summary>
         [UseFiltering]
-        public IQueryable<Recommedation> GetRecommedations([Service]IUserService context)
+        public IQueryable<Recommedation> GetRecommedations([Service]ILibraryService context)
         {
-            var user = context.GetCurrentUser();
+            var user = context.GetPersonalLibrary();
             return user.MyRecommendations.AsQueryable();
         }
 

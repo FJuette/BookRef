@@ -28,17 +28,18 @@ namespace BookRef.Api.Users.Commands
             CreateUserCommand request,
             CancellationToken cancellationToken)
         {
-            var id = Guid.NewGuid();
-            var aggregate = await _repository.LoadAsync<User>(id);
-            aggregate.Create(id, request.Username);
+            // var id = Guid.NewGuid();
+            // var aggregate = await _repository.LoadAsync<User>(id);
+            // aggregate.Create(id, request.Username);
 
-            await _repository.SaveAsync(aggregate);
-            var item = new User() { Id = id, Username = request.Username };
+            // await _repository.SaveAsync(aggregate);
+            // var item = new User() { Id = id, Username = request.Username };
 
-            var result = _context.Users.Attach(item);
-            await _context.SaveChangesAsync(cancellationToken);
-            return result.Entity.Id;
-            return id;
+            // var result = _context.Users.Attach(item);
+            // await _context.SaveChangesAsync(cancellationToken);
+            // return result.Entity.Id;
+            // return id;
+            return Guid.NewGuid();
         }
     }
 

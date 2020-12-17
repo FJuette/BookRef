@@ -6,24 +6,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookRef.Api.Infrastructure
 {
-    public interface IUserService
+    public interface ILibraryService
     {
-        User GetCurrentUser();
+        PersonalLibrary GetPersonalLibrary();
     }
 
-    public class UserService : IUserService
+    public class LibraryService : ILibraryService
     {
         private readonly BookRefDbContext _context;
         private readonly IGetClaimsProvider _provider;
 
-        public UserService(BookRefDbContext context, IGetClaimsProvider provider)
+        public LibraryService(BookRefDbContext context, IGetClaimsProvider provider)
         {
             _context = context;
             _provider = provider;
         }
-        public User GetCurrentUser()
+        public PersonalLibrary GetPersonalLibrary()
         {
-            var user = _context.Users
+            var library = _context.Libraries
                             .Include(e => e.MyBooks)
                                 .ThenInclude(e => e.Book)
                                 .ThenInclude(e => e.BookAuthors)
@@ -36,8 +36,8 @@ namespace BookRef.Api.Infrastructure
                                 .ThenInclude(e => e.Book)
                                 .ThenInclude(e => e.BookCategories)
                                 .ThenInclude(e => e.Category)
-                            .FirstOrDefault(e => e.Username == _provider.UserId);
-            return user != null ? user : throw new BadUserException(_provider.UserId);
+                            .FirstOrDefault(e => e.UserId == _provider.UserId);
+            return library != null ? library : throw new BadUserException(_provider.UserId.ToString());
         }
     }
 }

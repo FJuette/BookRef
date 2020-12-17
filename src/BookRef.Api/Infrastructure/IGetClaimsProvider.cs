@@ -7,7 +7,7 @@ namespace BookRef.Api.Infrastructure
 {
     public interface IGetClaimsProvider
     {
-        string UserId { get; }
+        long UserId { get; }
     }
 
     public class GetClaimsFromUser : IGetClaimsProvider
@@ -22,9 +22,9 @@ namespace BookRef.Api.Infrastructure
             //     ?.Value;
 
             // UserId = string.IsNullOrEmpty(username) ? "Admin" : username;
-            UserId = "Admin";
+            UserId = 1;
         }
 
-        public string UserId { get; }
+        public long UserId { get; }
     }
 }
