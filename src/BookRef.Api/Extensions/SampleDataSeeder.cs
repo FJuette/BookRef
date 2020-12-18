@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using BookRef.Api.Models;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
@@ -10,12 +12,17 @@ namespace BookRef.Api.Extensions
     public class SampleDataSeeder
     {
         private readonly BookRefDbContext _context;
+        private readonly AggregateRepository _repository;
 
         public SampleDataSeeder(
-            BookRefDbContext context) =>
-            _context = context;
+            BookRefDbContext context, AggregateRepository repository)
+            {
+                _context = context;
+                _repository = repository;
+            }
 
-        public void SeedAll()
+
+        public async Task SeedAll()
         {
             var danAuthor = new Author("Dan Ariely");
             _context.Attach(danAuthor);
@@ -44,17 +51,24 @@ namespace BookRef.Api.Extensions
             _context.Attach(speakerRike);
 
 
+            var id = Guid.NewGuid();
             var user = new User
             {
                 EMail = "fabian.j@test.de",
                 Username = "Admin",
                 Password = "dasistzueinfach",
-                Id = 1
+                PersonalLibraryId = id
             };
-            _context.Add(user);
+            _context.Attach(user);
+            _context.SaveChanges();
 
-            var library = new PersonalLibrary(user.Id);
-            _context.Add(library);
+            var library = await _repository.LoadAsync<PersonalLibrary>(id);
+            // TODO put real userID here
+            library.Create(id, 1);
+            await _repository.SaveAsync(library);
+            _context.Attach(library);
+
+            var library2 = await _repository.LoadAsync<PersonalLibrary>(library.Id);
 
             var book = new Book
             {
@@ -68,8 +82,8 @@ namespace BookRef.Api.Extensions
             };
             book.SetAuthors(new List<Author> { danAuthor });
             book.SetCategories(new List<Category> { categoryBoerse, categoryPsyche });
-            _context.Add(book);
-            library.AddBookDataSeeder(book);
+            _context.Attach(book);
+            library2.AddNewBook(book);
 
             var book2 = new Book
             {
@@ -83,10 +97,10 @@ namespace BookRef.Api.Extensions
             };
             book2.SetAuthors(new List<Author> { juliaAuthor, hansAuthor });
             book2.SetCategories(new List<Category> { categoryGehirn });
-            _context.Add(book2);
-            library.AddBookDataSeeder(book2);
-            library.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
-            library.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
+            _context.Attach(book2);
+            library2.AddNewBook(book2);
+            library2.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
+            library2.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
 
             var book3 = new Book
             {
@@ -100,8 +114,8 @@ namespace BookRef.Api.Extensions
             };
             book3.SetAuthors(new List<Author> { juliaAuthor });
             book3.SetCategories(new List<Category> { categoryGehirn });
-            _context.Add(book3);
-            library.AddBookDataSeeder(book3);
+            _context.Attach(book3);
+            library2.AddNewBook(book3);
 
             var book4 = new Book
             {
@@ -115,8 +129,8 @@ namespace BookRef.Api.Extensions
             };
             book4.SetAuthors(new List<Author> { zimbardoAuthor });
             book4.SetCategories(new List<Category> { categoryGehirn });
-            _context.Add(book4);
-            library.AddBookDataSeeder(book4);
+            _context.Attach(book4);
+            library2.AddNewBook(book4);
 
             var book5 = new Book
             {
@@ -130,8 +144,8 @@ namespace BookRef.Api.Extensions
             };
             book5.SetAuthors(new List<Author> { freudAuthor });
             book5.SetCategories(new List<Category> { categoryGehirn });
-            _context.Add(book5);
-            library.AddBookDataSeeder(book5);
+            _context.Attach(book5);
+            library2.AddNewBook(book5);
 
             var book6 = new Book
             {
@@ -145,30 +159,30 @@ namespace BookRef.Api.Extensions
             };
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
-            _context.Add(book6);
-            library.AddBookDataSeeder(book6);
+            _context.Attach(book6);
+            library2.AddNewBook(book6);
 
-
+            await _repository.SaveAsync(library2);
             _context.SaveChanges();
-            //TestSeededData();
+            TestSeededData();
         }
 
         public void TestSeededData()
         {
-            var authors = _context.Authors.ToList();
-            Print<Author>(authors);
-            var categories = _context.Categories.ToList();
-            Print<Category>(categories);
-            var people = _context.People.ToList();
-            Print<Person>(people);
-            var speaker = _context.Speakers.ToList();
-            Print<Speaker>(speaker);
+            // var authors = _context.Authors.ToList();
+            // Print<Author>(authors);
+            // var categories = _context.Categories.ToList();
+            // Print<Category>(categories);
+            // var people = _context.People.ToList();
+            // Print<Person>(people);
+            // var speaker = _context.Speakers.ToList();
+            // Print<Speaker>(speaker);
             var users = _context.Users.ToList();
             Print<User>(users);
-            var books = _context.Books.ToList();
-            Print<Book>(books);
-            var library = _context.Libraries.ToList();
-            Print<PersonalLibrary>(library);
+            // var books = _context.Books.ToList();
+            // Print<Book>(books);
+            // var library = _context.Libraries.ToList();
+            // Print<PersonalLibrary>(library);
         }
 
         public void Print<T>(List<T> data)

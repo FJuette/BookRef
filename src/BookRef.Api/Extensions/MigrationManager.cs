@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BookRef.Api.Persistence;
+using System.Threading.Tasks;
 
 namespace BookRef.Api.Extensions
 {
@@ -16,6 +17,7 @@ namespace BookRef.Api.Extensions
         {
             using var scope = webHost.Services.CreateScope();
             using var appContext = scope.ServiceProvider.GetRequiredService<BookRefDbContext>();
+            var repository = scope.ServiceProvider.GetRequiredService<AggregateRepository>();
             try
             {
                 var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
@@ -26,7 +28,8 @@ namespace BookRef.Api.Extensions
                     appContext.Database.Migrate();
                 }
 
-                new SampleDataSeeder(appContext).SeedAll();
+                var task = Task.Run(async () => await new SampleDataSeeder(appContext, repository).SeedAll());
+                task.GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {

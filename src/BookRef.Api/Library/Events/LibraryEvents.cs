@@ -1,4 +1,5 @@
 using System;
+using BookRef.Api.Models;
 
 namespace BookRef.Api.Library.Events
 {

@@ -1,6 +1,9 @@
 using System;
 using System.Threading.Tasks;
+using BookRef.Api.Books.Queries;
 using BookRef.Api.Library.Commands;
+using BookRef.Api.Library.Queries;
+using BookRef.Api.Models;
 using BookRef.Api.Users.Commands;
 using BookRef.Api.Users.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -28,5 +31,10 @@ namespace BookRef.Api.Controllers
             var id = await Mediator.Send(command);
             return Created("TODO", null);
         }
+
+        [HttpGet("api/library")]
+        [ProducesResponseType(200)]
+        public async Task<ActionResult<PersonalLibrary>> GetLibrary() =>
+            Ok(await Mediator.Send(new GetLibraryFromESQuery()));
     }
 }

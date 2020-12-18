@@ -1,3 +1,5 @@
+using System;
+
 namespace BookRef.Api.Models
 {
     public class User : EntityBase
@@ -6,5 +8,11 @@ namespace BookRef.Api.Models
         public string Password { get; set; }
         public string EMail { get; set; }
         public PersonalLibrary Library { get; set; }
+        public Guid PersonalLibraryId { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Username} {PersonalLibraryId}";
+        }
     }
 }
