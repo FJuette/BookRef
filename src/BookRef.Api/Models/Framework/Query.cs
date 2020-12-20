@@ -19,6 +19,7 @@ namespace BookRef.Api.Models.Framework
         public IQueryable<UserBooks> GetBooks([Service]ILibraryService context)
         {
             var user = context.GetPersonalLibrary();
+            System.Console.WriteLine(user);
             return user.MyBooks.AsQueryable();
         }
 
@@ -35,7 +36,7 @@ namespace BookRef.Api.Models.Framework
         /// <summary>
         /// Gets all authors.
         /// </summary>
-        [UseProjection]
+        //[UseProjection]
         [UseFiltering]
         public IQueryable<Author> GetAuthors([Service]BookRefDbContext context) =>
             context.Authors;

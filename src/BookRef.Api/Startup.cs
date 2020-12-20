@@ -89,6 +89,7 @@ namespace BookRef.Api
                 .AddQueryType<Query>()
                 .AddProjections()
                 .AddFiltering();
+                //.AddSorting();
 
             services.AddAutoMapper(typeof(Startup));
 

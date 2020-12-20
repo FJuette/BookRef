@@ -14,6 +14,7 @@ namespace BookRef.Api.Models
         //public byte[] Image { get; set; }
         public string Auflage { get; set; }
         public DateTime Created { get; set; }
+        public Category MainCategory { get; set; }
 
         public BookLanguage Language { get; set; }
 
