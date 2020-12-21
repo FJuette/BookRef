@@ -1,9 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
+using BookRef.Api.Persistence.DataLoader;
 using HotChocolate;
 using HotChocolate.Data;
 using HotChocolate.Types;
@@ -13,11 +16,18 @@ namespace BookRef.Api.Models.Framework
 {
     public class Query
     {
-        //[UseFiltering]
+        [UseFiltering]
         public IQueryable<Book> GetBooks([Service]BookRefDbContext context)
         {
             return context.Books;
         }
+        public Task<Book> GetBookAsync(
+            long id,
+            BooksByIdDataLoader dataLoader,
+            CancellationToken cancellationToken)
+            {
+                return dataLoader.LoadAsync(id, cancellationToken);
+            }
 
         // Cannot use PersonalLibrary directly -> HotChocolate problem with getting the types
         public IQueryable<PersonalBooks> GetLibrary([Service]BookRefDbContext context)
@@ -34,6 +44,14 @@ namespace BookRef.Api.Models.Framework
         {
             return context.PersonRecommedations;
         }
+
+        public Task<Author> GetAuthorAsync(
+            long id,
+            AuthorsByIdDataLoader dataLoader,
+            CancellationToken cancellationToken)
+            {
+                return dataLoader.LoadAsync(id, cancellationToken);
+            }
 
         public IQueryable<Author> GetAuthors(
             [Service]BookRefDbContext context)

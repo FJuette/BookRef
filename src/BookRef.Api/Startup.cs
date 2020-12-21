@@ -21,6 +21,7 @@ using BookRef.Api.Persistence;
 using EventStore.ClientAPI;
 using HotChocolate;
 using BookRef.Api.Models.Framework;
+using BookRef.Api.Persistence.DataLoader;
 
 namespace BookRef.Api
 {
@@ -91,6 +92,8 @@ namespace BookRef.Api
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
+                .AddDataLoader<AuthorsByIdDataLoader>()
+                .AddDataLoader<BooksByIdDataLoader>()
                 .AddProjections()
                 .AddFiltering();
                 //.AddSorting();
