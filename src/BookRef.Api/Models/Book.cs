@@ -8,10 +8,19 @@ namespace BookRef.Api.Models
 {
     public class Book : EntityBase
     {
-        public string Isbn { get; set; }
-        public string Title { get; set; }
-        public string Link { get; set; }
-        public string Auflage { get; set; }
+        protected Book() { }
+
+        public Book(string isbn, string title)
+        {
+            Isbn = isbn;
+            Title = title;
+            Created = DateTime.Now;
+        }
+
+        public string Isbn { get; private set; }
+        public string Title { get; private set; }
+        public string? Link { get; set; }
+        public string? Auflage { get; set; }
         public DateTime Created { get; set; }
 
         public BookLanguage Language { get; set; }

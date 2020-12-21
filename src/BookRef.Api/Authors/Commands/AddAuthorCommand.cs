@@ -9,32 +9,33 @@ using MediatR;
 
 namespace BookRef.Api.Authors.Commands
 {
-    public record AddAuthorCommand : IRequest<long>
+    public record AddAuthorCommand(string Name);
+
+    // Represents the output of our GraphQL mutation
+    public class AddAuthorPayload
     {
-        public string Name { get; init; }
+        public AddAuthorPayload(Author author)
+        {
+            Author = author;
+        }
+
+        public Author Author { get; }
     }
 
-    // public class AddAuthorCommandHandler : IRequestHandler<AddAuthorCommand, long>
-    // {
-    //     private readonly BookRefDbContext _context;
+    public class AddAuthorCommandHandler
+    {
+        [UseApplicationDbContext]
+        public async Task<AddAuthorPayload> AddAuthorAsync(
+             AddAuthorCommand input,
+             [ScopedService] BookRefDbContext context)
+        {
+            var author = new Author(input.Name);
+            context.Authors.Add(author);
+            await context.SaveChangesAsync();
 
-
-    //     public AddAuthorCommandHandler(
-    //         [ScopedService] BookRefDbContext context) =>
-    //         _context = context;
-
-    //     public async Task<long> Handle(
-    //         AddAuthorCommand request,
-    //         CancellationToken cancellationToken)
-    //     {
-    //         var item = new Author(request.Name);
-
-    //         // Prefer attach over add/update
-    //         var result = _context.Authors.Attach(item);
-    //         await _context.SaveChangesAsync(cancellationToken);
-    //         return result.Entity.Id;
-    //     }
-    // }
+            return new AddAuthorPayload(author);
+        }
+    }
 
     public class AddAuthorValidator : AbstractValidator<AddAuthorCommand>
     {

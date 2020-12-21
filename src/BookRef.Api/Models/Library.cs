@@ -89,11 +89,11 @@ namespace BookRef.Api.Models
 
         private void OnBookAded(BookAdded @event)
         {
-            var ub = new PersonalBooks
-            {
-                BookId = @event.BookId
-            };
-            MyBooks.Add(ub);
+            // var ub = new PersonalBooks
+            // {
+            //     BookId = @event.BookId
+            // };
+            // MyBooks.Add(ub);
         }
 
 
@@ -120,10 +120,7 @@ namespace BookRef.Api.Models
         // Only to seed data, remove in production
         public void AddBookDataSeeder(Book book)
         {
-            var ub = new PersonalBooks
-            {
-                Book = book
-            };
+            var ub = new PersonalBooks(this.Id, book, BookStatus.Active, BookFormat.Book);
             MyBooks.Add(ub);
         }
     }

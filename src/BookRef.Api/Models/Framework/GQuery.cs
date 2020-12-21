@@ -15,7 +15,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookRef.Api.Models.Framework
 {
-    public class Query
+    public class GQuery
     {
         [UseApplicationDbContext]
         public Task<List<Book>> GetBooks([ScopedService] BookRefDbContext context)
@@ -35,7 +35,7 @@ namespace BookRef.Api.Models.Framework
         [UseApplicationDbContext]
         public Task<List<PersonalBooks>> GetLibrary([ScopedService] BookRefDbContext context)
         {
-            return context.PersonalBooks.ToListAsync();
+            return context.PersonalBooks.Include(e => e.Book).ToListAsync();
         }
 
         [UseApplicationDbContext]
