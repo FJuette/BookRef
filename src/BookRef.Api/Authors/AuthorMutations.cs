@@ -1,32 +1,23 @@
-using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using BookRef.Api.Common;
 using BookRef.Api.Extensions;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
 using FluentValidation;
 using HotChocolate;
-using MediatR;
+using HotChocolate.Types;
 
-namespace BookRef.Api.Authors.Commands
+namespace BookRef.Api.Authors
 {
-    public record AddAuthorCommand(string Name);
+    public record AddAuthorInput(string Name);
 
-    // Represents the output of our GraphQL mutation
-    public class AddAuthorPayload
-    {
-        public AddAuthorPayload(Author author)
-        {
-            Author = author;
-        }
-
-        public Author Author { get; }
-    }
-
-    public class AddAuthorCommandHandler
+    [ExtendObjectType(Name = "Mutation")]
+    public class AuthorMutations
     {
         [UseApplicationDbContext]
         public async Task<AddAuthorPayload> AddAuthorAsync(
-             AddAuthorCommand input,
+             AddAuthorInput input,
              [ScopedService] BookRefDbContext context)
         {
             var author = new Author(input.Name);
@@ -37,7 +28,21 @@ namespace BookRef.Api.Authors.Commands
         }
     }
 
-    public class AddAuthorValidator : AbstractValidator<AddAuthorCommand>
+    public class AddAuthorPayload : AuthorPayloadBase
+    {
+        public AddAuthorPayload(Author author) : base(author)
+        {
+            Author = author;
+        }
+        public AddAuthorPayload(IReadOnlyList<UserError> errors)
+             : base(errors)
+         {
+         }
+
+        public Author Author { get; }
+    }
+
+    public class AddAuthorValidator : AbstractValidator<AddAuthorInput>
     {
         public AddAuthorValidator()
         {

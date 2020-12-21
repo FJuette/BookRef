@@ -25,7 +25,7 @@ using BookRef.Api.Persistence.DataLoader;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.Types;
 using Microsoft.EntityFrameworkCore;
-using BookRef.Api.Authors.Commands;
+using BookRef.Api.Authors;
 
 namespace BookRef.Api
 {
@@ -100,11 +100,12 @@ namespace BookRef.Api
             services
                 .AddGraphQLServer()
                 .AddQueryType<GQuery>()
-                .AddType<BookType>()
                 .AddDataLoader<AuthorByIdDataLoader>()
                 .AddDataLoader<BookByIdDataLoader>()
                 .AddDataLoader<CategoryByIdDataLoader>()
-                .AddMutationType<AddAuthorCommandHandler>()
+                .AddMutationType(d => d.Name("Mutation"))
+                    .AddTypeExtension<AuthorMutations>()
+                .AddType<BookType>()
                 .AddProjections()
                 .AddFiltering();
                 //.AddSorting();
