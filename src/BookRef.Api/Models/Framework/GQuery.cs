@@ -41,7 +41,10 @@ namespace BookRef.Api.Models.Framework
         [UseApplicationDbContext]
         public Task<List<BookRecommedation>> GetBookRecommedations([ScopedService] BookRefDbContext context)
         {
-            return context.BookRecommedations.ToListAsync();
+            return context.BookRecommedations
+                .Include(e => e.RecommendedBook)
+                .Include(e => e.SourceBook)
+                .ToListAsync();
         }
 
         [UseApplicationDbContext]

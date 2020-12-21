@@ -50,12 +50,7 @@ namespace BookRef.Api.Extensions
             var speakerRike = new Speaker("Rike Schmid");
             _context.Speakers.Add(speakerRike);
 
-            var user = new User
-            {
-                EMail = "fabian.j@test.de",
-                Username = "Admin",
-                Password = "dasistzueinfach"
-            };
+            var user = new User("Admin", "dasistzueinfach", "fabian.j@test.de");
             _context.Add(user);
 
             var library = new PersonalLibrary(user);

@@ -1,16 +1,17 @@
-using System;
-using BookRef.Api.Models.ValueObjects;
-
 namespace BookRef.Api.Models
 {
     public class BookRecommedation : BaseRecommedation
     {
-        public BookRecommedation()
+        protected BookRecommedation()
         {
             this.Type = RecommedationType.Book;
         }
-        public virtual Book? RecommendedBook { get; set; }
-        public long? RecommendedBookId { get; set; }
+        public BookRecommedation(Book book)
+        {
+            RecommendedBook = book;
+        }
+        public virtual Book RecommendedBook { get; private set; }
+        public long RecommendedBookId { get; private set; }
 
     }
 }

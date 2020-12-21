@@ -25,30 +25,22 @@ namespace BookRef.Api.Models
 
         public void AddBookRecommendation(Book sourceBook, Book recommendedBook, string note = "")
         {
-            var rec = new BookRecommedation
+            var rec = new BookRecommedation(recommendedBook)
             {
                 PersonalLibraryId = this.Id,
                 SourceBook = sourceBook,
-                RecommendedBook = recommendedBook,
-                Note = new Note
-                {
-                    Content = note
-                }
+                Note = new Note(note)
             };
             BookRecommedations.Add(rec);
         }
 
         public void AddPersonRecommendation(Book sourceBook, Person recommendedPerson, string note = "")
         {
-            var rec = new PersonRecommedation
+            var rec = new PersonRecommedation(recommendedPerson)
             {
                 PersonalLibraryId = this.Id,
                 SourceBook = sourceBook,
-                RecommendedPerson = recommendedPerson,
-                Note = new Note
-                {
-                    Content = note
-                }
+                Note = new Note(note)
             };
             PersonRecommedations.Add(rec);
         }

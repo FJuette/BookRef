@@ -5,12 +5,15 @@ namespace BookRef.Api.Models
 {
     public class PersonRecommedation : BaseRecommedation
     {
-        public PersonRecommedation()
+        protected PersonRecommedation() { }
+
+        public PersonRecommedation(Person person)
         {
             this.Type = RecommedationType.Person;
+            RecommendedPerson = person;
         }
-        public virtual Person? RecommendedPerson { get; set; }
-        public long? RecommendedPersonId { get; set; }
+        public virtual Person RecommendedPerson { get; private set; }
+        public long RecommendedPersonId { get; private set; }
 
     }
 }
