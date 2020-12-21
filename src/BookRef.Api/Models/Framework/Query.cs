@@ -16,18 +16,19 @@ namespace BookRef.Api.Models.Framework
 {
     public class Query
     {
-        [UseFiltering]
-        public IQueryable<Book> GetBooks([Service]BookRefDbContext context)
-        {
-            return context.Books;
-        }
-        public Task<Book> GetBookAsync(
-            long id,
-            BooksByIdDataLoader dataLoader,
-            CancellationToken cancellationToken)
-            {
-                return dataLoader.LoadAsync(id, cancellationToken);
-            }
+        // [UseFiltering]
+        // public IQueryable<Book> GetBooks([Service]BookRefDbContext context)
+        // {
+        //     return context.Books;
+        // }
+
+        // public Task<Book> GetBookAsync(
+        //     long id,
+        //     BooksByIdDataLoader dataLoader,
+        //     CancellationToken cancellationToken)
+        //     {
+        //         return dataLoader.LoadAsync(id, cancellationToken);
+        //     }
 
         // Cannot use PersonalLibrary directly -> HotChocolate problem with getting the types
         public IQueryable<PersonalBooks> GetLibrary([Service]BookRefDbContext context)

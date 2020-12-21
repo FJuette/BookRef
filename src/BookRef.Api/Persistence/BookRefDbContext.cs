@@ -129,7 +129,7 @@ namespace BookRef.Api.Persistence
                     .HasForeignKey(e => e.BookId);
                 b.Property(c => c.Status)
                     .HasConversion<string>();
-                b.Property(c => c.Type)
+                b.Property(c => c.Format)
                     .HasConversion<string>();
             });
 

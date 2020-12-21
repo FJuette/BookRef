@@ -10,8 +10,7 @@ namespace BookRef.Api.Models.Relations
         public int CurrentPage { get; set; }
 
         public BookStatus Status { get; set; }
-        public BookType Type { get; set; }
-        //public virtual PersonalLibrary PersonalLibrary { get; set; }
+        public BookFormat Format { get; set; }
         public Guid PersonalLibraryId { get; set; }
 
         public virtual Book Book { get; set; }
@@ -27,7 +26,7 @@ namespace BookRef.Api.Models.Relations
         Wish
     }
 
-    public enum BookType
+    public enum BookFormat
     {
         Book,
         AudioBook,
