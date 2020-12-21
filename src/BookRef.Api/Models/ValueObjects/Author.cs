@@ -13,6 +13,6 @@ namespace BookRef.Api.Models.ValueObjects
         public long Id { get; private set; }
         public string Name { get; private set; }
 
-        public virtual ICollection<Book> Books  { get; private set; }
+        public virtual ICollection<Book> Books { get; private set; } = new List<Book>();
     }
 }

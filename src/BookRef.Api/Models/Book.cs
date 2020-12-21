@@ -18,9 +18,9 @@ namespace BookRef.Api.Models
 
         //public User Creator { get; set; }
 
-        public virtual ICollection<BookCategory> BookCategories { get; private set; }
+        public virtual ICollection<BookCategory> BookCategories { get; private set; } = new List<BookCategory>();
 
-        public virtual ICollection<Author> Authors { get; private set; }
+        public virtual ICollection<Author> Authors { get; private set; } = new List<Author>();
 
         public void SetAuthors(IEnumerable<Author> authors)
         {

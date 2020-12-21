@@ -28,8 +28,8 @@ namespace BookRef.Api.Extensions
                     appContext.Database.Migrate();
                 }
 
-                var task = Task.Run(async () => await new SampleDataSeeder(appContext, repository).SeedAll());
-                task.GetAwaiter().GetResult();
+                // var task = Task.Run(async () => await new SampleDataSeeder(appContext, repository).SeedAll());
+                // task.GetAwaiter().GetResult();
             }
             catch (Exception ex)
             {

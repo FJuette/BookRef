@@ -12,6 +12,6 @@ namespace BookRef.Api.Models.ValueObjects
         }
         public long Id { get; private set; }
         public string Name { get; private set; }
-        public virtual ICollection<BookCategory> BookCategories { get; private set; }
+        public virtual ICollection<BookCategory> BookCategories { get; private set; } = new List<BookCategory>();
     }
 }
