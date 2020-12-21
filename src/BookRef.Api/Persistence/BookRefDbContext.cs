@@ -16,18 +16,6 @@ namespace BookRef.Api.Persistence
 #nullable disable
     public class BookRefDbContext : DbContext
     {
-        private static readonly Type[] _enumerationTypes = {}; // typeof()
-        private readonly IWebHostEnvironment _env;
-        private readonly string _userId;
-
-        public BookRefDbContext(
-            IWebHostEnvironment env,
-            IGetClaimsProvider userData)
-        {
-            _env = env;
-            _userId = userData?.UserId.ToString();
-        }
-
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Speaker> Speakers { get; set; }
@@ -40,24 +28,10 @@ namespace BookRef.Api.Persistence
         public DbSet<PersonalBooks> PersonalBooks { get; set; }
         public DbSet<User> Users { get; set; }
 
-
-
-        protected override void OnConfiguring(
-            DbContextOptionsBuilder optionsBuilder)
-        {
-            if (_env.IsProduction())
-            {
-                optionsBuilder.UseSqlServer(EnvFactory.GetConnectionString());
-            }
-            else
-            {
-                optionsBuilder.UseSqlite("Data Source=bookref.db").UseLazyLoadingProxies();
-                //optionsBuilder.UseInMemoryDatabase(new Guid().ToString()).UseLazyLoadingProxies();
-                optionsBuilder.EnableSensitiveDataLogging();
-            }
-
-            base.OnConfiguring(optionsBuilder);
-        }
+        public BookRefDbContext(DbContextOptions<BookRefDbContext> options)
+        : base(options)
+    {
+    }
 
         protected override void OnModelCreating(
             ModelBuilder builder)
@@ -171,50 +145,6 @@ namespace BookRef.Api.Persistence
             //         .WithMany()
             //         .HasForeignKey(e => e.FriendUserId);
             // });
-        }
-
-        public override Task<int> SaveChangesAsync(
-            CancellationToken cancellationToken = new CancellationToken())
-        {
-            MarkEnumTypesAsUnchanged();
-            this.MarkCreatedItemAsOwnedBy(_userId);
-            return base.SaveChangesAsync(cancellationToken);
-        }
-
-        public override int SaveChanges()
-        {
-            MarkEnumTypesAsUnchanged();
-            this.MarkCreatedItemAsOwnedBy(_userId);
-            return base.SaveChanges();
-        }
-
-        private void MarkEnumTypesAsUnchanged()
-        {
-            var enumerationEntries =
-                ChangeTracker.Entries().Where(x => _enumerationTypes.Contains(x.Entity.GetType()));
-
-            foreach (var enumerationEntry in enumerationEntries)
-            {
-                enumerationEntry.State = EntityState.Unchanged;
-            }
-        }
-    }
-
-    public static class ContextExtensions
-    {
-        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
-        public static void MarkCreatedItemAsOwnedBy(
-            this DbContext context,
-            string userId)
-        {
-            foreach (var entityEntry in context.ChangeTracker.Entries()
-                .Where(e => e.State == EntityState.Added))
-            {
-                if (entityEntry.Entity is IOwnedBy entityToMark)
-                {
-                    entityToMark.SetOwnedBy(userId);
-                }
-            }
         }
     }
 }

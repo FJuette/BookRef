@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BookRef.Api.Extensions;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
@@ -16,58 +17,65 @@ namespace BookRef.Api.Models.Framework
 {
     public class Query
     {
-        // [UseFiltering]
-        // public IQueryable<Book> GetBooks([Service]BookRefDbContext context)
-        // {
-        //     return context.Books;
-        // }
-
-        // public Task<Book> GetBookAsync(
-        //     long id,
-        //     BooksByIdDataLoader dataLoader,
-        //     CancellationToken cancellationToken)
-        //     {
-        //         return dataLoader.LoadAsync(id, cancellationToken);
-        //     }
-
-        // Cannot use PersonalLibrary directly -> HotChocolate problem with getting the types
-        public IQueryable<PersonalBooks> GetLibrary([Service]BookRefDbContext context)
+        [UseApplicationDbContext]
+        public Task<List<Book>> GetBooks([ScopedService] BookRefDbContext context)
         {
-            return context.PersonalBooks;
+            return context.Books.Include(e => e.Authors).ToListAsync();
         }
 
-        public IQueryable<BookRecommedation> GetBookRecommedations([Service]BookRefDbContext context)
-        {
-            return context.BookRecommedations;
-        }
-
-        public IQueryable<PersonRecommedation> GetPeopleRecommedations([Service]BookRefDbContext context)
-        {
-            return context.PersonRecommedations;
-        }
-
-        public Task<Author> GetAuthorAsync(
+        public Task<Book> GetBookAsync(
             long id,
-            AuthorsByIdDataLoader dataLoader,
+            BookByIdDataLoader dataLoader,
             CancellationToken cancellationToken)
             {
                 return dataLoader.LoadAsync(id, cancellationToken);
             }
 
-        public IQueryable<Author> GetAuthors(
-            [Service]BookRefDbContext context)
+        // Cannot use PersonalLibrary directly -> HotChocolate problem with getting the types
+        [UseApplicationDbContext]
+        public Task<List<PersonalBooks>> GetLibrary([ScopedService] BookRefDbContext context)
+        {
+            return context.PersonalBooks.ToListAsync();
+        }
+
+        [UseApplicationDbContext]
+        public Task<List<BookRecommedation>> GetBookRecommedations([ScopedService] BookRefDbContext context)
+        {
+            return context.BookRecommedations.ToListAsync();
+        }
+
+        [UseApplicationDbContext]
+        public Task<List<PersonRecommedation>> GetPeopleRecommedations([ScopedService] BookRefDbContext context)
+        {
+            return context.PersonRecommedations.ToListAsync();
+        }
+
+        public Task<Author> GetAuthorAsync(
+            long id,
+            AuthorByIdDataLoader dataLoader,
+            CancellationToken cancellationToken)
             {
-                return context.Authors;
+                return dataLoader.LoadAsync(id, cancellationToken);
             }
 
-        public IQueryable<Category> GetCategories(
-            [Service]BookRefDbContext context) => context.Categories;
+        [UseApplicationDbContext]
+        public Task<List<Author>> GetAuthors(
+            [ScopedService] BookRefDbContext context)
+            {
+                return context.Authors.ToListAsync();
+            }
 
-        public IQueryable<Person> GetPeople(
-            [Service]BookRefDbContext context) => context.People;
+        [UseApplicationDbContext]
+        public Task<List<Category>> GetCategories(
+            [ScopedService] BookRefDbContext context) => context.Categories.ToListAsync();
 
-        public IQueryable<Speaker> GetSpeakers(
-            [Service]BookRefDbContext context) => context.Speakers;
+        [UseApplicationDbContext]
+        public Task<List<Person>> GetPeople(
+            [ScopedService] BookRefDbContext context) => context.People.ToListAsync();
+
+        [UseApplicationDbContext]
+        public Task<List<Speaker>> GetSpeakers(
+            [ScopedService] BookRefDbContext context) => context.Speakers.ToListAsync();
 
     }
 }

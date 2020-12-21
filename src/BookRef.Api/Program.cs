@@ -24,6 +24,7 @@ namespace BookRef.Api
             {
                 Log.Information("Starting web host");
                 CreateHostBuilder(args).Build().MigrateDatabase().Run();
+                //CreateHostBuilder(args).Build().Run();
                 return 0;
             }
             catch (Exception ex)

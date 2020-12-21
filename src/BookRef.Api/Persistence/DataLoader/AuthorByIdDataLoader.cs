@@ -10,24 +10,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookRef.Api.Persistence.DataLoader
 {
-    public class AuthorsByIdDataLoader : BatchDataLoader<long, Author>
+    public class AuthorByIdDataLoader : BatchDataLoader<long, Author>
     {
-        private readonly BookRefDbContext _context;
+        private readonly IDbContextFactory<BookRefDbContext> _dbContextFactory;
 
-        public AuthorsByIdDataLoader(
+        public AuthorByIdDataLoader(
             IBatchScheduler batchScheduler,
-            BookRefDbContext context)
+            IDbContextFactory<BookRefDbContext> dbContextFactory)
             : base(batchScheduler)
         {
-            _context = context;
+            _dbContextFactory = dbContextFactory ??
+                 throw new ArgumentNullException(nameof(dbContextFactory));
         }
 
         protected override async Task<IReadOnlyDictionary<long, Author>> LoadBatchAsync(
             IReadOnlyList<long> keys,
             CancellationToken cancellationToken)
         {
-
-            return await _context.Authors
+            await using BookRefDbContext dbContext =
+                 _dbContextFactory.CreateDbContext();
+            return await dbContext.Authors
                 .Where(s => keys.Contains(s.Id))
                 .ToDictionaryAsync(t => t.Id, cancellationToken);
         }

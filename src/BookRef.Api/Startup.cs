@@ -24,6 +24,7 @@ using BookRef.Api.Models.Framework;
 using BookRef.Api.Persistence.DataLoader;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.Types;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookRef.Api
 {
@@ -85,7 +86,11 @@ namespace BookRef.Api
                 //.AddSqlServer(EnvFactory.GetConnectionString()) //TODO Enable if real MSSQL-Server is given
                 .AddCheck<ApiHealthCheck>("api");
 
-            services.AddScoped<BookRefDbContext>();
+            services.AddPooledDbContextFactory<BookRefDbContext>(options =>
+                options.UseSqlite("Data Source=bookref.db")
+                .UseLazyLoadingProxies()
+                .EnableSensitiveDataLogging()
+            );
 
             // Add my own services here
             services.AddScoped<IGetClaimsProvider, GetClaimsFromUser>();
@@ -95,8 +100,9 @@ namespace BookRef.Api
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
                 .AddType<BookType>()
-                .AddDataLoader<AuthorsByIdDataLoader>()
-                .AddDataLoader<BooksByIdDataLoader>()
+                .AddDataLoader<AuthorByIdDataLoader>()
+                .AddDataLoader<BookByIdDataLoader>()
+                .AddDataLoader<CategoryByIdDataLoader>()
                 .AddProjections()
                 .AddFiltering();
                 //.AddSorting();

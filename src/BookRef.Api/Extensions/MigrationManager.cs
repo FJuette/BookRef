@@ -16,19 +16,21 @@ namespace BookRef.Api.Extensions
             this IHost webHost)
         {
             using var scope = webHost.Services.CreateScope();
-            using var appContext = scope.ServiceProvider.GetRequiredService<BookRefDbContext>();
+            var appContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<BookRefDbContext>>();
+            using BookRefDbContext dbContext =
+                 appContextFactory.CreateDbContext();
             var repository = scope.ServiceProvider.GetRequiredService<AggregateRepository>();
             try
             {
                 var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
-                appContext.Database.EnsureCreated();
+                dbContext.Database.EnsureCreated();
                 if (env.IsProduction())
                 {
                     // not working with in memory dbs
-                    appContext.Database.Migrate();
+                    dbContext.Database.Migrate();
                 }
 
-                // var task = Task.Run(async () => await new SampleDataSeeder(appContext, repository).SeedAll());
+                // var task = Task.Run(async () => await new SampleDataSeeder(dbContext, repository).SeedAll());
                 // task.GetAwaiter().GetResult();
             }
             catch (Exception ex)
