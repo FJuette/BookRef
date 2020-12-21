@@ -25,50 +25,40 @@ namespace BookRef.Api.Extensions
         public async Task SeedAll()
         {
             var danAuthor = new Author("Dan Ariely");
-            _context.Attach(danAuthor);
+            _context.Authors.Add(danAuthor);
             var hansAuthor = new Author("Hans Rosling");
-            _context.Attach(hansAuthor);
+            _context.Authors.Add(hansAuthor);
             var juliaAuthor = new Author("Julia Shaw");
-            _context.Attach(juliaAuthor);
+            _context.Authors.Add(juliaAuthor);
             var zimbardoAuthor = new Author("Philip Zimbardo");
-            _context.Attach(zimbardoAuthor);
+            _context.Authors.Add(zimbardoAuthor);
             var freudAuthor = new Author("Sigmund Freud");
-            _context.Attach(freudAuthor);
+            _context.Authors.Add(freudAuthor);
             var bernaysAuthor = new Author("Edward Bernays");
-            _context.Attach(bernaysAuthor);
+            _context.Authors.Add(bernaysAuthor);
 
             var categoryGehirn = new Category("Gehirn");
-            _context.Attach(categoryGehirn);
+            _context.Categories.Add(categoryGehirn);
             var categoryPsyche = new Category("Psyche");
-            _context.Attach(categoryPsyche);
+            _context.Categories.Add(categoryPsyche);
             var categoryBoerse = new Category("Börse");
-            _context.Attach(categoryBoerse);
+            _context.Categories.Add(categoryBoerse);
 
             var charlsPerson = new Person("Charls Dunhig");
-            _context.Attach(charlsPerson);
+            _context.People.Add(charlsPerson);
 
             var speakerRike = new Speaker("Rike Schmid");
-            _context.Attach(speakerRike);
+            _context.Speakers.Add(speakerRike);
 
-
-            var id = Guid.NewGuid();
             var user = new User
             {
                 EMail = "fabian.j@test.de",
                 Username = "Admin",
-                Password = "dasistzueinfach",
-                PersonalLibraryId = id
+                Password = "dasistzueinfach"
             };
-            _context.Attach(user);
-            _context.SaveChanges();
+            _context.Add(user);
 
-            var library = await _repository.LoadAsync<PersonalLibrary>(id);
-            // TODO put real userID here
-            library.Create(id, 1);
-            await _repository.SaveAsync(library);
-            _context.Attach(library);
-
-            var library2 = await _repository.LoadAsync<PersonalLibrary>(library.Id);
+            var library = new PersonalLibrary(user);
 
             var book = new Book
             {
@@ -82,8 +72,7 @@ namespace BookRef.Api.Extensions
             };
             book.SetAuthors(new List<Author> { danAuthor });
             book.SetCategories(new List<Category> { categoryBoerse, categoryPsyche });
-            _context.Attach(book);
-            library2.AddNewBook(book);
+            _context.Books.Add(book);
 
             var book2 = new Book
             {
@@ -97,10 +86,10 @@ namespace BookRef.Api.Extensions
             };
             book2.SetAuthors(new List<Author> { juliaAuthor, hansAuthor });
             book2.SetCategories(new List<Category> { categoryGehirn });
-            _context.Attach(book2);
-            library2.AddNewBook(book2);
-            library2.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
-            library2.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
+            _context.Add(book2);
+            library.AddBookDataSeeder(book2);
+            library.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
+            library.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
 
             var book3 = new Book
             {
@@ -114,8 +103,8 @@ namespace BookRef.Api.Extensions
             };
             book3.SetAuthors(new List<Author> { juliaAuthor });
             book3.SetCategories(new List<Category> { categoryGehirn });
-            _context.Attach(book3);
-            library2.AddNewBook(book3);
+            _context.Add(book3);
+            //library2.AddNewBook(book3);
 
             var book4 = new Book
             {
@@ -129,8 +118,8 @@ namespace BookRef.Api.Extensions
             };
             book4.SetAuthors(new List<Author> { zimbardoAuthor });
             book4.SetCategories(new List<Category> { categoryGehirn });
-            _context.Attach(book4);
-            library2.AddNewBook(book4);
+            _context.Add(book4);
+            //library2.AddNewBook(book4);
 
             var book5 = new Book
             {
@@ -143,9 +132,9 @@ namespace BookRef.Api.Extensions
                 //Creator = user
             };
             book5.SetAuthors(new List<Author> { freudAuthor });
-            book5.SetCategories(new List<Category> { categoryGehirn });
-            _context.Attach(book5);
-            library2.AddNewBook(book5);
+            book5.SetCategories(new List<Category> { categoryPsyche });
+            _context.Add(book5);
+            //library2.AddNewBook(book5);
 
             var book6 = new Book
             {
@@ -159,12 +148,37 @@ namespace BookRef.Api.Extensions
             };
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
-            _context.Attach(book6);
-            library2.AddNewBook(book6);
+            _context.Add(book6);
+            //library2.AddNewBook(book6);
 
-            await _repository.SaveAsync(library2);
+
+            _context.Libraries.Add(library);
+
             _context.SaveChanges();
-            TestSeededData();
+
+
+
+
+            // var id = Guid.NewGuid();
+
+            // _context.SaveChanges();
+
+            // var library = await _repository.LoadAsync<PersonalLibrary>(id);
+            // // TODO put real userID here
+            // library.Create(id, 1);
+            // await _repository.SaveAsync(library);
+
+            // var library2 = await _repository.LoadAsync<PersonalLibrary>(library.Id);
+
+
+            // library2.AddNewBook(book);
+
+
+
+            // _context.Add(library2);
+            // await _repository.SaveAsync(library2);
+            // _context.SaveChanges();
+            // TestSeededData();
         }
 
         public void TestSeededData()
@@ -177,8 +191,8 @@ namespace BookRef.Api.Extensions
             // Print<Person>(people);
             // var speaker = _context.Speakers.ToList();
             // Print<Speaker>(speaker);
-            var users = _context.Users.ToList();
-            Print<User>(users);
+            // var users = _context.Users.ToList();
+            // Print<User>(users);
             // var books = _context.Books.ToList();
             // Print<Book>(books);
             // var library = _context.Libraries.ToList();

@@ -1,19 +1,13 @@
-using System.Collections.Generic;
-using CSharpFunctionalExtensions;
-
 namespace BookRef.Api.Models.ValueObjects
 {
-    public record Speaker
+    public class Speaker
     {
-        protected Speaker()
-        {
-
-        }
+        protected Speaker() { }
         public Speaker(string name)
         {
             Name = name;
         }
-        public long Id { get; init; }
-        public string Name { get; init; }
+        public long Id { get; private set; }
+        public string Name { get; private set; }
     }
 }

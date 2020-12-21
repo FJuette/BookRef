@@ -6,24 +6,26 @@ namespace BookRef.Api.Models.Relations
     {
         protected BookCategory() {}
 
-        public BookCategory(Book book, Category category)
-        {
-            Book = book;
-            Category = category;
-        }
-
-        public BookCategory(int bookId, int categoryId)
+        public BookCategory(long bookId, long categoryId, bool isPrimary = false)
         {
             BookId = bookId;
             CategoryId = categoryId;
+            IsPrimary = isPrimary;
         }
 
-        public Book Book { get; set; }
-        public long BookId { get; set; }
+        public BookCategory(Book book, Category category, bool isPrimary = false)
+        {
+            Book = book;
+            Category = category;
+            IsPrimary = isPrimary;
+        }
 
-        public Category Category { get; set; }
-        public long CategoryId { get; set; }
+        public virtual Book Book { get; private set; }
+        public long BookId { get; private set; }
 
-        public bool IsPrimary { get; set; }
+        public virtual Category Category { get; private set; }
+        public long CategoryId { get; private set; }
+
+        public bool IsPrimary { get; private set; }
     }
 }

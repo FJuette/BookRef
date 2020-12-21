@@ -84,6 +84,10 @@ namespace BookRef.Api
 
             services.AddScoped<BookRefDbContext>();
 
+            // Add my own services here
+            services.AddScoped<IGetClaimsProvider, GetClaimsFromUser>();
+            services.AddSingleton<IDateTime, MachineDateTime>();
+
             services
                 .AddGraphQLServer()
                 .AddQueryType<Query>()
@@ -100,11 +104,6 @@ namespace BookRef.Api
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
             });
-
-            // Add my own services here
-            services.AddScoped<IGetClaimsProvider, GetClaimsFromUser>();
-            services.AddScoped<ILibraryService, LibraryService>();
-            services.AddSingleton<IDateTime, MachineDateTime>();
 
             services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilter)))
                 .AddFluentValidation(fv =>

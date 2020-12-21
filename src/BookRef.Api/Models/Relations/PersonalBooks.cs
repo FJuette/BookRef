@@ -3,24 +3,21 @@ using BookRef.Api.Models.ValueObjects;
 
 namespace BookRef.Api.Models.Relations
 {
-    public class UserBooks
+    public class PersonalBooks
     {
-        public long UserBooksId { get; set; }
+        public long PersonalBooksId { get; set; }
         public DateTime? StartDate { get; set; }
         public int CurrentPage { get; set; }
-        public bool Wishlist { get; set; }
 
         public BookStatus Status { get; set; }
         public BookType Type { get; set; }
+        //public virtual PersonalLibrary PersonalLibrary { get; set; }
+        public Guid PersonalLibraryId { get; set; }
 
-        //public User User { get; set; }
-        public long UserId { get; set; }
-        public Guid LibraryId { get; set; }
-
-        public Book Book { get; set; }
+        public virtual Book Book { get; set; }
         public long BookId { get; set; }
 
-        public Speaker? Speaker { get; set; }
+        //public Speaker? Speaker { get; set; }
     }
 
     public enum BookStatus

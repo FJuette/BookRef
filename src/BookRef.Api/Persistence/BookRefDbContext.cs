@@ -28,17 +28,19 @@ namespace BookRef.Api.Persistence
             _userId = userData?.UserId.ToString();
         }
 
-        public DbSet<Book> Books { get; set; }
-        public DbSet<Recommedation> Recommedations { get; set; }
-        public DbSet<User> Users { get; set; }
-        // public DbSet<BookAuthor> BookAuthors { get; set; }
-        // public DbSet<BookCategory> BookCategories { get; set; }
-        // public DbSet<UserBooks> UserBooks { get; set; }
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Person> People { get; set; }
         public DbSet<Speaker> Speakers { get; set; }
+        public DbSet<Person> People { get; set; }
+        public DbSet<Book> Books { get; set; }
+        public DbSet<BookCategory> BookCategories { get; set; }
+        public DbSet<BookRecommedation> BookRecommedations { get; set; }
+        public DbSet<PersonRecommedation> PersonRecommedations { get; set; }
         public DbSet<PersonalLibrary> Libraries { get; set; }
+        public DbSet<PersonalBooks> PersonalBooks { get; set; }
+        public DbSet<User> Users { get; set; }
+
+
 
         protected override void OnConfiguring(
             DbContextOptionsBuilder optionsBuilder)
@@ -49,7 +51,8 @@ namespace BookRef.Api.Persistence
             }
             else
             {
-                optionsBuilder.UseInMemoryDatabase(new Guid().ToString());
+                optionsBuilder.UseSqlite("Data Source=bookref.db").UseLazyLoadingProxies();
+                //optionsBuilder.UseInMemoryDatabase(new Guid().ToString()).UseLazyLoadingProxies();
                 optionsBuilder.EnableSensitiveDataLogging();
             }
 
@@ -61,6 +64,7 @@ namespace BookRef.Api.Persistence
         {
             builder?.Entity<Author>(b =>
             {
+                b.HasKey(e => e.Id);
                 b.Property(e => e.Name)
                     .IsRequired(true);
             });
@@ -84,23 +88,11 @@ namespace BookRef.Api.Persistence
                 b.HasKey(e => e.Id);
                 b.Property(c => c.Language)
                     .HasConversion<string>();
-                // b.HasOne(e => e.Creator)
-                //     .WithMany();
+                b.HasMany(e => e.Authors)
+                    .WithMany(e => e.Books);
             });
 
-            // Book to Author n...m
-            builder?.Entity<BookAuthor>(b =>
-            {
-                b.HasKey(e => new { e.AuthorId, e.BookId });
-                b.HasOne(e => e.Book)
-                    .WithMany(e => e.BookAuthors)
-                    .HasForeignKey(e => e.BookId);
-                b.HasOne(e => e.Author)
-                    .WithMany()
-                    .HasForeignKey(e => e.AuthorId);
-            });
-
-            // Book to Catogory n...m
+            // Book to Catogory n...m with extra property
             builder?.Entity<BookCategory>(b =>
             {
                 b.HasKey(e => new { e.CategoryId, e.BookId });
@@ -108,25 +100,30 @@ namespace BookRef.Api.Persistence
                     .WithMany(e => e.BookCategories)
                     .HasForeignKey(e => e.BookId);
                 b.HasOne(e => e.Category)
-                    .WithMany()
+                    .WithMany(e => e.BookCategories)
                     .HasForeignKey(e => e.CategoryId);
             });
 
             builder?.Entity<PersonalLibrary>(b =>
             {
                 b.HasKey(e => e.Id);
-                b.HasMany(e => e.MyRecommendations)
+                b.HasMany(e => e.BookRecommedations)
                     .WithOne()
-                    .HasForeignKey(e => e.OwnerId);
+                    .HasForeignKey(e => e.PersonalLibraryId);
+                b.HasMany(e => e.PersonRecommedations)
+                    .WithOne()
+                    .HasForeignKey(e => e.PersonalLibraryId);
                 b.HasMany(e => e.MyBooks)
                     .WithOne()
-                    .HasForeignKey(e => e.LibraryId);
+                    .HasForeignKey(e => e.PersonalLibraryId);
+                b.HasOne(e => e.User)
+                    .WithOne()
+                    .HasForeignKey<User>(e => e.PersonalLibraryId);
             });
 
-            // Book to User
-            builder?.Entity<UserBooks>(b =>
+            builder?.Entity<PersonalBooks>(b =>
             {
-                b.HasKey(e => e.UserBooksId);
+                b.HasKey(e => e.PersonalBooksId);
                 b.HasOne(e => e.Book)
                     .WithMany()
                     .HasForeignKey(e => e.BookId);
@@ -137,7 +134,7 @@ namespace BookRef.Api.Persistence
             });
 
             // Personal User recommendations from a book
-            builder?.Entity<Recommedation>(b =>
+            builder?.Entity<BookRecommedation>(b =>
             {
                 b.HasOne(e => e.SourceBook)
                     .WithMany()
@@ -146,6 +143,13 @@ namespace BookRef.Api.Persistence
                 b.HasOne(e => e.RecommendedBook)
                     .WithMany()
                     .HasForeignKey(e => e.RecommendedBookId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+            builder?.Entity<PersonRecommedation>(b =>
+            {
+                b.HasOne(e => e.SourceBook)
+                    .WithMany()
+                    .HasForeignKey(e => e.SourceBookId)
                     .OnDelete(DeleteBehavior.NoAction);
                 b.HasOne(e => e.RecommendedPerson)
                     .WithMany()
@@ -156,9 +160,6 @@ namespace BookRef.Api.Persistence
             builder?.Entity<User>(b =>
             {
                 b.HasKey(e => e.Id);
-                b.HasOne(e => e.Library)
-                    .WithOne()
-                    .HasForeignKey<PersonalLibrary>(e => e.UserId);
             });
 
             // builder?.Entity<Friends>(b =>

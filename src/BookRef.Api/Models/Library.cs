@@ -11,25 +11,23 @@ namespace BookRef.Api.Models
 {
     public class PersonalLibrary : Aggregate
     {
-        public long UserId { get; private set; }
-        public PersonalLibrary() {}
-        public PersonalLibrary(long userId)
+        public virtual User User { get; private set; }
+        protected PersonalLibrary() {}
+        public PersonalLibrary(User user)
         {
-            UserId = userId;
+            User = user;
         }
 
-        private List<Recommedation> _myRecommendations = new List<Recommedation>();
-        public IReadOnlyList<Recommedation> MyRecommendations => _myRecommendations.ToList();
-
-        private List<UserBooks> _myBooks = new List<UserBooks>();
-        public IReadOnlyList<UserBooks> MyBooks => _myBooks.ToList();
+        public virtual ICollection<BookRecommedation> BookRecommedations { get; private set; } = new List<BookRecommedation>();
+        public virtual ICollection<PersonRecommedation> PersonRecommedations { get; private set; } = new List<PersonRecommedation>();
+        public virtual ICollection<PersonalBooks> MyBooks { get; private set; } = new List<PersonalBooks>();
 
 
         public void AddBookRecommendation(Book sourceBook, Book recommendedBook, string note = "")
         {
-            var rec = new Recommedation
+            var rec = new BookRecommedation
             {
-                OwnerId = this.Id,
+                PersonalLibraryId = this.Id,
                 SourceBook = sourceBook,
                 RecommendedBook = recommendedBook,
                 Note = new Note
@@ -37,14 +35,14 @@ namespace BookRef.Api.Models
                     Content = note
                 }
             };
-            _myRecommendations.Add(rec);
+            BookRecommedations.Add(rec);
         }
 
         public void AddPersonRecommendation(Book sourceBook, Person recommendedPerson, string note = "")
         {
-            var rec = new Recommedation
+            var rec = new PersonRecommedation
             {
-                OwnerId = this.Id,
+                PersonalLibraryId = this.Id,
                 SourceBook = sourceBook,
                 RecommendedPerson = recommendedPerson,
                 Note = new Note
@@ -52,17 +50,16 @@ namespace BookRef.Api.Models
                     Content = note
                 }
             };
-            _myRecommendations.Add(rec);
+            PersonRecommedations.Add(rec);
         }
 
-        public override string ToString()
-        {
-            var myBooks = string.Join("|", _myBooks.Select(e => e.Book.Title));
-            var allMyRec = string.Join("|", _myRecommendations
-                                                .Where(e => e.RecommendedBook != null)
-                                                .Select(e => $"From ‘{e.SourceBook.Title}‘ for ‘{e.RecommendedBook.Title}‘ with note ‘{e.Note.Content}‘"));
-            return $"Person {{ Id = {Id}, UserId = {UserId}, MyBooks = {myBooks}, MyRecommendations = {allMyRec} }}";
-        }
+        // public override string ToString()
+        // {
+        //     var myBooks = string.Join("|", MyBooks.Select(e => e.Book.Title));
+        //     var allMyRec = string.Join("|", MyRecommendations
+        //                                         .Select(e => $"From ‘{e.SourceBook.Title}‘"));
+        //     return $"Person {{ Id = {Id}, UserId = {UserId}, MyBooks = {myBooks}, MyRecommendations = {allMyRec} }}";
+        // }
 
         // Events
         protected override void When(object @event)
@@ -86,18 +83,17 @@ namespace BookRef.Api.Models
 
         private void OnCreated(LibraryCreated @event)
         {
-            UserId = @event.UserId;
+            //UserId = @event.UserId;
             Id = @event.LibraryId;
         }
 
         private void OnBookAded(BookAdded @event)
         {
-            var ub = new UserBooks
+            var ub = new PersonalBooks
             {
-                BookId = @event.BookId,
-                UserId = this.UserId
+                BookId = @event.BookId
             };
-            _myBooks.Add(ub);
+            MyBooks.Add(ub);
         }
 
 
@@ -124,12 +120,11 @@ namespace BookRef.Api.Models
         // Only to seed data, remove in production
         public void AddBookDataSeeder(Book book)
         {
-            var ub = new UserBooks
+            var ub = new PersonalBooks
             {
-                BookId = book.Id,
-                UserId = this.UserId
+                Book = book
             };
-            _myBooks.Add(ub);
+            MyBooks.Add(ub);
         }
     }
 }

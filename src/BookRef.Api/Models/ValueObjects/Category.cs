@@ -1,19 +1,17 @@
 using System.Collections.Generic;
-using CSharpFunctionalExtensions;
+using BookRef.Api.Models.Relations;
 
 namespace BookRef.Api.Models.ValueObjects
 {
-    public record Category
+    public class Category
     {
-        protected Category()
-        {
-
-        }
+        protected Category() { }
         public Category(string name)
         {
             Name = name;
         }
-        public long Id { get; init; }
-        public string Name { get; init; }
+        public long Id { get; private set; }
+        public string Name { get; private set; }
+        public virtual ICollection<BookCategory> BookCategories { get; private set; }
     }
 }

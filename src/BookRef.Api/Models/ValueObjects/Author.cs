@@ -1,19 +1,18 @@
 using System.Collections.Generic;
-using CSharpFunctionalExtensions;
+using System.Linq;
 
 namespace BookRef.Api.Models.ValueObjects
 {
-    public record Author
+    public class Author
     {
-        protected Author()
-        {
-
-        }
+        protected Author() { }
         public Author(string name)
         {
             Name = name;
         }
-        public long Id { get; init; }
-        public string Name { get; init; }
+        public long Id { get; private set; }
+        public string Name { get; private set; }
+
+        public virtual ICollection<Book> Books  { get; private set; }
     }
 }

@@ -9,6 +9,7 @@ using EventStore.ClientAPI;
 
 namespace BookRef.Api.Persistence
 {
+    #nullable disable
     public class AggregateRepository
     {
         private readonly IEventStoreConnection _eventStore;
@@ -70,4 +71,5 @@ namespace BookRef.Api.Persistence
 
         private string GetStreamName<T>(T type, Guid aggregateId) => $"{type.GetType().Name}-{aggregateId}";
     }
+    #nullable enable
 }

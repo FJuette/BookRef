@@ -12,32 +12,32 @@ namespace BookRef.Api.Library.Commands
 
     }
 
-    public class CreateLibraryCommandHandler : IRequestHandler<CreateLibraryCommand, Guid>
-    {
-        private readonly BookRefDbContext _context;
-        private readonly AggregateRepository _repository;
+    // public class CreateLibraryCommandHandler : IRequestHandler<CreateLibraryCommand, Guid>
+    // {
+    //     private readonly BookRefDbContext _context;
+    //     private readonly AggregateRepository _repository;
 
-        public CreateLibraryCommandHandler(
-            BookRefDbContext context, AggregateRepository repository)
-            {
-                _context = context;
-                _repository = repository;
-            }
+    //     public CreateLibraryCommandHandler(
+    //         BookRefDbContext context, AggregateRepository repository)
+    //         {
+    //             _context = context;
+    //             _repository = repository;
+    //         }
 
-        public async Task<Guid> Handle(
-            CreateLibraryCommand request,
-            CancellationToken cancellationToken)
-        {
-            var id = Guid.NewGuid();
-            var aggregate = await _repository.LoadAsync<PersonalLibrary>(id);
-            // TODO put real userID here
-            aggregate.Create(id, 1);
+    //     public async Task<Guid> Handle(
+    //         CreateLibraryCommand request,
+    //         CancellationToken cancellationToken)
+    //     {
+    //         var id = Guid.NewGuid();
+    //         var aggregate = await _repository.LoadAsync<PersonalLibrary>(id);
+    //         // TODO put real userID here
+    //         aggregate.Create(id, 1);
 
-            await _repository.SaveAsync(aggregate);
+    //         await _repository.SaveAsync(aggregate);
 
-            var result = _context.Libraries.Attach(aggregate);
-            await _context.SaveChangesAsync(cancellationToken);
-            return result.Entity.Id;
-        }
-    }
+    //         var result = _context.Libraries.Attach(aggregate);
+    //         await _context.SaveChangesAsync(cancellationToken);
+    //         return result.Entity.Id;
+    //     }
+    // }
 }
