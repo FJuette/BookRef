@@ -37,6 +37,19 @@ query {
 }
 ```
 
+Example for mutation
+
+```graphql
+mutation {
+   addSpeaker(input: {
+     name: "Speaker Name" }) {
+     speaker {
+       name
+     }
+   }
+ }
+```
+
 ## References
 
 ### Used (HotChocolate)
