@@ -25,8 +25,9 @@ namespace BookRef.Api.Persistence
         public DbSet<BookRecommedation> BookRecommedations { get; set; }
         public DbSet<PersonRecommedation> PersonRecommedations { get; set; }
         public DbSet<PersonalLibrary> Libraries { get; set; }
-        public DbSet<PersonalBooks> PersonalBooks { get; set; }
+        public DbSet<PersonalBook> PersonalBooks { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         public BookRefDbContext(DbContextOptions<BookRefDbContext> options)
         : base(options)
@@ -95,7 +96,7 @@ namespace BookRef.Api.Persistence
                     .HasForeignKey<User>(e => e.PersonalLibraryId);
             });
 
-            builder?.Entity<PersonalBooks>(b =>
+            builder?.Entity<PersonalBook>(b =>
             {
                 b.HasKey(e => e.PersonalBooksId);
                 b.HasOne(e => e.Book)

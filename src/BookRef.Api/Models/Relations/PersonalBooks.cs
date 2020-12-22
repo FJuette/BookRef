@@ -3,10 +3,10 @@ using BookRef.Api.Models.ValueObjects;
 
 namespace BookRef.Api.Models.Relations
 {
-    public class PersonalBooks
+    public class PersonalBook
     {
-        protected PersonalBooks() {}
-        public PersonalBooks(Guid personalLibraryId, Book book, BookStatus bookStatus, BookFormat bookFormat)
+        protected PersonalBook() {}
+        public PersonalBook(Guid personalLibraryId, Book book, BookStatus bookStatus, BookFormat bookFormat)
         {
             PersonalLibraryId = personalLibraryId;
             Book = book;

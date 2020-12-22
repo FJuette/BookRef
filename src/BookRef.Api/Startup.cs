@@ -117,6 +117,8 @@ namespace BookRef.Api
                 .AddType<BookRecommedationType>()
                 .AddType<BookType>()
                 .AddType<CategoryType>()
+                .AddType<NoteType>()
+                .AddType<PersonalBookType>()
                 .AddType<PersonRecommedationType>()
                 .AddType<PersonType>()
                 .AddType<SpeakerType>()
@@ -127,7 +129,9 @@ namespace BookRef.Api
                 .AddDataLoader<BookByIdDataLoader>()
                 .AddDataLoader<BookRecommendationByIdDataLoader>()
                 .AddDataLoader<CategoryByIdDataLoader>()
+                .AddDataLoader<NoteByIdDataLoader>()
                 .AddDataLoader<PersonByIdDataLoader>()
+                .AddDataLoader<PersonalBookByIdDataLoader>()
                 .AddDataLoader<PersonRecommendationByIdDataLoader>()
                 .AddDataLoader<SpeakerByIdDataLoader>();
 

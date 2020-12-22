@@ -93,7 +93,7 @@ namespace BookRef.Api.Extensions
             book3.SetAuthors(new List<Author> { juliaAuthor });
             book3.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book3);
-            //library2.AddNewBook(book3);
+            library.AddBookDataSeeder(book3);
 
             var book4 = new Book("978-3662533253", "Der Luzifer-Effekt: Die Macht der Umstände und die Psychologie des Bösen")
             {
@@ -106,7 +106,7 @@ namespace BookRef.Api.Extensions
             book4.SetAuthors(new List<Author> { zimbardoAuthor });
             book4.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book4);
-            //library2.AddNewBook(book4);
+            library.AddBookDataSeeder(book4);
 
             var book5 = new Book("978-3730604540", "Massenpsychologie und Ich-Analyse")
             {
@@ -119,7 +119,7 @@ namespace BookRef.Api.Extensions
             book5.SetAuthors(new List<Author> { freudAuthor });
             book5.SetCategories(new List<Category> { categoryPsyche });
             _context.Add(book5);
-            //library2.AddNewBook(book5);
+            library.AddBookDataSeeder(book5);
 
             var book6 = new Book("978-3936086355", "Propaganda: Die Kunst der Public Relations")
             {
@@ -132,7 +132,7 @@ namespace BookRef.Api.Extensions
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book6);
-            //library2.AddNewBook(book6);
+            library.AddBookDataSeeder(book6);
 
 
             _context.Libraries.Add(library);

@@ -19,6 +19,8 @@ namespace BookRef.Api.Models.Types
                 .ResolveWith<BookRecommedationResolvers>(t => t.GetRecommendedBookAsync(default!, default!, default));
             descriptor.Field(e => e.SourceBook)
                 .ResolveWith<BookRecommedationResolvers>(t => t.GetSourceBookAsync(default!, default!, default));
+            // descriptor.Field(e => e.Note)
+            //     .ResolveWith<BookRecommedationResolvers>(t => t.GetNoteAsync(default!, default!, default));
 
             descriptor
                  .Field(t => t.RecommendedBookId)
@@ -43,6 +45,17 @@ namespace BookRef.Api.Models.Types
             {
                 return await bookById.LoadAsync(bookRecommedation.SourceBookId, cancellationToken);
             }
+            // public async Task<Note?> GetNoteAsync(
+            //      BookRecommedation bookRecommedation,
+            //      NoteByIdDataLoader noteById,
+            //      CancellationToken cancellationToken)
+            // {
+            //     if (bookRecommedation.Note == null)
+            //     {
+            //         return null;
+            //     }
+            //     return await noteById.LoadAsync(bookRecommedation.Note.Id, cancellationToken);
+            // }
         }
     }
 }

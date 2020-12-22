@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BookRef.Api.Extensions;
+using BookRef.Api.Infrastructure;
 using BookRef.Api.Models;
+using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.Types;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
@@ -23,7 +26,7 @@ namespace BookRef.Api.Books
         [UsePaging(typeof(NonNullType<BookType>))]
         [UseFiltering(typeof(BookFilterInputType))]
         [UseSorting]
-        public IQueryable<Book> GetBooks(
+        public IQueryable<Book> GetAllBooks(
             [ScopedService] BookRefDbContext context) =>
              context.Books;
 
@@ -39,8 +42,24 @@ namespace BookRef.Api.Books
             CancellationToken cancellationToken) =>
             dataLoader.LoadAsync(ids, cancellationToken);
 
+        // Personal books
         [UseApplicationDbContext]
-        public Task<List<BookRecommedation>> GetBookRecommendations(
+        [UseFiltering(typeof(PersonalBookFilterInputType))]
+        public Task<IReadOnlyList<PersonalBook>> GetBooksAsync(
+            PersonalBookByIdDataLoader dataLoader,
+            [Service] IGetClaimsProvider claimsProvider,
+            [ScopedService] BookRefDbContext context,
+            CancellationToken cancellationToken)
+            {
+                var ids = context.Libraries
+                    .Include(e => e.MyBooks)
+                    .First(e => e.User.Id == claimsProvider.UserId)
+                    .MyBooks.Select(e => e.PersonalBooksId);
+                return dataLoader.LoadAsync(ids.ToArray(), cancellationToken);
+            }
+
+        [UseApplicationDbContext]
+        public Task<List<BookRecommedation>> GetAllBookRecommendations(
             [ScopedService] BookRefDbContext context) =>
              context.BookRecommedations.ToListAsync();
 
@@ -62,19 +81,21 @@ namespace BookRef.Api.Books
             context.PersonRecommedations.Where(e => e.SourceBookId == id).ToListAsync();
 
         [UseApplicationDbContext]
-        public async Task<MyRecommendations> GetMyRecommendationsForBook(
+        public async Task<MyRecommendations> GetRecommendationsForBook(
             [ID(nameof(Book))] long id,
             BookByIdDataLoader dataLoader,
+            [Service] IGetClaimsProvider claimsProvider,
             [ScopedService] BookRefDbContext context,
             CancellationToken cancellationToken)
             {
+                var library = context.Libraries
+                    .First(e => e.User.Id == claimsProvider.UserId);
                 var result = new MyRecommendations();
                 result.SourceBook = await dataLoader.LoadAsync(id, cancellationToken);
                 result.BookRecommedations = await context.BookRecommedations.Where(e => e.SourceBookId == id).ToListAsync();
                 result.PersonRecommedations = await context.PersonRecommedations.Where(e => e.SourceBookId == id).ToListAsync();
                 return result;
             }
-
     }
 }
 

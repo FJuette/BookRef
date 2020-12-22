@@ -1,5 +1,69 @@
 # GraphQL
 
+## Use Cases
+
+Get Books for user:
+
+```graphql
+query {
+  books(where: {status: {eq: ACTIVE}}) {
+    id
+    status
+    bookId
+    book {
+      title
+      categories {
+        name
+      }
+      authors {
+        name
+      }
+    }
+    currentPage
+    format
+    personalLibraryId
+    startDate
+    status
+  }
+}
+```
+
+Get a specific book by id:
+
+```graphql
+query {
+  bookById(id: "Qm9vawpsMw==") {
+    title
+  }
+}
+```
+
+Find all recommendations for a book:
+
+```graphql
+query {
+  recommendationsForBook(id: "Qm9vawpsMg==") {
+    sourceBook {
+      title
+    }
+    bookRecommedations {
+      id
+      recommendedBook {
+        title
+      }
+    }
+    personRecommedations {
+      id
+      recommendedPerson {
+        name
+      }
+    }
+  }
+}
+```
+
+## Testing
+
 Example with filter:
 
 ```graphql

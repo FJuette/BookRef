@@ -20,7 +20,7 @@ namespace BookRef.Api.Models
 
         public virtual ICollection<BookRecommedation> BookRecommedations { get; private set; } = new List<BookRecommedation>();
         public virtual ICollection<PersonRecommedation> PersonRecommedations { get; private set; } = new List<PersonRecommedation>();
-        public virtual ICollection<PersonalBooks> MyBooks { get; private set; } = new List<PersonalBooks>();
+        public virtual ICollection<PersonalBook> MyBooks { get; private set; } = new List<PersonalBook>();
 
 
         public void AddBookRecommendation(Book sourceBook, Book recommendedBook, string note = "")
@@ -112,7 +112,7 @@ namespace BookRef.Api.Models
         // Only to seed data, remove in production
         public void AddBookDataSeeder(Book book)
         {
-            var ub = new PersonalBooks(this.Id, book, BookStatus.Active, BookFormat.Book);
+            var ub = new PersonalBook(this.Id, book, BookStatus.Active, BookFormat.Book);
             MyBooks.Add(ub);
         }
     }
