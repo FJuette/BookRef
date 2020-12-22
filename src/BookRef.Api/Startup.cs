@@ -99,13 +99,26 @@ namespace BookRef.Api
 
             services
                 .AddGraphQLServer()
-                .AddQueryType<GQuery>()
+                .AddQueryType(d => d.Name("Query"))
+                    .AddType<AuthorQueries>()
+                    .AddType<CategoryQueries>()
+                    .AddType<BookQueries>()
+                .AddMutationType(d => d.Name("Mutation"))
+                    .AddTypeExtension<AuthorMutations>()
+                    .AddTypeExtension<CategoryMutations>()
+                    //.AddTypeExtension<BookMutations>()
+                .AddType<AuthorType>()
+                .AddType<BookRecommedationType>()
+                .AddType<BookType>()
+                .AddType<CategoryType>()
+                .AddType<PersonRecommedationType>()
+                .AddType<PersonType>()
+                .AddType<SpeakerType>()
+                .EnableRelaySupport()
                 .AddDataLoader<AuthorByIdDataLoader>()
                 .AddDataLoader<BookByIdDataLoader>()
                 .AddDataLoader<CategoryByIdDataLoader>()
-                .AddMutationType(d => d.Name("Mutation"))
-                    .AddTypeExtension<AuthorMutations>()
-                .AddType<BookType>()
+
                 .AddProjections()
                 .AddFiltering();
                 //.AddSorting();

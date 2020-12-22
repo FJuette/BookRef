@@ -41,13 +41,4 @@ namespace BookRef.Api.Authors
 
         public Author Author { get; }
     }
-
-    public class AddAuthorValidator : AbstractValidator<AddAuthorInput>
-    {
-        public AddAuthorValidator()
-        {
-            RuleFor(x => x.Name).NotEmpty()
-                .WithMessage("Name is required");
-        }
-    }
 }
