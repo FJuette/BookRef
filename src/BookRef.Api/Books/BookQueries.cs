@@ -12,7 +12,7 @@ using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookRef.Api.Authors
+namespace BookRef.Api.Books
 {
     [ExtendObjectType(Name = "Query")]
     public class BookQueries

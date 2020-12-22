@@ -26,6 +26,10 @@ using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.Types;
 using Microsoft.EntityFrameworkCore;
 using BookRef.Api.Authors;
+using BookRef.Api.Books;
+using BookRef.Api.Categories;
+using BookRef.Api.People;
+using BookRef.Api.Speakers;
 
 namespace BookRef.Api
 {
@@ -103,6 +107,8 @@ namespace BookRef.Api
                     .AddType<AuthorQueries>()
                     .AddType<CategoryQueries>()
                     .AddType<BookQueries>()
+                    .AddType<PersonQueries>()
+                    .AddType<SpeakerQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<AuthorMutations>()
                     .AddTypeExtension<CategoryMutations>()

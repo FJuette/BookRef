@@ -10,18 +10,18 @@ using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookRef.Api.Categories
+namespace BookRef.Api.Speakers
 {
     [ExtendObjectType(Name = "Query")]
-    public class CategoryQueries
+    public class SpeakerQueries
     {
         [UseApplicationDbContext]
-        public Task<List<Category>> GetCategories([ScopedService] BookRefDbContext context) =>
-             context.Categories.ToListAsync();
+        public Task<List<Speaker>> GetSpeakers([ScopedService] BookRefDbContext context) =>
+             context.Speakers.ToListAsync();
 
-        public Task<Category> GetCategoryAsync(
-            [ID(nameof(Category))] long id,
-            CategoryByIdDataLoader dataLoader,
+        public Task<Speaker> GetSpeakerAsync(
+            [ID(nameof(Speaker))] long id,
+            SpeakerByIdDataLoader dataLoader,
             CancellationToken cancellationToken) =>
             dataLoader.LoadAsync(id, cancellationToken);
     }

@@ -8,7 +8,7 @@ using FluentValidation;
 using HotChocolate;
 using HotChocolate.Types;
 
-namespace BookRef.Api.Books
+namespace BookRef.Api.People
 {
     // public record AddBookInput(string Name);
 

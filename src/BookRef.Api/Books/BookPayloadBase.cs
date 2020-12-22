@@ -3,7 +3,7 @@ using BookRef.Api.Common;
 using BookRef.Api.Models;
 using BookRef.Api.Models.ValueObjects;
 
-namespace BookRef.Api.Authors
+namespace BookRef.Api.Books
 {
     public class BookPayloadBase : Payload
     {

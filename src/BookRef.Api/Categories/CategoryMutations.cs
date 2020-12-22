@@ -8,7 +8,7 @@ using FluentValidation;
 using HotChocolate;
 using HotChocolate.Types;
 
-namespace BookRef.Api.Authors
+namespace BookRef.Api.Categories
 {
     public record AddCategoryInput(string Name);
 
