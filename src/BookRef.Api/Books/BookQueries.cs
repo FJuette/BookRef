@@ -4,10 +4,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using BookRef.Api.Extensions;
 using BookRef.Api.Models;
+using BookRef.Api.Models.Types;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
 using BookRef.Api.Persistence.DataLoader;
 using HotChocolate;
+using HotChocolate.Data;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using Microsoft.EntityFrameworkCore;
@@ -18,8 +20,12 @@ namespace BookRef.Api.Books
     public class BookQueries
     {
         [UseApplicationDbContext]
-        public Task<List<Book>> GetBooksAsync([ScopedService] BookRefDbContext context) =>
-             context.Books.ToListAsync();
+        [UsePaging(typeof(NonNullType<BookType>))]
+        [UseFiltering(typeof(BookFilterInputType))]
+        [UseSorting]
+        public IQueryable<Book> GetBooks(
+            [ScopedService] BookRefDbContext context) =>
+             context.Books;
 
         public Task<Book> GetBookByIdAsync(
             [ID(nameof(Book))] long id,

@@ -121,13 +121,15 @@ namespace BookRef.Api
                 .AddType<PersonType>()
                 .AddType<SpeakerType>()
                 .EnableRelaySupport()
+                .AddFiltering()
+                .AddSorting()
                 .AddDataLoader<AuthorByIdDataLoader>()
                 .AddDataLoader<BookByIdDataLoader>()
+                .AddDataLoader<BookRecommendationByIdDataLoader>()
                 .AddDataLoader<CategoryByIdDataLoader>()
-
-                .AddProjections()
-                .AddFiltering();
-                //.AddSorting();
+                .AddDataLoader<PersonByIdDataLoader>()
+                .AddDataLoader<PersonRecommendationByIdDataLoader>()
+                .AddDataLoader<SpeakerByIdDataLoader>();
 
             services.AddAutoMapper(typeof(Startup));
 
