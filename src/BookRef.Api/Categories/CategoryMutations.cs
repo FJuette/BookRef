@@ -28,9 +28,9 @@ namespace BookRef.Api.Categories
         }
     }
 
-    public class AddCategoryPayload : CategoryPayloadBase
+    public class AddCategoryPayload : Payload
     {
-        public AddCategoryPayload(Category category) : base(category)
+        public AddCategoryPayload(Category category)
         {
             Category = category;
         }
@@ -39,6 +39,6 @@ namespace BookRef.Api.Categories
          {
          }
 
-        public Category Category { get; }
+        public Category? Category { get; }
     }
 }

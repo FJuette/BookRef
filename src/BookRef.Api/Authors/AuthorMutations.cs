@@ -20,6 +20,15 @@ namespace BookRef.Api.Authors
              AddAuthorInput input,
              [ScopedService] BookRefDbContext context)
         {
+            if (input.Name.Length < 5)
+            {
+                return new AddAuthorPayload(
+                    new List<UserError>
+                    {
+                        new UserError("Minimum Length greater 5 required.", "AUTHOR LENGTH")
+                    });
+            }
+
             var author = new Author(input.Name);
             context.Authors.Add(author);
             await context.SaveChangesAsync();
@@ -28,17 +37,17 @@ namespace BookRef.Api.Authors
         }
     }
 
-    public class AddAuthorPayload : AuthorPayloadBase
+    public class AddAuthorPayload : Payload
     {
-        public AddAuthorPayload(Author author) : base(author)
+        public AddAuthorPayload(Author author)
         {
             Author = author;
         }
         public AddAuthorPayload(IReadOnlyList<UserError> errors)
              : base(errors)
-         {
-         }
+        {
+        }
 
-        public Author Author { get; }
+        public Author? Author { get; }
     }
 }
