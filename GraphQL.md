@@ -1,38 +1,25 @@
 # GraphQL
 
-Example with query:
+Example with filter:
 
 ```graphql
 query {
-  books (where: { status: { eq: ACTIVE } } ) {
-    userId
-    currentPage
-    status
-    book {
-      language
+  books(where: {language: {eq: GERMAN}}) {
+    nodes {
       title
-      bookAuthors {
-        author {
-          name
-        }
-      }
-      created
-      isbn
-      bookCategories {
-        category {
-          name
-        }
-      }
     }
   }
 }
 ```
 
+Example with filter and order
+
 ```graphql
 query {
-  people (where: {id: { eq: 1 } }) {
-    id
-    name
+  books(where: {language: {eq: GERMAN}} order: {isbn: ASC}) {
+    nodes {
+      title
+    }
   }
 }
 ```
@@ -40,14 +27,92 @@ query {
 Example for mutation
 
 ```graphql
-mutation {
-   addSpeaker(input: {
-     name: "Speaker Name" }) {
-     speaker {
-       name
+mutation AddAuthor {
+   addAuthor(input: {
+     name: "Fabian Jütte" }) {
+     author {
+       id
      }
    }
  }
+```
+
+Mutation with error response
+
+```graphql
+mutation {
+   addAuthor (input: {
+     name: "Xi" })
+     {
+       author {
+         id
+         name
+       }
+       errors {
+         code
+         message
+       }
+     }
+ }
+```
+
+Multi Queries
+
+```graphql
+query {
+  a: recommendationsForBook(id: "Qm9vawpsMg==") {
+    id
+    sourceBook {
+      title
+      id
+    }
+    recommendedBook {
+      title
+    }
+  }
+  b: recommendationsForBook(id: "Qm9vawpsMQ==") {
+    id
+    sourceBook {
+      title
+      id
+    }
+    recommendedBook {
+      title
+    }
+  }
+}
+```
+
+Query for multiple Ids
+
+```graphql
+query {
+  authorsById(ids: ["QXV0aG9yCmwx", "QXV0aG9yCmwy"]) {
+    name
+  }
+}
+```
+
+Query with paging
+
+```graphql
+query GetFirstBook {
+  books(first: 1) {
+    edges {
+      node {
+        id
+        title
+      }
+      cursor
+    }
+    pageInfo {
+      startCursor
+      endCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}
 ```
 
 ## References
