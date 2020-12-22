@@ -18,14 +18,20 @@ namespace BookRef.Api.Books
     public class BookQueries
     {
         [UseApplicationDbContext]
-        public Task<List<Book>> GetBooks([ScopedService] BookRefDbContext context) =>
+        public Task<List<Book>> GetBooksAsync([ScopedService] BookRefDbContext context) =>
              context.Books.ToListAsync();
 
-        public Task<Book> GetBookAsync(
+        public Task<Book> GetBookByIdAsync(
             [ID(nameof(Book))] long id,
             BookByIdDataLoader dataLoader,
             CancellationToken cancellationToken) =>
             dataLoader.LoadAsync(id, cancellationToken);
+
+        public Task<IReadOnlyList<Book>> GetBooksByIdAsync(
+            [ID(nameof(Book))] long[] ids,
+            BookByIdDataLoader dataLoader,
+            CancellationToken cancellationToken) =>
+            dataLoader.LoadAsync(ids, cancellationToken);
 
         [UseApplicationDbContext]
         public Task<List<BookRecommedation>> GetBookRecommendations(

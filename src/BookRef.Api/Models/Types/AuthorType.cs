@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using BookRef.Api.Extensions;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
 using BookRef.Api.Persistence.DataLoader;
@@ -25,6 +26,10 @@ namespace BookRef.Api.Models.Types
                 .ResolveWith<AuthorResolvers>(t => t.GetBooksAsync(default!, default!, default!, default))
                 .UseDbContext<BookRefDbContext>()
                 .Name("books");
+
+            // Example UpperCase
+            descriptor.Field(e => e.Name)
+                .UseUpperCase();
         }
 
         private class AuthorResolvers

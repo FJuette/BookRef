@@ -18,14 +18,20 @@ namespace BookRef.Api.People
     public class PersonQueries
     {
         [UseApplicationDbContext]
-        public Task<List<Person>> GetPeople([ScopedService] BookRefDbContext context) =>
+        public Task<List<Person>> GetPeopleAsync([ScopedService] BookRefDbContext context) =>
              context.People.ToListAsync();
 
-        public Task<Person> GetPersonAsync(
+        public Task<Person> GetPersonByIdAsync(
             [ID(nameof(Person))] long id,
             PersonByIdDataLoader dataLoader,
             CancellationToken cancellationToken) =>
             dataLoader.LoadAsync(id, cancellationToken);
+
+        public Task<IReadOnlyList<Person>> GetPeopleByIdAsync(
+            [ID(nameof(Person))] long[] ids,
+            PersonByIdDataLoader dataLoader,
+            CancellationToken cancellationToken) =>
+            dataLoader.LoadAsync(ids, cancellationToken);
     }
 }
 

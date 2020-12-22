@@ -16,13 +16,20 @@ namespace BookRef.Api.Authors
     public class AuthorQueries
     {
         [UseApplicationDbContext]
-        public Task<List<Author>> GetAuthors([ScopedService] BookRefDbContext context) =>
+        public Task<List<Author>> GetAuthorsAsync(
+            [ScopedService] BookRefDbContext context) =>
              context.Authors.ToListAsync();
 
-        public Task<Author> GetAuthorAsync(
+        public Task<Author> GetAuthorByIdAsync(
             [ID(nameof(Author))] long id,
             AuthorByIdDataLoader dataLoader,
             CancellationToken cancellationToken) =>
             dataLoader.LoadAsync(id, cancellationToken);
+
+        public Task<IReadOnlyList<Author>> GetAuthorsByIdAsync(
+            [ID(nameof(Author))] long[] ids,
+            AuthorByIdDataLoader dataLoader,
+            CancellationToken cancellationToken) =>
+            dataLoader.LoadAsync(ids, cancellationToken);
     }
 }

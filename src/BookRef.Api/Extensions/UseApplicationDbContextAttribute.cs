@@ -12,7 +12,7 @@ namespace BookRef.Api.Extensions
             IObjectFieldDescriptor descriptor,
             MemberInfo member)
         {
-            descriptor.UseDbContext<BookRefDbContext>();
+            descriptor.UseBookRefDbContext<BookRefDbContext>();
         }
     }
 }

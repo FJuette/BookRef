@@ -16,13 +16,19 @@ namespace BookRef.Api.Categories
     public class CategoryQueries
     {
         [UseApplicationDbContext]
-        public Task<List<Category>> GetCategories([ScopedService] BookRefDbContext context) =>
+        public Task<List<Category>> GetCategoriesAsync([ScopedService] BookRefDbContext context) =>
              context.Categories.ToListAsync();
 
-        public Task<Category> GetCategoryAsync(
+        public Task<Category> GetCategoryByIdAsync(
             [ID(nameof(Category))] long id,
             CategoryByIdDataLoader dataLoader,
             CancellationToken cancellationToken) =>
             dataLoader.LoadAsync(id, cancellationToken);
+
+        public Task<IReadOnlyList<Category>> GetCategoriesByIdAsync(
+            [ID(nameof(Category))] long[] ids,
+            CategoryByIdDataLoader dataLoader,
+            CancellationToken cancellationToken) =>
+            dataLoader.LoadAsync(ids, cancellationToken);
     }
 }

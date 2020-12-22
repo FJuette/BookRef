@@ -16,13 +16,19 @@ namespace BookRef.Api.Speakers
     public class SpeakerQueries
     {
         [UseApplicationDbContext]
-        public Task<List<Speaker>> GetSpeakers([ScopedService] BookRefDbContext context) =>
+        public Task<List<Speaker>> GetSpeakersAsync([ScopedService] BookRefDbContext context) =>
              context.Speakers.ToListAsync();
 
-        public Task<Speaker> GetSpeakerAsync(
+        public Task<Speaker> GetSpeakerByIdAsync(
             [ID(nameof(Speaker))] long id,
             SpeakerByIdDataLoader dataLoader,
             CancellationToken cancellationToken) =>
             dataLoader.LoadAsync(id, cancellationToken);
+
+        public Task<IReadOnlyList<Speaker>> GetSpeakersByIdAsync(
+            [ID(nameof(Speaker))] long[] ids,
+            SpeakerByIdDataLoader dataLoader,
+            CancellationToken cancellationToken) =>
+            dataLoader.LoadAsync(ids, cancellationToken);
     }
 }
