@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using BookRef.Api.Extensions;
@@ -25,5 +26,49 @@ namespace BookRef.Api.Authors
             BookByIdDataLoader dataLoader,
             CancellationToken cancellationToken) =>
             dataLoader.LoadAsync(id, cancellationToken);
+
+        [UseApplicationDbContext]
+        public Task<List<BookRecommedation>> GetBookRecommendations(
+            [ScopedService] BookRefDbContext context) =>
+             context.BookRecommedations.ToListAsync();
+
+        [UseApplicationDbContext]
+        public Task<List<BookRecommedation>> GetBookRecommendationsForBook(
+            [ID(nameof(Book))] long id,
+            [ScopedService] BookRefDbContext context) =>
+            context.BookRecommedations.Where(e => e.SourceBookId == id).ToListAsync();
+
+        [UseApplicationDbContext]
+        public Task<List<PersonRecommedation>> GetPeopleRecommendations(
+            [ScopedService] BookRefDbContext context) =>
+             context.PersonRecommedations.ToListAsync();
+
+        [UseApplicationDbContext]
+        public Task<List<PersonRecommedation>> GetPeopleRecommendationsForBook(
+            [ID(nameof(Book))] long id,
+            [ScopedService] BookRefDbContext context) =>
+            context.PersonRecommedations.Where(e => e.SourceBookId == id).ToListAsync();
+
+        [UseApplicationDbContext]
+        public async Task<MyRecommendations> GetMyRecommendationsForBook(
+            [ID(nameof(Book))] long id,
+            BookByIdDataLoader dataLoader,
+            [ScopedService] BookRefDbContext context,
+            CancellationToken cancellationToken)
+            {
+                var result = new MyRecommendations();
+                result.SourceBook = await dataLoader.LoadAsync(id, cancellationToken);
+                result.BookRecommedations = await context.BookRecommedations.Where(e => e.SourceBookId == id).ToListAsync();
+                result.PersonRecommedations = await context.PersonRecommedations.Where(e => e.SourceBookId == id).ToListAsync();
+                return result;
+            }
+
     }
+}
+
+public class MyRecommendations
+{
+    public Book SourceBook { get; set; }
+    public List<BookRecommedation> BookRecommedations { get; set; }
+    public List<PersonRecommedation> PersonRecommedations { get; set; }
 }

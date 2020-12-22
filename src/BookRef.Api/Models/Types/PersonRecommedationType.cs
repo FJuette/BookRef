@@ -28,7 +28,7 @@ namespace BookRef.Api.Models.Types
 
             descriptor
                  .Field(t => t.RecommendedPersonId)
-                 .ID(nameof(Book));
+                 .ID(nameof(Person));
             descriptor
                  .Field(t => t.SourceBookId)
                  .ID(nameof(Book));
@@ -43,11 +43,11 @@ namespace BookRef.Api.Models.Types
                 return await personById.LoadAsync(bookRecommedation.RecommendedPersonId, cancellationToken);
             }
             public async Task<Book?> GetSourceBookAsync(
-                 BookRecommedation bookRecommedation,
+                 PersonRecommedation personRecommedation,
                  BookByIdDataLoader bookById,
                  CancellationToken cancellationToken)
             {
-                return await bookById.LoadAsync(bookRecommedation.SourceBookId, cancellationToken);
+                return await bookById.LoadAsync(personRecommedation.SourceBookId, cancellationToken);
             }
         }
     }
