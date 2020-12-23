@@ -45,14 +45,6 @@ namespace BookRef.Api.Models
             PersonRecommedations.Add(rec);
         }
 
-        // public override string ToString()
-        // {
-        //     var myBooks = string.Join("|", MyBooks.Select(e => e.Book.Title));
-        //     var allMyRec = string.Join("|", MyRecommendations
-        //                                         .Select(e => $"From ‘{e.SourceBook.Title}‘"));
-        //     return $"Person {{ Id = {Id}, UserId = {UserId}, MyBooks = {myBooks}, MyRecommendations = {allMyRec} }}";
-        // }
-
         // Events
         protected override void When(object @event)
         {
@@ -63,50 +55,36 @@ namespace BookRef.Api.Models
             }
         }
 
-        public void Create(Guid libraryId, long userId)
+        public void Create(Guid libraryId, User user)
         {
             if (Version >= 0)
             {
                 //throw new UserAlreadyCreatedException();
             }
 
-            Apply(new LibraryCreated(libraryId, userId));
+            Apply(new LibraryCreated(libraryId, user));
         }
 
         private void OnCreated(LibraryCreated @event)
         {
-            //UserId = @event.UserId;
+            User = @event.User;
             Id = @event.LibraryId;
         }
 
         private void OnBookAded(BookAdded @event)
         {
-            // var ub = new PersonalBooks
-            // {
-            //     BookId = @event.BookId
-            // };
-            // MyBooks.Add(ub);
+            var ub = new PersonalBook(@event.LibraryId, @event.Book, @event.Status, @event.format);
+            MyBooks.Add(ub);
         }
 
-
-        public void AddNewBook(long bookId)
+        public void AddNewBook(Book book, BookStatus status, BookFormat format)
         {
             if (Version == -1)
             {
                 throw new NotFoundException("No user Library found", null);
             }
 
-            Apply(new BookAdded(Id, bookId));
-        }
-
-        public void AddNewBook(Book book)
-        {
-            if (Version == -1)
-            {
-                throw new NotFoundException("No user Library found", null);
-            }
-
-            Apply(new BookAdded(Id, book.Id));
+            Apply(new BookAdded(Id, book, status, format));
         }
 
         // Only to seed data, remove in production

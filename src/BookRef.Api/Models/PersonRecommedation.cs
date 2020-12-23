@@ -1,4 +1,3 @@
-using System;
 using BookRef.Api.Models.ValueObjects;
 
 namespace BookRef.Api.Models

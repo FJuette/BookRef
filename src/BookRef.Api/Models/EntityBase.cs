@@ -2,14 +2,7 @@ using System;
 
 namespace BookRef.Api.Models
 {
-    public interface IOwnedBy
-    {
-        // This holds the ID of the person/institution who own the entity
-        string OwnedBy { get; }
-        void SetOwnedBy(string protectKey);
-    }
-
-    public abstract class EntityBase : IOwnedBy
+    public abstract class EntityBase
     {
         protected EntityBase()
         {
@@ -21,12 +14,6 @@ namespace BookRef.Api.Models
             Id = id;
 
         public long Id { get; set; }
-
-        public string OwnedBy { get; private set; } = "Admin"; // Dummy default value
-
-        public void SetOwnedBy(
-            string protectKey) =>
-            OwnedBy = protectKey;
 
         public override bool Equals(
             object? obj)
