@@ -13,7 +13,7 @@ namespace BookRef.Api.Models.Relations
             Status = bookStatus;
             Format = bookFormat;
         }
-        public long PersonalBooksId { get; set; }
+        public long Id { get; set; }
         public DateTime? StartDate { get; set; }
         public int CurrentPage { get; set; }
 

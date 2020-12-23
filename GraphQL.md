@@ -51,11 +51,17 @@ query {
       recommendedBook {
         title
       }
+      note {
+        content
+      }
     }
     personRecommedations {
       id
       recommendedPerson {
         name
+      }
+      note {
+        content
       }
     }
   }
@@ -186,6 +192,7 @@ query GetFirstBook {
 - https://github.com/ChilliCream/graphql-workshop/blob/master/docs/1-creating-a-graphql-server-project.md
 - https://dev.to/michaelstaib/get-started-with-hot-chocolate-and-entity-framework-e9i
 - https://github.com/ChilliCream/hotchocolate/tree/main/examples
+- Main Documentation: https://chillicream.com/docs/hotchocolate/
 
 ### General
 

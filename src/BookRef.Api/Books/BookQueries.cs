@@ -54,7 +54,7 @@ namespace BookRef.Api.Books
                 var ids = context.Libraries
                     .Include(e => e.MyBooks)
                     .First(e => e.User.Id == claimsProvider.UserId)
-                    .MyBooks.Select(e => e.PersonalBooksId);
+                    .MyBooks.Select(e => e.Id);
                 return dataLoader.LoadAsync(ids.ToArray(), cancellationToken);
             }
 
@@ -88,8 +88,8 @@ namespace BookRef.Api.Books
             [ScopedService] BookRefDbContext context,
             CancellationToken cancellationToken)
             {
-                var library = context.Libraries
-                    .First(e => e.User.Id == claimsProvider.UserId);
+                // var library = context.Libraries
+                //     .First(e => e.User.Id == claimsProvider.UserId);
                 var result = new MyRecommendations();
                 result.SourceBook = await dataLoader.LoadAsync(id, cancellationToken);
                 result.BookRecommedations = await context.BookRecommedations.Where(e => e.SourceBookId == id).ToListAsync();

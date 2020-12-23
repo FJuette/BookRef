@@ -8,6 +8,7 @@ namespace BookRef.Api.Models
 
         public Guid PersonalLibraryId { get; set; }
         public virtual Note? Note { get; set; }
+        public long NoteId { get; set; }
         public virtual Book SourceBook { get; set; }
         public long SourceBookId { get; set; }
     }

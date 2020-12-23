@@ -98,7 +98,7 @@ namespace BookRef.Api.Persistence
 
             builder?.Entity<PersonalBook>(b =>
             {
-                b.HasKey(e => e.PersonalBooksId);
+                b.HasKey(e => e.Id);
                 b.HasOne(e => e.Book)
                     .WithMany()
                     .HasForeignKey(e => e.BookId);
@@ -106,6 +106,13 @@ namespace BookRef.Api.Persistence
                     .HasConversion<string>();
                 b.Property(c => c.Format)
                     .HasConversion<string>();
+            });
+
+            builder?.Entity<BaseRecommedation>(b =>
+            {
+                b.HasOne(e => e.Note)
+                    .WithOne()
+                    .HasForeignKey<BaseRecommedation>(e => e.NoteId);
             });
 
             // Personal User recommendations from a book

@@ -32,8 +32,8 @@ namespace BookRef.Api.Persistence.DataLoader
             await using BookRefDbContext dbContext =
                  _dbContextFactory.CreateDbContext();
             return await dbContext.PersonalBooks
-                .Where(s => keys.Contains(s.PersonalBooksId))
-                .ToDictionaryAsync(t => t.PersonalBooksId, cancellationToken);
+                .Where(s => keys.Contains(s.Id))
+                .ToDictionaryAsync(t => t.Id, cancellationToken);
         }
     }
 }

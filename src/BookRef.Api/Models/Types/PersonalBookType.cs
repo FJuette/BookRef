@@ -19,7 +19,7 @@ namespace BookRef.Api.Models.Types
         {
             descriptor
                 .ImplementsNode()
-                .IdField(t => t.PersonalBooksId)
+                .IdField(t => t.Id)
                 .ResolveNode((ctx, id) => ctx.DataLoader<PersonalBookByIdDataLoader>().LoadAsync(id, ctx.RequestAborted));
 
             descriptor.Field(e => e.Book)

@@ -8,7 +8,7 @@ namespace BookRef.Api.Books
    {
       protected override void Configure(IFilterInputTypeDescriptor<PersonalBook> descriptor)
       {
-            descriptor.Ignore(t => t.PersonalBooksId);
+            descriptor.Ignore(t => t.Id);
             //descriptor.Ignore(t => t.);
       }
    }
