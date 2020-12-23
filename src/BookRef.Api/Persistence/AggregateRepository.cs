@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using BookRef.Api.Models.Framework;
 using EventStore.ClientAPI;
@@ -21,12 +22,17 @@ namespace BookRef.Api.Persistence
 
         public async Task SaveAsync<T>(T aggregate) where T : Aggregate, new()
         {
+            JsonSerializerOptions options = new()
+            {
+                ReferenceHandler = ReferenceHandler.Preserve
+            };
+            options.Converters.Add(new JsonStringEnumConverter());
             var events = aggregate.GetChanges()
                 .Select(@event => new EventData(
                     Guid.NewGuid(),
                     @event.GetType().Name,
                     true,
-                    Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event)),
+                    Encoding.UTF8.GetBytes(JsonSerializer.Serialize(@event, options)),
                     Encoding.UTF8.GetBytes(@event.GetType().FullName)))
                 .ToArray();
 

@@ -12,7 +12,9 @@ namespace BookRef.Api.Models
     public class PersonalLibrary : Aggregate
     {
         public virtual User User { get; private set; }
-        protected PersonalLibrary() {}
+        public long UserId { get; set; }
+        // Public needed for EventStore AggregateRepository
+        public PersonalLibrary() {}
         public PersonalLibrary(User user)
         {
             User = user;
@@ -55,19 +57,19 @@ namespace BookRef.Api.Models
             }
         }
 
-        public void Create(Guid libraryId, User user)
+        public void Create(Guid libraryId, long userId)
         {
             if (Version >= 0)
             {
                 //throw new UserAlreadyCreatedException();
             }
 
-            Apply(new LibraryCreated(libraryId, user));
+            Apply(new LibraryCreated(libraryId, userId));
         }
 
         private void OnCreated(LibraryCreated @event)
         {
-            User = @event.User;
+            UserId = @event.UserId;
             Id = @event.LibraryId;
         }
 

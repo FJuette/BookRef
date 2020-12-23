@@ -82,6 +82,7 @@ namespace BookRef.Api.Persistence
             builder?.Entity<PersonalLibrary>(b =>
             {
                 b.HasKey(e => e.Id);
+                b.Property(e => e.Id).ValueGeneratedNever();
                 b.HasMany(e => e.BookRecommedations)
                     .WithOne()
                     .HasForeignKey(e => e.PersonalLibraryId);
@@ -137,11 +138,6 @@ namespace BookRef.Api.Persistence
                     .WithMany()
                     .HasForeignKey(e => e.RecommendedPersonId)
                     .OnDelete(DeleteBehavior.NoAction);
-            });
-
-            builder?.Entity<User>(b =>
-            {
-                b.HasKey(e => e.Id);
             });
 
             // builder?.Entity<Friends>(b =>

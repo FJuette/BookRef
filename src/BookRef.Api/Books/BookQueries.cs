@@ -53,7 +53,7 @@ namespace BookRef.Api.Books
             {
                 var ids = context.Libraries
                     .Include(e => e.MyBooks)
-                    .First(e => e.User.Id == claimsProvider.UserId)
+                    .First(e => e.UserId == claimsProvider.UserId)
                     .MyBooks.Select(e => e.Id);
                 return dataLoader.LoadAsync(ids.ToArray(), cancellationToken);
             }

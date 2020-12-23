@@ -21,7 +21,6 @@ namespace BookRef.Api.Extensions
                 _repository = repository;
             }
 
-
         public async Task SeedAll()
         {
             var danAuthor = new Author("Dan Ariely");
@@ -52,8 +51,15 @@ namespace BookRef.Api.Extensions
 
             var user = new User("Admin", "dasistzueinfach", "fabian.j@test.de");
             _context.Add(user);
+            _context.SaveChanges();
 
-            var library = new PersonalLibrary(user);
+            var libraryId = Guid.NewGuid();
+            var esStream = await _repository.LoadAsync<PersonalLibrary>(libraryId);
+            esStream.Create(libraryId, user.Id);
+            await _repository.SaveAsync(esStream);
+
+            var library = await _repository.LoadAsync<PersonalLibrary>(libraryId);
+            //var library = new PersonalLibrary(user);
 
             var book = new Book("978-3426300886", "Denken hilft zwar, nützt aber nichts: Warum wir immer wieder unvernünftige Entscheidungen")
             {
@@ -132,11 +138,11 @@ namespace BookRef.Api.Extensions
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book6);
-            library.AddBookDataSeeder(book6);
+            library.AddNewBook(book6, BookStatus.Active, BookFormat.Book);
 
 
             _context.Libraries.Add(library);
-
+            await _repository.SaveAsync(library);
             _context.SaveChanges();
 
 

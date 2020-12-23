@@ -14,7 +14,7 @@ namespace BookRef.Api.Models
         public string Username { get; private set; }
         public string Password { get; private set; }
         public string EMail { get; private set; }
-        public Guid PersonalLibraryId { get; set; }
+        public Guid? PersonalLibraryId { get; set; }
 
         public override string ToString()
         {

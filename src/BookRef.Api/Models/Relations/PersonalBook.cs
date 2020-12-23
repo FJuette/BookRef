@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json.Serialization;
 using BookRef.Api.Models.ValueObjects;
 
 namespace BookRef.Api.Models.Relations

@@ -30,6 +30,7 @@ using BookRef.Api.Books;
 using BookRef.Api.Categories;
 using BookRef.Api.People;
 using BookRef.Api.Speakers;
+using System.Text.Json.Serialization;
 
 namespace BookRef.Api
 {
@@ -150,7 +151,13 @@ namespace BookRef.Api
                 {
                     fv.RunDefaultMvcValidationAfterFluentValidationExecutes = false;
                     fv.RegisterValidatorsFromAssemblyContaining<Startup>();
-                }).AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+                })
+                .AddJsonOptions(options =>
+                    {
+                        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                    }
+                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
