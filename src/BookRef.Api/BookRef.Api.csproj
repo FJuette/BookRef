@@ -52,4 +52,8 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
   </PropertyGroup>
 
+  <ItemGroup Condition="'$(Configuration)' == 'Debug'">
+  <None Update="Categories.txt" CopyToOutputDirectory="PreserveNewest" />
+</ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BookRef.Api.Models;
@@ -36,12 +37,12 @@ namespace BookRef.Api.Extensions
             var bernaysAuthor = new Author("Edward Bernays");
             _context.Authors.Add(bernaysAuthor);
 
-            var categoryGehirn = new Category("Gehirn");
-            _context.Categories.Add(categoryGehirn);
-            var categoryPsyche = new Category("Psyche");
-            _context.Categories.Add(categoryPsyche);
-            var categoryBoerse = new Category("Börse");
-            _context.Categories.Add(categoryBoerse);
+            var categories = File.ReadAllLines("Categories.txt").Select(e => new Category(e));
+            _context.Categories.AddRange(categories);
+
+            var categoryGehirn = categories.First(e => e.Name == "Bildung");
+            var categoryPsyche = categories.First(e => e.Name == "Persönliche Entwicklung");
+            var categoryBoerse = categories.First(e => e.Name == "Persönliche Finanzen");
 
             var charlsPerson = new Person("Charls Dunhig");
             _context.People.Add(charlsPerson);

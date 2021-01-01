@@ -6,6 +6,7 @@ using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
 using BookRef.Api.Persistence.DataLoader;
 using HotChocolate;
+using HotChocolate.Data;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using Microsoft.EntityFrameworkCore;
@@ -16,6 +17,7 @@ namespace BookRef.Api.Categories
     public class CategoryQueries
     {
         [UseApplicationDbContext]
+        [UseSorting]
         public Task<List<Category>> GetCategoriesAsync([ScopedService] BookRefDbContext context) =>
              context.Categories.ToListAsync();
 

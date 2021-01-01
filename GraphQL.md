@@ -68,6 +68,17 @@ query {
 }
 ```
 
+All Categories ordered by name:
+
+```graphql
+query {
+  categories(order: {name: ASC}) {
+    id
+    name
+  }
+}
+```
+
 ## Testing
 
 Example with filter:

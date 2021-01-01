@@ -105,6 +105,7 @@ namespace BookRef.Api.Models
         // BookCompleted (Input: Draft to Book)
         // BookStatusMoved (e.g. from wish to active)
         // BookEdited (Needed?)
+        // CategoryAdded
 
         // Exceptions:
         // ---
