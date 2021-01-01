@@ -24,6 +24,8 @@ namespace BookRef.Api.Models.Relations
 
         public virtual Book Book { get; set; }
         public long BookId { get; set; }
+        public string? ColorCode { get; set; }
+        public DateTime LastChanged { get; set; } = DateTime.Now;
 
         //public Speaker? Speaker { get; set; }
     }

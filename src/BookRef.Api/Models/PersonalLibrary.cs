@@ -95,5 +95,20 @@ namespace BookRef.Api.Models
             var ub = new PersonalBook(this.Id, book, BookStatus.Active, BookFormat.Book);
             MyBooks.Add(ub);
         }
+
+        // Events:
+        // ----
+        // MyBookAdded
+        // MyBookRemoved
+        // RecommendationAdded (toggle by type)
+        // BookDraftAdded (No Isbn)
+        // BookCompleted (Input: Draft to Book)
+        // BookStatusMoved (e.g. from wish to active)
+        // BookEdited (Needed?)
+
+        // Exceptions:
+        // ---
+        // BookAlreadyExists (same Isbn)
+
     }
 }
