@@ -106,6 +106,9 @@ namespace BookRef.Api.Models
         // BookStatusMoved (e.g. from wish to active)
         // BookEdited (Needed?)
         // CategoryAdded
+        // BookStarted
+        // CurrentPageSet
+        // RecommendedBookMovedToReadingList
 
         // Exceptions:
         // ---
