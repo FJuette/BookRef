@@ -6,25 +6,25 @@ Get Books for user:
 
 ```graphql
 query {
-  books(where: {status: {eq: ACTIVE}}) {
-    id
-    status
-    bookId
-    book {
-      title
-      categories {
-        name
-      }
-      authors {
-        name
-      }
+    books(where: { status: { eq: ACTIVE } }) {
+        id
+        status
+        bookId
+        book {
+            title
+            categories {
+                name
+            }
+            authors {
+                name
+            }
+        }
+        currentPage
+        format
+        personalLibraryId
+        startDate
+        status
     }
-    currentPage
-    format
-    personalLibraryId
-    startDate
-    status
-  }
 }
 ```
 
@@ -32,9 +32,9 @@ Get a specific book by id:
 
 ```graphql
 query {
-  bookById(id: "Qm9vawpsMw==") {
-    title
-  }
+    bookById(id: "Qm9vawpsMw==") {
+        title
+    }
 }
 ```
 
@@ -42,29 +42,29 @@ Find all recommendations for a book:
 
 ```graphql
 query {
-  recommendationsForBook(id: "Qm9vawpsMg==") {
-    sourceBook {
-      title
+    recommendationsForBook(id: "Qm9vawpsMg==") {
+        sourceBook {
+            title
+        }
+        bookRecommedations {
+            id
+            recommendedBook {
+                title
+            }
+            note {
+                content
+            }
+        }
+        personRecommedations {
+            id
+            recommendedPerson {
+                name
+            }
+            note {
+                content
+            }
+        }
     }
-    bookRecommedations {
-      id
-      recommendedBook {
-        title
-      }
-      note {
-        content
-      }
-    }
-    personRecommedations {
-      id
-      recommendedPerson {
-        name
-      }
-      note {
-        content
-      }
-    }
-  }
 }
 ```
 
@@ -72,10 +72,10 @@ All Categories ordered by name:
 
 ```graphql
 query {
-  categories(order: {name: ASC}) {
-    id
-    name
-  }
+    categories(order: { name: ASC }) {
+        id
+        name
+    }
 }
 ```
 
@@ -85,11 +85,11 @@ Example with filter:
 
 ```graphql
 query {
-  books(where: {language: {eq: GERMAN}}) {
-    nodes {
-      title
+    allBooks(where: { language: { eq: GERMAN } }) {
+        nodes {
+            title
+        }
     }
-  }
 }
 ```
 
@@ -97,11 +97,11 @@ Example with filter and order
 
 ```graphql
 query {
-  books(where: {language: {eq: GERMAN}} order: {isbn: ASC}) {
-    nodes {
-      title
+    allBooks(where: { language: { eq: GERMAN } }, order: { isbn: ASC }) {
+        nodes {
+            title
+        }
     }
-  }
 }
 ```
 
@@ -109,58 +109,55 @@ Example for mutation
 
 ```graphql
 mutation AddAuthor {
-   addAuthor(input: {
-     name: "Fabian Jütte" }) {
-     author {
-       id
-     }
-   }
- }
+    addAuthor(input: { name: "Fabian Jütte" }) {
+        author {
+            id
+        }
+    }
+}
 ```
 
 Mutation with error response
 
 ```graphql
 mutation {
-   addAuthor (input: {
-     name: "Xi" })
-     {
-       author {
-         id
-         name
-       }
-       errors {
-         code
-         message
-       }
-     }
- }
+    addAuthor(input: { name: "Xi" }) {
+        author {
+            id
+            name
+        }
+        errors {
+            code
+            message
+        }
+    }
+}
 ```
 
 Multi Queries
 
 ```graphql
 query {
-  a: recommendationsForBook(id: "Qm9vawpsMg==") {
-    id
-    sourceBook {
-      title
-      id
+    a: recommendationsForBook(id: "Qm9vawpsMg==") {
+        id
+        sourceBook {
+            title
+            id
+        }
+        recommendedBook {
+            title
+        }
     }
-    recommendedBook {
-      title
+    b: recommendationsForBook(id: "Qm9vawpsMQ==") {
+        id
+        sourceBook {
+            title
+            id
+        }
+        recommendedBook {
+            title
+        }
     }
-  }
-  b: recommendationsForBook(id: "Qm9vawpsMQ==") {
-    id
-    sourceBook {
-      title
-      id
-    }
-    recommendedBook {
-      title
-    }
-  }
 }
 ```
 
@@ -168,9 +165,9 @@ Query for multiple Ids
 
 ```graphql
 query {
-  authorsById(ids: ["QXV0aG9yCmwx", "QXV0aG9yCmwy"]) {
-    name
-  }
+    authorsById(ids: ["QXV0aG9yCmwx", "QXV0aG9yCmwy"]) {
+        name
+    }
 }
 ```
 
@@ -178,21 +175,21 @@ Query with paging
 
 ```graphql
 query GetFirstBook {
-  books(first: 1) {
-    edges {
-      node {
-        id
-        title
-      }
-      cursor
+    books(first: 1) {
+        edges {
+            node {
+                id
+                title
+            }
+            cursor
+        }
+        pageInfo {
+            startCursor
+            endCursor
+            hasNextPage
+            hasPreviousPage
+        }
     }
-    pageInfo {
-      startCursor
-      endCursor
-      hasNextPage
-      hasPreviousPage
-    }
-  }
 }
 ```
 
@@ -200,15 +197,15 @@ query GetFirstBook {
 
 ### Used (HotChocolate)
 
-- https://github.com/ChilliCream/graphql-workshop/blob/master/docs/1-creating-a-graphql-server-project.md
-- https://dev.to/michaelstaib/get-started-with-hot-chocolate-and-entity-framework-e9i
-- https://github.com/ChilliCream/hotchocolate/tree/main/examples
-- Main Documentation: https://chillicream.com/docs/hotchocolate/
+-   https://github.com/ChilliCream/graphql-workshop/blob/master/docs/1-creating-a-graphql-server-project.md
+-   https://dev.to/michaelstaib/get-started-with-hot-chocolate-and-entity-framework-e9i
+-   https://github.com/ChilliCream/hotchocolate/tree/main/examples
+-   Main Documentation: https://chillicream.com/docs/hotchocolate/
 
 ### General
 
-- https://fiyazhasan.me/graphql-with-net-core-part-v-fields-arguments-variables/
-- https://fiyazhasan.me/tag/graphql/
-- https://graphql-dotnet.github.io/docs/getting-started/databases
-- https://github.com/SimonCropp/GraphQL.EntityFramework/blob/master/docs/configuration.md#register-in-container
-- https://volosoft.com/blog/Building-GraphQL-APIs-with-ASP.NET-Core
+-   https://fiyazhasan.me/graphql-with-net-core-part-v-fields-arguments-variables/
+-   https://fiyazhasan.me/tag/graphql/
+-   https://graphql-dotnet.github.io/docs/getting-started/databases
+-   https://github.com/SimonCropp/GraphQL.EntityFramework/blob/master/docs/configuration.md#register-in-container
+-   https://volosoft.com/blog/Building-GraphQL-APIs-with-ASP.NET-Core

@@ -16,11 +16,12 @@
     <PackageReference Include="CSharpFunctionalExtensions" Version="2.13.2" />
     <PackageReference Include="EventStore.Client" Version="5.0.9" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
-    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.3" />
+    <PackageReference Include="HotChocolate.AspNetCore" Version="11.0.6" />
+    <PackageReference Include="HotChocolate.AspNetCore.Authorization" Version="11.0.6" />
     <PackageReference Include="HotChocolate.AspNetCore.Playground" Version="10.5.5" />
-    <PackageReference Include="HotChocolate.Data" Version="11.0.4" />
-    <PackageReference Include="HotChocolate.Data.EntityFramework" Version="11.0.4" />
-    <PackageReference Include="HotChocolate.Types" Version="11.0.4" />
+    <PackageReference Include="HotChocolate.Data" Version="11.0.6" />
+    <PackageReference Include="HotChocolate.Data.EntityFramework" Version="11.0.6" />
+    <PackageReference Include="HotChocolate.Types" Version="11.0.6" />
     <PackageReference Include="LanguageExt.Core" Version="3.4.15" />
     <PackageReference Include="MediatR" Version="9.0.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
@@ -43,7 +44,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.6.3" />
   </ItemGroup>
 
