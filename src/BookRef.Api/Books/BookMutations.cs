@@ -13,40 +13,67 @@ using HotChocolate.Types;
 
 namespace BookRef.Api.Books
 {
-    public record AddBookInput(string Isbn, BookStatus Status, BookFormat Format);
+    public record AddBookToLibraryInput(string Isbn, BookStatus Status);
+    public record AddNewBookInput(string Isbn, string? Title, string? Auflage, BookLanguage Language = BookLanguage.German);
+    public record AddNewBookDraftInput(string Name);
 
     [ExtendObjectType(Name = "Mutation")]
     public class BookMutations
     {
         [UseApplicationDbContext]
-        public async Task<AddBookPayload> AddBookAsync(
-             AddBookInput input,
+        public async Task<AddBookToLibrary> AddBookToLibraryAsync(
+             AddBookToLibraryInput input,
              [ScopedService] BookRefDbContext context)
         {
             var book = context.Books.FirstOrDefault(e => e.Isbn == input.Isbn);
-            var library = context.Libraries.First();
-            library.AddNewBook(book, input.Status, input.Format);
-            await context.SaveChangesAsync();
-            return new AddBookPayload(library.MyBooks.Last());
-            // var author = new Author(input.Name);
-            // context.Authors.Add(author);
-            // await context.SaveChangesAsync();
+            if (book == null)
+                return new AddBookToLibrary(new List<UserError>{ new UserError("ISBN not found", "4001") });
 
-            // return new AddAuthorPayload(author);
+            var library = context.Libraries.First();
+            library.AddNewBook(book, input.Status);
+            await context.SaveChangesAsync();
+            return new AddBookToLibrary(library.MyBooks.Last());
         }
+
+        [UseApplicationDbContext]
+        public async Task<AddBookPayload> AddNewBookAsync(
+             AddNewBookInput input,
+             [ScopedService] BookRefDbContext context)
+        {
+            // TODO API call to get all data for this book
+            var book = new Book(input.Isbn, input.Title != null ? input.Title : "Missing Title");
+            book.Language = input.Language;
+            context.Books.Add(book);
+            await context.SaveChangesAsync();
+            return new AddBookPayload(book);
+        }
+    }
+
+    public class AddBookToLibrary : Payload
+    {
+        public AddBookToLibrary(PersonalBook personalBook)
+        {
+            PersonalBook = personalBook;
+        }
+        public AddBookToLibrary(IReadOnlyList<UserError> errors)
+             : base(errors)
+        {
+        }
+
+        public PersonalBook PersonalBook { get; }
     }
 
     public class AddBookPayload : Payload
     {
-        public AddBookPayload(PersonalBook personalBook)
+        public AddBookPayload(Book book)
         {
-            PersonalBook = personalBook;
+            Book = book;
         }
         public AddBookPayload(IReadOnlyList<UserError> errors)
              : base(errors)
         {
         }
 
-        public PersonalBook PersonalBook { get; }
+        public Book Book { get; }
     }
 }

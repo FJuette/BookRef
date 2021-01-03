@@ -75,24 +75,24 @@ namespace BookRef.Api.Models
 
         private void OnBookAded(BookAdded @event)
         {
-            var ub = new PersonalBook(@event.LibraryId, @event.Book, @event.Status, @event.format);
+            var ub = new PersonalBook(@event.LibraryId, @event.Book, @event.Status);
             MyBooks.Add(ub);
         }
 
-        public void AddNewBook(Book book, BookStatus status, BookFormat format)
+        public void AddNewBook(Book book, BookStatus status)
         {
             if (Version == -1)
             {
                 throw new NotFoundException("No user Library found", null);
             }
 
-            Apply(new BookAdded(Id, book, status, format));
+            Apply(new BookAdded(Id, book, status));
         }
 
         // Only to seed data, remove in production
         public void AddBookDataSeeder(Book book)
         {
-            var ub = new PersonalBook(this.Id, book, BookStatus.Active, BookFormat.Book);
+            var ub = new PersonalBook(this.Id, book, BookStatus.Active);
             MyBooks.Add(ub);
         }
 
@@ -106,6 +106,9 @@ namespace BookRef.Api.Models
         // BookStatusMoved (e.g. from wish to active)
         // BookEdited (Needed?)
         // CategoryAdded
+        // CategoryRemoved
+        // AuthorAdded
+        // AuthorRemoved
         // BookStarted
         // CurrentPageSet
         // RecommendedBookMovedToReadingList

@@ -139,7 +139,7 @@ namespace BookRef.Api.Extensions
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book6);
-            library.AddNewBook(book6, BookStatus.Active, BookFormat.Book);
+            library.AddNewBook(book6, BookStatus.Active);
 
 
             _context.Libraries.Add(library);
