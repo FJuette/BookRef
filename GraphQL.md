@@ -262,6 +262,30 @@ query {
 }
 ```
 
+```graphql
+query {
+  Authors: authors {
+    id
+    name
+  }
+  Categories: categories {
+    id
+    name
+  }
+  People: people {
+    id
+    name
+  }
+  allBooks {
+    nodes {
+      id
+      title
+      subtitle
+    }
+  }
+}
+```
+
 Query for multiple Ids
 
 ```graphql

@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BookRef.Api.Persistence;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace BookRef.Api.Extensions
 {
@@ -30,8 +31,12 @@ namespace BookRef.Api.Extensions
                     dbContext.Database.Migrate();
                 }
 
-                var task = Task.Run(async () => await new SampleDataSeeder(dbContext, repository).SeedAll());
-                task.GetAwaiter().GetResult();
+                if (!dbContext.Books.Any())
+                {
+                    var task = Task.Run(async () => await new SampleDataSeeder(dbContext, repository).SeedAll());
+                    task.GetAwaiter().GetResult();
+                }
+
             }
             catch (Exception ex)
             {
