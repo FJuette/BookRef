@@ -31,6 +31,7 @@ using BookRef.Api.Categories;
 using BookRef.Api.People;
 using BookRef.Api.Speakers;
 using System.Text.Json.Serialization;
+using BookRef.Api.Services;
 
 namespace BookRef.Api
 {
@@ -100,6 +101,7 @@ namespace BookRef.Api
 
             // Add my own services here
             services.AddScoped<IGetClaimsProvider, GetClaimsFromUser>();
+            services.AddScoped<IOpenLibraryService, OpenLibraryService>();
             services.AddSingleton<IDateTime, MachineDateTime>();
 
             services
@@ -111,8 +113,8 @@ namespace BookRef.Api
                     .AddType<PersonQueries>()
                     .AddType<SpeakerQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
-                    .AddTypeExtension<AuthorMutations>()
-                    .AddTypeExtension<CategoryMutations>()
+                    //.AddTypeExtension<AuthorMutations>()
+                    //.AddTypeExtension<CategoryMutations>()
                     .AddTypeExtension<BookMutations>()
                 .AddType<AuthorType>()
                 .AddType<BookRecommedationType>()

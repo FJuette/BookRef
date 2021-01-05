@@ -62,7 +62,7 @@ namespace BookRef.Api.Extensions
             var library = await _repository.LoadAsync<PersonalLibrary>(libraryId);
             //var library = new PersonalLibrary(user);
 
-            var book = new Book("978-3426300886", "Denken hilft zwar, nützt aber nichts: Warum wir immer wieder unvernünftige Entscheidungen")
+            var book = new Book("9783426300886", "Denken hilft zwar, nützt aber nichts: Warum wir immer wieder unvernünftige Entscheidungen")
             {
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/Denken-hilft-zwar-n%C3%BCtzt-nichts/dp/3426300885",
@@ -139,7 +139,7 @@ namespace BookRef.Api.Extensions
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book6);
-            library.AddNewBook(book6, BookStatus.Active);
+            library.AddNewBook(book6, BookStatus.Active, "ffffff");
 
 
             _context.Libraries.Add(library);

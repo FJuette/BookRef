@@ -15,12 +15,12 @@ namespace BookRef.Api.Models.Relations
         public DateTime? StartDate { get; set; }
         public int CurrentPage { get; set; }
 
-        public BookStatus Status { get; set; }
+        public BookStatus Status { get; set; } //! Start
         public Guid PersonalLibraryId { get; set; }
 
         public virtual Book Book { get; set; }
         public long BookId { get; set; }
-        public string? ColorCode { get; set; }
+        public string? ColorCode { get; set; } //! Start
         public DateTime LastChanged { get; set; } = DateTime.Now;
 
         //public Speaker? Speaker { get; set; }

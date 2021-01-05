@@ -47,6 +47,20 @@ namespace BookRef.Api.Models
             PersonRecommedations.Add(rec);
         }
 
+        public PersonalBook ChangeBookStatus(long personalBookId, BookStatus newStatus)
+        {
+            var pb = MyBooks.First(e => e.Id == personalBookId);
+            pb.Status = newStatus;
+            return pb;
+        }
+
+        public PersonalBook ChangeColorCode(long personalBookId, string colorCode)
+        {
+            var pb = MyBooks.First(e => e.Id == personalBookId);
+            pb.ColorCode = colorCode;
+            return pb;
+        }
+
         // Events
         protected override void When(object @event)
         {
@@ -75,18 +89,21 @@ namespace BookRef.Api.Models
 
         private void OnBookAded(BookAdded @event)
         {
-            var ub = new PersonalBook(@event.LibraryId, @event.Book, @event.Status);
+            var ub = new PersonalBook(@event.LibraryId, @event.Book, @event.Status)
+            {
+                ColorCode = @event.ColorCode
+            };
             MyBooks.Add(ub);
         }
 
-        public void AddNewBook(Book book, BookStatus status)
+        public void AddNewBook(Book book, BookStatus status, string? colorCode)
         {
             if (Version == -1)
             {
                 throw new NotFoundException("No user Library found", null);
             }
 
-            Apply(new BookAdded(Id, book, status));
+            Apply(new BookAdded(Id, book, status, colorCode));
         }
 
         // Only to seed data, remove in production
@@ -98,20 +115,11 @@ namespace BookRef.Api.Models
 
         // Events:
         // ----
-        // MyBookAdded
+
         // MyBookRemoved
-        // RecommendationAdded (toggle by type)
-        // BookDraftAdded (No Isbn)
-        // BookCompleted (Input: Draft to Book)
-        // BookStatusMoved (e.g. from wish to active)
-        // BookEdited (Needed?)
-        // CategoryAdded
+        // BookDeleted
         // CategoryRemoved
-        // AuthorAdded
         // AuthorRemoved
-        // BookStarted
-        // CurrentPageSet
-        // RecommendedBookMovedToReadingList
 
         // Exceptions:
         // ---

@@ -17,8 +17,9 @@ namespace BookRef.Api.Models
             Created = DateTime.Now;
         }
 
-        public string Isbn { get; private set; }
-        public string Title { get; private set; }
+        public string? Isbn { get; private set; } //! Start -> Identifier
+        public string Title { get; private set; } //! Start
+        public string? Subtitle { get; set; } //! Start
         public string? Link { get; set; }
         public string? Auflage { get; set; }
         public DateTime Created { get; set; }
@@ -27,13 +28,18 @@ namespace BookRef.Api.Models
 
         //public User Creator { get; set; }
 
-        public virtual ICollection<BookCategory> BookCategories { get; private set; } = new List<BookCategory>();
+        public virtual ICollection<BookCategory> BookCategories { get; private set; } = new List<BookCategory>(); //! Start
 
-        public virtual ICollection<Author> Authors { get; private set; } = new List<Author>();
+        public virtual ICollection<Author> Authors { get; private set; } = new List<Author>(); //! Start
 
         public void SetAuthors(IEnumerable<Author> authors)
         {
             Authors = authors.ToList();
+        }
+
+        public void AddAuthor(Author author)
+        {
+            Authors.Add(author);
         }
 
         public void SetCategories(IEnumerable<Category> categories)
@@ -41,6 +47,12 @@ namespace BookRef.Api.Models
             BookCategories = categories.Select(e => new BookCategory(this, e)).ToList();
         }
 
+        public void AddCategory(Category category, bool isPrimary = false)
+        {
+            var bc = new BookCategory(this, category, isPrimary);
+            //TODO check for other category which is primary
+            BookCategories.Add(bc);
+        }
 
         public override string ToString()
         {

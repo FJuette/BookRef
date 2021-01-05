@@ -43,7 +43,7 @@ namespace BookRef.Api.Models.Types
             {
                 long[] catIds = await dbContext.Books
                     .Where(s => s.Id == book.Id)
-                    .SelectMany(s => s.BookCategories.Select(t => t.BookId))
+                    .SelectMany(s => s.BookCategories.Select(t => t.CategoryId))
                     .ToArrayAsync();
 
                 return await catById.LoadAsync(catIds, cancellationToken);

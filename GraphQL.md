@@ -134,6 +134,97 @@ mutation {
 }
 ```
 
+Add book recommendation
+
+```graphql
+mutation AddBookRec {
+    addBookRecommendation(input: { sourceBookId: "Qm9vawpsMQ==", targetBookId: "Qm9vawpsMg==", note: "Test note" }) {
+        data {
+          note {
+            content
+          }
+        }
+        errors {
+          message
+        }
+    }
+}
+```
+
+Add book
+
+```graphql
+mutation AddBook {
+  addBook(input: {isbn: "Optional", title: "Test buch", subtitle: "nur ein Test"}) {
+    data {
+      title
+      subtitle
+      id
+    }
+  }
+}
+```
+
+Move book into library, e.g. from recommendation into active library or directly after creating the book.
+
+```graphql
+mutation MoveBookToLibrary {
+  moveBookInLibrary (input: {bookId: "Qm9vawpsOQ==", status: ACTIVE, colorCode: "ffffff"}) {
+    data {
+      colorCode
+      status
+      book {
+        title
+      }
+    }
+  }
+}
+```
+
+Add non existing author to book:
+
+```graphql
+mutation AddAuthor {
+  addNewAuthor(input: {bookId: "Qm9vawpsOQ==", name: "Thomas Jeffersson"}) {
+    data {
+      authors {
+        id
+        name
+      }
+    }
+  }
+}
+```
+
+Attach a category to a book
+
+```graphql
+mutation AttachCategory {
+  addCategory(input: {bookId: "Qm9vawpsOA==", categoryId: "Q2F0ZWdvcnkKbDQ2", isPrimary: true}) {
+    data {
+      categories {
+        name
+      }
+    }
+  }
+}
+```
+
+Change personal book status (same for changing the color code):
+
+```graphql
+mutation ChangeStatus {
+    changeBookStatus(input: {personalBookId: "UGVyc29uYWxCb29rCmwx", newStatus: DONE}) {
+      data {
+        id
+        status
+      }
+    }
+}
+```
+
+
+
 Multi Queries
 
 ```graphql

@@ -2,13 +2,20 @@ using System.Collections.Generic;
 
 namespace BookRef.Api.Common
 {
-    public abstract class Payload
-     {
-         protected Payload(IReadOnlyList<UserError>? errors = null)
-         {
-             Errors = errors;
-         }
+    public class Payload<T>
+    {
+        public Payload(IReadOnlyList<UserError>? errors = null)
+        {
+            Errors = errors;
+        }
 
-         public IReadOnlyList<UserError>? Errors { get; }
-     }
+        public Payload(T data)
+        {
+            Data = data;
+        }
+
+        public IReadOnlyList<UserError>? Errors { get; }
+
+        public T? Data { get; }
+    }
 }
