@@ -223,7 +223,17 @@ mutation ChangeStatus {
 }
 ```
 
+Add person
 
+```graphql
+mutation {
+  addPerson(input: {name: "Thomas"}) {data {
+    name
+    id
+    }
+  }
+}
+```
 
 Multi Queries
 

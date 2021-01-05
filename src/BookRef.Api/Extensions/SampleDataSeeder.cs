@@ -54,13 +54,14 @@ namespace BookRef.Api.Extensions
             _context.Add(user);
             _context.SaveChanges();
 
-            var libraryId = Guid.NewGuid();
-            var esStream = await _repository.LoadAsync<PersonalLibrary>(libraryId);
-            esStream.Create(libraryId, user.Id);
-            await _repository.SaveAsync(esStream);
+            // var libraryId = Guid.NewGuid();
+            // var esStream = await _repository.LoadAsync<PersonalLibrary>(libraryId);
+            // esStream.Create(libraryId, user.Id);
+            // await _repository.SaveAsync(esStream);
 
-            var library = await _repository.LoadAsync<PersonalLibrary>(libraryId);
-            //var library = new PersonalLibrary(user);
+            // var library = await _repository.LoadAsync<PersonalLibrary>(libraryId);
+            var library = new PersonalLibrary(new Guid("EE471115-0425-489B-931A-8B3F7F187205"), user);
+            _context.Libraries.Add(library);
 
             var book = new Book("9783426300886", "Denken hilft zwar, nützt aber nichts: Warum wir immer wieder unvernünftige Entscheidungen")
             {
@@ -142,8 +143,8 @@ namespace BookRef.Api.Extensions
             library.AddNewBook(book6, BookStatus.Active, "ffffff");
 
 
-            _context.Libraries.Add(library);
-            await _repository.SaveAsync(library);
+            // _context.Libraries.Add(library);
+            //await _repository.SaveAsync(library);
             _context.SaveChanges();
 
 

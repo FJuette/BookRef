@@ -19,6 +19,11 @@ namespace BookRef.Api.Models
         {
             User = user;
         }
+        public PersonalLibrary(Guid id, User user)
+        {
+            Id = id;
+            User = user;
+        }
 
         public virtual ICollection<BookRecommedation> BookRecommedations { get; private set; } = new List<BookRecommedation>();
         public virtual ICollection<PersonRecommedation> PersonRecommedations { get; private set; } = new List<PersonRecommedation>();
@@ -98,10 +103,11 @@ namespace BookRef.Api.Models
 
         public void AddNewBook(Book book, BookStatus status, string? colorCode)
         {
-            if (Version == -1)
-            {
-                throw new NotFoundException("No user Library found", null);
-            }
+            // Enable when ES is used
+            // if (Version == -1)
+            // {
+            //     throw new NotFoundException("No user Library found", null);
+            // }
 
             Apply(new BookAdded(Id, book, status, colorCode));
         }

@@ -113,7 +113,7 @@ namespace BookRef.Api
                     .AddType<PersonQueries>()
                     .AddType<SpeakerQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
-                    //.AddTypeExtension<AuthorMutations>()
+                    .AddTypeExtension<PeopleMutations>()
                     //.AddTypeExtension<CategoryMutations>()
                     .AddTypeExtension<BookMutations>()
                 .AddType<AuthorType>()
