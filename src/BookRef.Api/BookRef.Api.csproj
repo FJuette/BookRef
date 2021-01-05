@@ -9,7 +9,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-<ItemGroup>
+  <ItemGroup>
     <PackageReference Include="AspNetCore.HealthChecks.SqlServer" Version="3.2.0" />
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
@@ -54,7 +54,7 @@
   </PropertyGroup>
 
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
-  <None Update="Categories.txt" CopyToOutputDirectory="PreserveNewest" />
-</ItemGroup>
+    <None Update="Categories.txt" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
 
 </Project>

@@ -21,4 +21,5 @@ FROM base AS final
 RUN sed -i 's/TLSv1.2/TLSv1.0/g' /etc/ssl/openssl.cnf
 WORKDIR /app
 COPY --from=publish /app .
+COPY src/BookRef.Api/Categories.txt .
 ENTRYPOINT ["dotnet", "BookRef.Api.dll"]
