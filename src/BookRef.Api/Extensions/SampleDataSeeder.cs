@@ -50,9 +50,10 @@ namespace BookRef.Api.Extensions
             var speakerRike = new Speaker("Rike Schmid");
             _context.Speakers.Add(speakerRike);
 
-            var user = new User("Admin", "dasistzueinfach", "fabian.j@test.de");
+            var user = new User("admin", "fabian.j@test.de");
+            user.SetPassword("geheim");
             _context.Add(user);
-            _context.SaveChanges();
+            //_context.SaveChanges();
 
             // var libraryId = Guid.NewGuid();
             // var esStream = await _repository.LoadAsync<PersonalLibrary>(libraryId);
@@ -62,6 +63,7 @@ namespace BookRef.Api.Extensions
             // var library = await _repository.LoadAsync<PersonalLibrary>(libraryId);
             var library = new PersonalLibrary(new Guid("EE471115-0425-489B-931A-8B3F7F187205"), user);
             _context.Libraries.Add(library);
+            _context.SaveChanges();
 
             var book = new Book("9783426300886", "Denken hilft zwar, nützt aber nichts: Warum wir immer wieder unvernünftige Entscheidungen")
             {

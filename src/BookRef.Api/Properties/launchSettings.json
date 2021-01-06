@@ -5,7 +5,7 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "JWT_ISSUER": "http://example.org",
+        "JWT_ISSUER": "http://localhost:5000",
         "JWT_KEY": "34905893405839340578208926527934534"
       },
       "applicationUrl": "http://localhost:5000"

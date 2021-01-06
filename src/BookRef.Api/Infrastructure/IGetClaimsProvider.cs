@@ -9,6 +9,7 @@ namespace BookRef.Api.Infrastructure
     public interface IGetClaimsProvider
     {
         long UserId { get; }
+        string Username { get; }
         Guid LibraryId { get; }
     }
 
@@ -18,17 +19,23 @@ namespace BookRef.Api.Infrastructure
         public GetClaimsFromUser(
             IHttpContextAccessor accessor)
         {
-            // var username = accessor.HttpContext?
-            //     .User.Claims
-            //     .SingleOrDefault(x => x.Type == ClaimTypes.Name)
-            //     ?.Value;
+            var username = accessor.HttpContext?
+                .User.Claims
+                .SingleOrDefault(x => x.Type == ClaimTypes.Name)
+                ?.Value;
 
-            // UserId = string.IsNullOrEmpty(username) ? "Admin" : username;
+            Username = username ?? "";
+
             UserId = 1;
-            LibraryId = new Guid("EE471115-0425-489B-931A-8B3F7F187205");
+            var libId = accessor.HttpContext?
+                .User.Claims
+                .SingleOrDefault(x => x.Type == "LibraryId")
+                ?.Value;
+            LibraryId = libId != null ? new Guid(libId) : Guid.Empty;
         }
 
         public long UserId { get; }
+        public string Username { get; }
         public Guid LibraryId { get; }
     }
 }

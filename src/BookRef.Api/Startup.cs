@@ -32,6 +32,10 @@ using BookRef.Api.People;
 using BookRef.Api.Speakers;
 using System.Text.Json.Serialization;
 using BookRef.Api.Services;
+using BookRef.Api.Users;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace BookRef.Api
 {
@@ -48,24 +52,21 @@ namespace BookRef.Api
             // Add MediatR - must be first
             services.AddMediatR(Assembly.GetExecutingAssembly());
 
-            // services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            //     .AddJwtBearer(options =>
-            //         options.TokenValidationParameters = new TokenValidationParameters
-            //         {
-            //             ValidateIssuer = true,
-            //             ValidateAudience = true,
-            //             ValidateLifetime = true,
-            //             ValidateIssuerSigningKey = true,
-            //             ValidIssuer = EnvFactory.GetJwtIssuer(),
-            //             ValidAudience = EnvFactory.GetJwtIssuer(),
-            //             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvFactory.GetJwtKey()))
-            //         });
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = EnvFactory.GetJwtIssuer(),
+                        ValidAudience = EnvFactory.GetJwtIssuer(),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvFactory.GetJwtKey()))
+                    });
 
-            // // At least a module claim is required to use any protected endpoint
-            // services.AddAuthorization(
-            //     auth => auth.DefaultPolicy = new AuthorizationPolicyBuilder()
-            //         .RequireClaim("modules", "claim-module-name")
-            //         .Build());
+            // At least a module claim is required to use any protected endpoint
+            services.AddAuthorization();
 
             services.AddCors(options =>
                 options.AddPolicy("Locations",
@@ -114,8 +115,8 @@ namespace BookRef.Api
                     .AddType<SpeakerQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
                     .AddTypeExtension<PeopleMutations>()
-                    //.AddTypeExtension<CategoryMutations>()
                     .AddTypeExtension<BookMutations>()
+                    .AddTypeExtension<UserMutations>()
                 .AddType<AuthorType>()
                 .AddType<BookRecommedationType>()
                 .AddType<BookType>()
