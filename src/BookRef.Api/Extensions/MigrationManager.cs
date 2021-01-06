@@ -20,7 +20,7 @@ namespace BookRef.Api.Extensions
             var appContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<BookRefDbContext>>();
             using BookRefDbContext dbContext =
                  appContextFactory.CreateDbContext();
-            var repository = scope.ServiceProvider.GetRequiredService<AggregateRepository>();
+            //var repository = scope.ServiceProvider.GetRequiredService<AggregateRepository>();
             try
             {
                 var env = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
@@ -33,7 +33,7 @@ namespace BookRef.Api.Extensions
 
                 if (!dbContext.Books.Any())
                 {
-                    var task = Task.Run(async () => await new SampleDataSeeder(dbContext, repository).SeedAll());
+                    var task = Task.Run(async () => await new SampleDataSeeder(dbContext).SeedAll());
                     task.GetAwaiter().GetResult();
                 }
 

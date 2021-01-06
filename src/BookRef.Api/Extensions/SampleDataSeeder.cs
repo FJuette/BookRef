@@ -13,13 +13,13 @@ namespace BookRef.Api.Extensions
     public class SampleDataSeeder
     {
         private readonly BookRefDbContext _context;
-        private readonly AggregateRepository _repository;
+        //private readonly AggregateRepository _repository;
 
         public SampleDataSeeder(
-            BookRefDbContext context, AggregateRepository repository)
+            BookRefDbContext context)
             {
                 _context = context;
-                _repository = repository;
+                //_repository = repository;
             }
 
         public async Task SeedAll()
