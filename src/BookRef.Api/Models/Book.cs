@@ -10,11 +10,12 @@ namespace BookRef.Api.Models
     {
         protected Book() { }
 
-        public Book(string isbn, string title)
+        public Book(string isbn, string title, string creator)
         {
             Isbn = isbn;
             Title = title;
             Created = DateTime.Now;
+            Creator = creator;
         }
 
         public string? Isbn { get; private set; } //! Start -> Identifier
@@ -26,7 +27,7 @@ namespace BookRef.Api.Models
 
         public BookLanguage Language { get; set; }
 
-        //public User Creator { get; set; }
+        public string Creator { get; set; }
 
         public virtual ICollection<BookCategory> BookCategories { get; private set; } = new List<BookCategory>(); //! Start
 

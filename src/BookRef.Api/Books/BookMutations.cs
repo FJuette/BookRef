@@ -31,9 +31,10 @@ namespace BookRef.Api.Books
         [UseApplicationDbContext]
         public async Task<Payload<Book>> AddBookAsync(
              AddBookInput input,
+             [Service] IGetClaimsProvider claimsProvider,
              [ScopedService] BookRefDbContext context)
         {
-            var book = new Book(input.Isbn, input.Title)
+            var book = new Book(input.Isbn, input.Title, claimsProvider.Username)
             {
                 Subtitle = input.Subtitle
             };

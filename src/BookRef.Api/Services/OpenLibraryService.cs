@@ -47,7 +47,7 @@ namespace BookRef.Api.Services
             var client = new RestClient("https://openlibrary.org");
             var request = new RestRequest($"books/{id}.json", DataFormat.Json);
             var response = client.Get<OpenLibBookDto>(request);
-            var book = new Book("", response.Data.Title)
+            var book = new Book("", response.Data.Title, "openlibrary.org")
             {
                 Subtitle = response.Data.Subtitle
             };

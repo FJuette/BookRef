@@ -28,8 +28,8 @@ namespace BookRef.Api.Models.Types
                 .Name("books");
 
             // Example UpperCase
-            descriptor.Field(e => e.Name)
-                .UseUpperCase();
+            // descriptor.Field(e => e.Name)
+            //     .UseUpperCase();
         }
 
         private class AuthorResolvers

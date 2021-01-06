@@ -8,7 +8,6 @@ namespace BookRef.Api.Infrastructure
 {
     public interface IGetClaimsProvider
     {
-        long UserId { get; }
         string Username { get; }
         Guid LibraryId { get; }
     }
@@ -26,7 +25,6 @@ namespace BookRef.Api.Infrastructure
 
             Username = username ?? "";
 
-            UserId = 1;
             var libId = accessor.HttpContext?
                 .User.Claims
                 .SingleOrDefault(x => x.Type == "LibraryId")
@@ -34,7 +32,6 @@ namespace BookRef.Api.Infrastructure
             LibraryId = libId != null ? new Guid(libId) : Guid.Empty;
         }
 
-        public long UserId { get; }
         public string Username { get; }
         public Guid LibraryId { get; }
     }

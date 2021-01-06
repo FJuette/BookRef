@@ -50,7 +50,7 @@ namespace BookRef.Api
             IServiceCollection services)
         {
             // Add MediatR - must be first
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            //services.AddMediatR(Assembly.GetExecutingAssembly());
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer(options =>
@@ -58,14 +58,13 @@ namespace BookRef.Api
                     {
                         ValidateIssuer = true,
                         ValidateAudience = true,
-                        ValidateLifetime = true,
+                        ValidateLifetime = false,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = EnvFactory.GetJwtIssuer(),
                         ValidAudience = EnvFactory.GetJwtIssuer(),
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(EnvFactory.GetJwtKey()))
                     });
 
-            // At least a module claim is required to use any protected endpoint
             services.AddAuthorization();
 
             services.AddCors(options =>
@@ -78,16 +77,16 @@ namespace BookRef.Api
                         builder.AllowAnyOrigin(); //TODO remove in production and add to origin list
                     }));
 
-            var eventStoreConnection = EventStoreConnection.Create(
-                connectionString: "ConnectTo=tcp://admin:changeit@localhost:1113; DefaultUserCredentials=admin:changeit;",
-                builder: ConnectionSettings.Create().KeepReconnecting(),
-                connectionName: "Library");
-            eventStoreConnection.ConnectAsync().GetAwaiter().GetResult();
-            services.AddSingleton(eventStoreConnection);
-            services.AddTransient<AggregateRepository>();
+            // var eventStoreConnection = EventStoreConnection.Create(
+            //     connectionString: "ConnectTo=tcp://admin:changeit@localhost:1113; DefaultUserCredentials=admin:changeit;",
+            //     builder: ConnectionSettings.Create().KeepReconnecting(),
+            //     connectionName: "Library");
+            // eventStoreConnection.ConnectAsync().GetAwaiter().GetResult();
+            // services.AddSingleton(eventStoreConnection);
+            // services.AddTransient<AggregateRepository>();
 
             // Add Swagger
-            services.AddSwaggerDocumentation();
+            //services.AddSwaggerDocumentation();
 
             // Add Health Checks
             services.AddHealthChecks()
@@ -140,14 +139,6 @@ namespace BookRef.Api
                 .AddDataLoader<SpeakerByIdDataLoader>();
 
             services.AddAutoMapper(typeof(Startup));
-
-            // Avoid the MultiPartBodyLength error
-            services.Configure<FormOptions>(o =>
-            {
-                o.ValueLengthLimit = int.MaxValue;
-                o.MultipartBodyLengthLimit = int.MaxValue;
-                o.MemoryBufferThreshold = int.MaxValue;
-            });
 
             services.AddControllers(options => options.Filters.Add(typeof(CustomExceptionFilter)))
                 .AddFluentValidation(fv =>

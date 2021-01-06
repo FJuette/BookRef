@@ -65,25 +65,25 @@ namespace BookRef.Api.Extensions
             _context.Libraries.Add(library);
             _context.SaveChanges();
 
-            var book = new Book("9783426300886", "Denken hilft zwar, nützt aber nichts: Warum wir immer wieder unvernünftige Entscheidungen")
+            var book = new Book("9783426300886", "Denken hilft zwar, nützt aber nichts", "admin")
             {
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/Denken-hilft-zwar-n%C3%BCtzt-nichts/dp/3426300885",
                 Created = new System.DateTime(2020, 05, 11),
                 Auflage = "Sechste",
-                //Creator = user
+                Subtitle = "Warum wir immer wieder unvernünftige Entscheidungen"
             };
             book.SetAuthors(new List<Author> { danAuthor });
             book.SetCategories(new List<Category> { categoryBoerse, categoryPsyche });
             _context.Books.Add(book);
 
-            var book2 = new Book("978-3453604483", "Das trügerische Gedächtnis: Wie unser Gehirn Erinnerungen fälscht")
+            var book2 = new Book("978-3453604483", "Das trügerische Gedächtnis", "admin")
             {
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/Das-tr%C3%BCgerische-Ged%C3%A4chtnis-Erinnerungen-f%C3%A4lscht/dp/3453604482",
                 Created = new System.DateTime(2020, 06, 12),
                 Auflage = "Erste",
-                //Creator = user
+                Subtitle = "Wie unser Gehirn Erinnerungen fälscht"
             };
             book2.SetAuthors(new List<Author> { juliaAuthor, hansAuthor });
             book2.SetCategories(new List<Category> { categoryGehirn });
@@ -92,33 +92,33 @@ namespace BookRef.Api.Extensions
             library.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
             library.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
 
-            var book3 = new Book("978-3446260290", "Böse: Die Psychologie unserer Abgründe")
+            var book3 = new Book("978-3446260290", "Böse", "admin")
             {
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/B%C3%B6se-Die-Psychologie-unserer-Abgr%C3%BCnde/dp/3446260293",
                 Created = new System.DateTime(2020, 07, 15),
                 Auflage = "Dritte",
-                //Creator = user
+                Subtitle = "Die Psychologie unserer Abgründe"
             };
             book3.SetAuthors(new List<Author> { juliaAuthor });
             book3.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book3);
             library.AddBookDataSeeder(book3);
 
-            var book4 = new Book("978-3662533253", "Der Luzifer-Effekt: Die Macht der Umstände und die Psychologie des Bösen")
+            var book4 = new Book("978-3662533253", "Der Luzifer-Effekt", "admin")
             {
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/B%C3%B6se-Die-Psychologie-unserer-Abgr%C3%BCnde/dp/3446260293",
                 Created = new System.DateTime(2020, 07, 18),
                 Auflage = "Erste",
-                //Creator = user
+                Subtitle = "Die Macht der Umstände und die Psychologie des Bösen"
             };
             book4.SetAuthors(new List<Author> { zimbardoAuthor });
             book4.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book4);
             library.AddBookDataSeeder(book4);
 
-            var book5 = new Book("978-3730604540", "Massenpsychologie und Ich-Analyse")
+            var book5 = new Book("978-3730604540", "Massenpsychologie und Ich-Analyse", "admin")
             {
                 Language = BookLanguage.English,
                 Link = "https://www.amazon.de/Massenpsychologie-Ich-Analyse-Sigmund-Freud/dp/3730604546",
@@ -131,13 +131,13 @@ namespace BookRef.Api.Extensions
             _context.Add(book5);
             library.AddBookDataSeeder(book5);
 
-            var book6 = new Book("978-3936086355", "Propaganda: Die Kunst der Public Relations")
+            var book6 = new Book("978-3936086355", "Propaganda", "admin")
             {
                 Language = BookLanguage.English,
                 Link = "https://www.amazon.de/Propaganda-Die-Kunst-Public-Relations/dp/3936086354",
                 Created = new System.DateTime(2020, 09, 1),
                 Auflage = "Dritte",
-                //Creator = user
+                Subtitle = "Die Kunst der Public Relations"
             };
             book6.SetAuthors(new List<Author> { bernaysAuthor });
             book6.SetCategories(new List<Category> { categoryGehirn });
