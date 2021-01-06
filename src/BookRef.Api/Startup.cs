@@ -160,7 +160,7 @@ namespace BookRef.Api
             IApplicationBuilder app)
         {
             app.UseCors("Locations");
-            app.UseSwaggerDocumentation();
+            //app.UseSwaggerDocumentation();
 
             app.UseHealthChecks("/health", new HealthCheckOptions {ResponseWriter = WriteHealthCheckResponse});
 
