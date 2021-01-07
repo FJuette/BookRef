@@ -17,6 +17,8 @@ namespace BookRef.Api.Models.Types
     {
         protected override void Configure(IObjectTypeDescriptor<PersonalBook> descriptor)
         {
+            descriptor.Authorize();
+
             descriptor
                 .ImplementsNode()
                 .IdField(t => t.Id)

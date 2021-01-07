@@ -125,6 +125,7 @@ namespace BookRef.Api
                 .AddType<PersonRecommedationType>()
                 .AddType<PersonType>()
                 .AddType<SpeakerType>()
+                .AddAuthorization()
                 .EnableRelaySupport()
                 .AddFiltering()
                 .AddSorting()
