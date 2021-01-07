@@ -1,19 +1,24 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BookRef.Api.Common;
+using BookRef.Api.Exceptions;
 using BookRef.Api.Extensions;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Models;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
+using FluentValidation;
+using FluentValidation.Results;
 using HotChocolate;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 
 namespace BookRef.Api.Books
 {
-    public record AddBookInput(string? Isbn, string Title, string? Subtitle);
+    public record AddBookInput(string Identifier, string Title, string? Subtitle);
     public record MoveBookToLibraryInput([ID(nameof(Book))] long BookId, BookStatus Status, string? ColorCode);
     public record AddBookRecommendationInput([ID(nameof(Book))] long SourceBookId, [ID(nameof(Book))] long TargetBookId, string? Note);
     public record AddPersonRecommendationInput([ID(nameof(Book))] long SourceBookId, [ID(nameof(Person))] long TargetPersonId, string? Note);
@@ -23,10 +28,28 @@ namespace BookRef.Api.Books
     public record MoveBookStatusInput([ID(nameof(PersonalBook))] long PersonalBookId, BookStatus NewStatus);
     public record ChangeColorCodeInput([ID(nameof(PersonalBook))] long PersonalBookId, string ColorCode);
 
+    public class BookValidator : AbstractValidator<Book>
+    {
+        public BookValidator()
+        {
+            RuleFor(e => e.Identifier).NotEmpty().WithMessage("Missing value for `identifier`. (e.g. isbn or asin, should be unique)");
+            RuleFor(e => e.Title).NotEmpty().WithMessage("Missing value for `title`");
+        }
+    }
 
     [ExtendObjectType(Name = "Mutation")]
     public class BookMutations
     {
+        private IReadOnlyList<UserError> BuildErrorList(IList<ValidationFailure> input)
+        {
+            return input.Select(e => new UserError(e.ErrorMessage, e.ErrorCode)).ToList();
+        }
+
+        private IReadOnlyList<UserError> BuildSingleError(Exception ex)
+        {
+            return new List<UserError>{ new UserError(ex.Message, "9000") };
+        }
+
         // BookAdded AND MyBookAdded
         [UseApplicationDbContext]
         public async Task<Payload<Book>> AddBookAsync(
@@ -34,10 +57,14 @@ namespace BookRef.Api.Books
              [Service] IGetClaimsProvider claimsProvider,
              [ScopedService] BookRefDbContext context)
         {
-            var book = new Book(input.Isbn, input.Title, claimsProvider.Username)
+            var book = new Book(input.Identifier, input.Title, claimsProvider.Username)
             {
                 Subtitle = input.Subtitle
             };
+            var validationResult = new BookValidator().Validate(book);
+            if (!validationResult.IsValid)
+                return new Payload<Book>(BuildErrorList(validationResult.Errors));
+
             context.Books.Add(book);
             await context.SaveChangesAsync();
             return new Payload<Book>(book);
@@ -52,9 +79,16 @@ namespace BookRef.Api.Books
         {
             var library = context.Libraries.First(e => e.Id == claimsProvider.LibraryId);
             var book = context.Books.Find(input.BookId);
-            library.AddNewBook(book, input.Status, input.ColorCode);
-            await context.SaveChangesAsync();
+            try
+            {
+                library.AddNewBook(book, input.Status, input.ColorCode);
+            }
+            catch (LibraryException ex)
+            {
+                return new Payload<PersonalBook>(BuildSingleError(ex));
+            }
 
+            await context.SaveChangesAsync();
             return new Payload<PersonalBook>(library.MyBooks.Last());
         }
 

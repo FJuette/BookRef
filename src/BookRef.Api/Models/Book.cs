@@ -10,15 +10,15 @@ namespace BookRef.Api.Models
     {
         protected Book() { }
 
-        public Book(string isbn, string title, string creator)
+        public Book(string identifier, string title, string creator)
         {
-            Isbn = isbn;
+            Identifier = identifier;
             Title = title;
             Created = DateTime.Now;
             Creator = creator;
         }
 
-        public string? Isbn { get; private set; } //! Start -> Identifier
+        public string Identifier { get; private set; } //! Start -> Identifier
         public string Title { get; private set; } //! Start
         public string? Subtitle { get; set; } //! Start
         public string? Link { get; set; }
@@ -59,7 +59,7 @@ namespace BookRef.Api.Models
         {
             var authors = string.Join("|", Authors.Select(e => e.Name));
             var categories = string.Join('|', BookCategories.Select(e => e.Category.Name));
-            return $"Book {{ Id = {Id}, ISBN = {Isbn}, Title = {Title}, Auflage = {Auflage}, Language = {Language}, Authors = {authors}, Categories = {categories} }}";
+            return $"Book {{ Id = {Id}, ISBN = {Identifier}, Title = {Title}, Auflage = {Auflage}, Language = {Language}, Authors = {authors}, Categories = {categories} }}";
         }
     }
 

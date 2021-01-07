@@ -75,6 +75,7 @@ namespace BookRef.Api.Extensions
             };
             book.SetAuthors(new List<Author> { danAuthor });
             book.SetCategories(new List<Category> { categoryBoerse, categoryPsyche });
+            library.AddNewBook(book, BookStatus.Active, "");
             _context.Books.Add(book);
 
             var book2 = new Book("978-3453604483", "Das trügerische Gedächtnis", "admin")
@@ -88,7 +89,7 @@ namespace BookRef.Api.Extensions
             book2.SetAuthors(new List<Author> { juliaAuthor, hansAuthor });
             book2.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book2);
-            library.AddBookDataSeeder(book2);
+            library.AddNewBook(book2, BookStatus.Active, "");
             library.AddBookRecommendation(book, book2, "Sie findet das Buch ganz toll");
             library.AddPersonRecommendation(book, charlsPerson, "Seine arbeiten zum Thema 'Habits' sind interessant");
 
@@ -103,7 +104,7 @@ namespace BookRef.Api.Extensions
             book3.SetAuthors(new List<Author> { juliaAuthor });
             book3.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book3);
-            library.AddBookDataSeeder(book3);
+            library.AddNewBook(book3, BookStatus.Active, "");
 
             var book4 = new Book("978-3662533253", "Der Luzifer-Effekt", "admin")
             {
@@ -116,7 +117,7 @@ namespace BookRef.Api.Extensions
             book4.SetAuthors(new List<Author> { zimbardoAuthor });
             book4.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book4);
-            library.AddBookDataSeeder(book4);
+            library.AddNewBook(book4, BookStatus.Active, "");
 
             var book5 = new Book("978-3730604540", "Massenpsychologie und Ich-Analyse", "admin")
             {
@@ -129,7 +130,7 @@ namespace BookRef.Api.Extensions
             book5.SetAuthors(new List<Author> { freudAuthor });
             book5.SetCategories(new List<Category> { categoryPsyche });
             _context.Add(book5);
-            library.AddBookDataSeeder(book5);
+            library.AddNewBook(book5, BookStatus.Active, "");
 
             var book6 = new Book("978-3936086355", "Propaganda", "admin")
             {

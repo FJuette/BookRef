@@ -29,9 +29,16 @@ namespace BookRef.Api.Models
         public virtual ICollection<PersonRecommedation> PersonRecommedations { get; private set; } = new List<PersonRecommedation>();
         public virtual ICollection<PersonalBook> MyBooks { get; private set; } = new List<PersonalBook>();
 
+        private bool IsBookInLibrary(Book book)
+        {
+            return MyBooks.Select(e => e.Book).Contains(book);
+        }
 
         public void AddBookRecommendation(Book sourceBook, Book recommendedBook, string note = "")
         {
+            if (!IsBookInLibrary(sourceBook))
+                throw new LibraryException("Source book not in library");
+
             var rec = new BookRecommedation(recommendedBook)
             {
                 PersonalLibraryId = this.Id,
@@ -43,6 +50,9 @@ namespace BookRef.Api.Models
 
         public void AddPersonRecommendation(Book sourceBook, Person recommendedPerson, string note = "")
         {
+            if (!IsBookInLibrary(sourceBook))
+                throw new LibraryException("Source book not in library");
+
             var rec = new PersonRecommedation(recommendedPerson)
             {
                 PersonalLibraryId = this.Id,
@@ -103,6 +113,8 @@ namespace BookRef.Api.Models
 
         public void AddNewBook(Book book, BookStatus status, string? colorCode)
         {
+            if (IsBookInLibrary(book))
+                throw new LibraryException("Book already in library");
             // Enable when ES is used
             // if (Version == -1)
             // {
@@ -110,13 +122,6 @@ namespace BookRef.Api.Models
             // }
 
             Apply(new BookAdded(Id, book, status, colorCode));
-        }
-
-        // Only to seed data, remove in production
-        public void AddBookDataSeeder(Book book)
-        {
-            var ub = new PersonalBook(this.Id, book, BookStatus.Active);
-            MyBooks.Add(ub);
         }
 
         // Events:
