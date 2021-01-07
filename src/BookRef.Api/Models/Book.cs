@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BookRef.Api.Exceptions;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
 
@@ -48,11 +49,31 @@ namespace BookRef.Api.Models
             BookCategories = categories.Select(e => new BookCategory(this, e)).ToList();
         }
 
+        private bool IsCategoryInList(Category category)
+        {
+            return BookCategories.Select(e => e.Category).Contains(category);
+        }
+
         public void AddCategory(Category category, bool isPrimary = false)
         {
+            if (IsCategoryInList(category))
+                throw new BookException("Category already added to this book");
+
+            if (isPrimary && BookCategories.Any(e => e.IsPrimary))
+                throw new BookException("Book already contains a primary category, a book can only have a single primary category");
+
             var bc = new BookCategory(this, category, isPrimary);
-            //TODO check for other category which is primary
             BookCategories.Add(bc);
+        }
+
+        public void RemoveCategory(Category category)
+        {
+            var bc = BookCategories.First(e => e.Category == category);
+            if (bc is not null)
+            {
+                BookCategories.Remove(bc);
+            }
+
         }
 
         public override string ToString()

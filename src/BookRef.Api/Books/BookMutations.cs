@@ -25,6 +25,7 @@ namespace BookRef.Api.Books
     public record AddNewAuthorInput([ID(nameof(Book))] long BookId, string Name);
     public record AddExistingAuthorInput([ID(nameof(Book))] long BookId, [ID(nameof(Author))] long AuthorId);
     public record AddCategoryInput([ID(nameof(Book))] long BookId, [ID(nameof(Category))] long CategoryId, bool IsPrimary);
+    public record RemoveCategoryInput([ID(nameof(Book))] long BookId, [ID(nameof(Category))] long CategoryId);
     public record MoveBookStatusInput([ID(nameof(PersonalBook))] long PersonalBookId, BookStatus NewStatus);
     public record ChangeColorCodeInput([ID(nameof(PersonalBook))] long PersonalBookId, string ColorCode);
 
@@ -102,7 +103,15 @@ namespace BookRef.Api.Books
             var library = context.Libraries.First(e => e.Id == claimsProvider.LibraryId);
             var source = context.Books.First(e => e.Id == input.SourceBookId);
             var target = context.Books.First(e => e.Id == input.TargetBookId);
-            library.AddBookRecommendation(source, target, input.Note != null ? input.Note : "");
+            try
+            {
+                library.AddBookRecommendation(source, target, input.Note != null ? input.Note : "");
+            }
+            catch (LibraryException ex)
+            {
+                return new Payload<BookRecommedation>(BuildSingleError(ex));
+            }
+
             await context.SaveChangesAsync();
             return new Payload<BookRecommedation>(library.BookRecommedations.Last());
         }
@@ -117,7 +126,15 @@ namespace BookRef.Api.Books
             var library = context.Libraries.First(e => e.Id == claimsProvider.LibraryId);
             var source = context.Books.First(e => e.Id == input.SourceBookId);
             var target = context.People.First(e => e.Id == input.TargetPersonId);
-            library.AddPersonRecommendation(source, target, input.Note != null ? input.Note : "");
+            try
+            {
+                library.AddPersonRecommendation(source, target, input.Note != null ? input.Note : "");
+            }
+            catch (LibraryException ex)
+            {
+                return new Payload<PersonRecommedation>(BuildSingleError(ex));
+            }
+
             await context.SaveChangesAsync();
             return new Payload<PersonRecommedation>(library.PersonRecommedations.Last());
         }
@@ -157,9 +174,32 @@ namespace BookRef.Api.Books
              AddCategoryInput input,
              [ScopedService] BookRefDbContext context)
         {
+            // Primary checks
             var book = context.Books.Find(input.BookId);
             var category = context.Categories.Find(input.CategoryId);
-            book.AddCategory(category, input.IsPrimary);
+            try
+            {
+                book.AddCategory(category, input.IsPrimary);
+            }
+            catch (System.Exception ex)
+            {
+                return new Payload<Book>(BuildSingleError(ex));
+            }
+
+            await context.SaveChangesAsync();
+            return new Payload<Book>(book);
+        }
+
+        // CategoryRemoved
+        [UseApplicationDbContext]
+        public async Task<Payload<Book>> RemoveCategoryAsync(
+             RemoveCategoryInput input,
+             [ScopedService] BookRefDbContext context)
+        {
+            // Primary remove check
+            var book = context.Books.Find(input.BookId);
+            var category = context.Categories.Find(input.CategoryId);
+            book.RemoveCategory(category);
 
             await context.SaveChangesAsync();
             return new Payload<Book>(book);
