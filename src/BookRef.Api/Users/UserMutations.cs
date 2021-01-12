@@ -9,9 +9,7 @@ using BookRef.Api.Common;
 using BookRef.Api.Extensions;
 using BookRef.Api.Infrastructure;
 using BookRef.Api.Models;
-using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
-using FluentValidation;
 using HotChocolate;
 using HotChocolate.Types;
 using Microsoft.IdentityModel.Tokens;
@@ -29,6 +27,9 @@ namespace BookRef.Api.Users
              NewUserInput input,
              [ScopedService] BookRefDbContext context)
         {
+            if (context.Users.Any(e => e.Username.ToLower() == input.Username))
+                return new Payload<Guid>(PayloadHelper.BuildSingleError(new Exception("Username already taken")));
+
             var user = new User(input.Username, input.Email);
             user.SetPassword(input.Password);
             await context.Users.AddAsync(user);
@@ -44,8 +45,13 @@ namespace BookRef.Api.Users
              SingInInput input,
              [ScopedService] BookRefDbContext context)
         {
-            var user = context.Users.First(e => e.Username == input.Username);
+            var user = context.Users.FirstOrDefault(e => e.Username == input.Username);
+            if (user is null)
+                return new Payload<string>(PayloadHelper.BuildSingleError(new Exception("Bad username or password")));
+
             var isValid = BCrypt.Net.BCrypt.Verify(input.Password, user.Password);
+            if (!isValid)
+                return new Payload<string>(PayloadHelper.BuildSingleError(new Exception("Bad username or password")));
 
             return new Payload<string>(BuildToken(user.Username, user.PersonalLibraryId));
         }
