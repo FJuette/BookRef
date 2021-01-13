@@ -10,6 +10,8 @@ Welcome to BookRef's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   Using the API <examples>
+
 
 
 Indices and tables
