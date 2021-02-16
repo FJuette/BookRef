@@ -114,3 +114,16 @@ As alternative we can add the book as recommendation using the **addBookRecommen
             }
         }
     }
+
+Finding data
+------------
+
+For authors and books a filter input type is defined. Usage example to filter the list of authors.
+
+.. code::
+
+    query {
+        authors(where: { name: { contains: "h" } }) {
+            name
+        }
+    }
