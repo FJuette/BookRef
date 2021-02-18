@@ -127,3 +127,9 @@ For authors and books a filter input type is defined. Usage example to filter th
             name
         }
     }
+
+    query {
+        people(where: { name: { startsWith: "Ch" } }) {
+            name
+        }
+    }

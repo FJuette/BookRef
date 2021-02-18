@@ -8,6 +8,7 @@ using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
 using BookRef.Api.Persistence.DataLoader;
 using HotChocolate;
+using HotChocolate.Data;
 using HotChocolate.Types;
 using HotChocolate.Types.Relay;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace BookRef.Api.People
     public class PersonQueries
     {
         [UseApplicationDbContext]
+        [UseFiltering(typeof(PersonFilterInputType))]
         public Task<List<Person>> GetPeopleAsync([ScopedService] BookRefDbContext context) =>
              context.People.ToListAsync();
 
