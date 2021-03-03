@@ -133,3 +133,34 @@ For authors and books a filter input type is defined. Usage example to filter th
             name
         }
     }
+
+Change status of book
+---------------------
+
+Frist find the **id** of the book in the personal library (not the bookId).
+Goal is to change the status of the book for this user, not for all users.
+
+.. code::
+
+    query {
+        books {
+            status,
+            id
+        }
+    }
+
+Change the status of the book.
+
+.. code::
+
+    mutation ChangeStatus {
+        changeBookStatus(input: {personalBookId: "UGVyc29uYWxCb29rCmwx", newStatus: DONE}) {
+            data {
+                id
+                status
+            }
+            errors {
+                message
+            }
+        }
+    }

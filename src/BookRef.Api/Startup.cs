@@ -96,7 +96,7 @@ namespace BookRef.Api
             services.AddPooledDbContextFactory<BookRefDbContext>(options =>
                 options.UseSqlite("Data Source=bookref.db")
                 .UseLazyLoadingProxies()
-                .EnableSensitiveDataLogging()
+                //.EnableSensitiveDataLogging()
             );
 
             // Add my own services here

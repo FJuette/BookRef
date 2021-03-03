@@ -13,6 +13,7 @@ using BookRef.Api.Persistence;
 using HotChocolate;
 using HotChocolate.Types;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 namespace BookRef.Api.Users
 {
@@ -47,11 +48,19 @@ namespace BookRef.Api.Users
         {
             var user = context.Users.FirstOrDefault(e => e.Username == input.Username);
             if (user is null)
+            {
+                Log.Information("User '{Username}' not found in database", input.Username);
                 return new Payload<string>(PayloadHelper.BuildSingleError(new Exception("Bad username or password")));
+            }
+
 
             var isValid = BCrypt.Net.BCrypt.Verify(input.Password, user.Password);
             if (!isValid)
+            {
+                Log.Information("Password from user '{Username}' is not valid", input.Username);
                 return new Payload<string>(PayloadHelper.BuildSingleError(new Exception("Bad username or password")));
+            }
+
 
             return new Payload<string>(BuildToken(user.Username, user.PersonalLibraryId));
         }
