@@ -76,6 +76,13 @@ namespace BookRef.Api.Models
             return pb;
         }
 
+        public PersonalLibrary RemoveBook(long personalBookId)
+        {
+            var pb = MyBooks.First(e => e.Id == personalBookId);
+            MyBooks.Remove(pb);
+            return this;
+        }
+
         // Events
         protected override void When(object @event)
         {

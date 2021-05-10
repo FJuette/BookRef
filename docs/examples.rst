@@ -137,7 +137,7 @@ For authors and books a filter input type is defined. Usage example to filter th
 Change status of book
 ---------------------
 
-Frist find the **id** of the book in the personal library (not the bookId).
+First find the **id** of the book in the personal library (not the bookId).
 Goal is to change the status of the book for this user, not for all users.
 
 .. code::
@@ -162,5 +162,24 @@ Change the status of the book.
             errors {
                 message
             }
+        }
+    }
+
+Remove book from personal library
+---------------------------------
+
+First find the **id** of the book in the personal library (not the bookId).
+Goal is to remove the book from the library for this user, not for all users.
+
+**data** ist *true* when mutation is successfull.
+
+.. code::
+    mutation {
+        remove (input: { personalBookId: "UGVyc29uYWxCb29rCmw2"}) {
+            errors {
+                code
+                message
+            }
+            data
         }
     }
