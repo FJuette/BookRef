@@ -45,6 +45,7 @@ namespace BookRef.Api.Books
         // Personal books
         [UseApplicationDbContext]
         [UseFiltering(typeof(PersonalBookFilterInputType))]
+        //[UseSorting]
         public Task<IReadOnlyList<PersonalBook>> GetBooksAsync(
             PersonalBookByIdDataLoader dataLoader,
             [Service] IGetClaimsProvider claimsProvider,

@@ -33,6 +33,8 @@ namespace BookRef.Api.Persistence.DataLoader
                  _dbContextFactory.CreateDbContext();
             return await dbContext.PersonalBooks
                 .Where(s => keys.Contains(s.Id))
+                .OrderBy(s => s.LastChanged)
+                .ThenBy(s => s.Status)
                 .ToDictionaryAsync(t => t.Id, cancellationToken);
         }
     }
