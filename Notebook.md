@@ -22,5 +22,3 @@ https://bookref-api-dev.mi5u.de/graphql/
 
 
 https://itnext.io/asp-net-core-3-1-entity-framework-core-with-postgresql-with-code-first-approach-33b102e1734f
-
-
