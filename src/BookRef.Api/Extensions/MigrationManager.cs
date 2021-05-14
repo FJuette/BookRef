@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using BookRef.Api.Persistence;
 using System.Threading.Tasks;
 using System.Linq;
+using BookRef.Api.Services;
 
 namespace BookRef.Api.Extensions
 {
@@ -18,6 +19,7 @@ namespace BookRef.Api.Extensions
         {
             using var scope = webHost.Services.CreateScope();
             var appContextFactory = scope.ServiceProvider.GetRequiredService<IDbContextFactory<BookRefDbContext>>();
+            var service = scope.ServiceProvider.GetRequiredService<IBookApiService>();
             using BookRefDbContext dbContext =
                  appContextFactory.CreateDbContext();
             //var repository = scope.ServiceProvider.GetRequiredService<AggregateRepository>();
@@ -33,7 +35,7 @@ namespace BookRef.Api.Extensions
 
                 if (!dbContext.Books.Any())
                 {
-                    var task = Task.Run(async () => await new SampleDataSeeder(dbContext).SeedAll());
+                    var task = Task.Run(async () => await new SampleDataSeeder(dbContext, service).SeedAll());
                     task.GetAwaiter().GetResult();
                 }
 

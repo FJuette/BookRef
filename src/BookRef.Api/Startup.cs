@@ -103,6 +103,9 @@ namespace BookRef.Api
             services.AddScoped<IGetClaimsProvider, GetClaimsFromUser>();
             services.AddScoped<IOpenLibraryService, OpenLibraryService>();
             services.AddSingleton<IDateTime, MachineDateTime>();
+            //services.AddScoped<IBookService, BookService>();
+            services.AddScoped<IBookApiService, GoogleBooksSerivce>();
+
 
             services
                 .AddGraphQLServer()

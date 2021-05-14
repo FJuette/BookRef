@@ -7,20 +7,25 @@ using BookRef.Api.Models;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
+using BookRef.Api.Services;
 
 namespace BookRef.Api.Extensions
 {
     public class SampleDataSeeder
     {
         private readonly BookRefDbContext _context;
+        private readonly IBookApiService _service;
+
         //private readonly AggregateRepository _repository;
 
         public SampleDataSeeder(
-            BookRefDbContext context)
+            BookRefDbContext context,
+            IBookApiService service)
             {
                 _context = context;
-                //_repository = repository;
-            }
+            _service = service;
+            //_repository = repository;
+        }
 
         public async Task SeedAll()
         {
@@ -34,7 +39,7 @@ namespace BookRef.Api.Extensions
             _context.Authors.Add(zimbardoAuthor);
             var freudAuthor = new Author("Sigmund Freud");
             _context.Authors.Add(freudAuthor);
-            var bernaysAuthor = new Author("Edward Bernays");
+            var bernaysAuthor = new Author("Ulrich Preis");
             _context.Authors.Add(bernaysAuthor);
 
             var categories = File.ReadAllLines("Categories.txt").Select(e => new Category(e));
@@ -144,6 +149,26 @@ namespace BookRef.Api.Extensions
             book6.SetCategories(new List<Category> { categoryGehirn });
             _context.Add(book6);
             library.AddNewBook(book6, BookStatus.Active, "ffffff");
+
+            _context.SaveChanges();
+            var authors = _context.Authors.ToList();
+            var book7 = _service.FindBook("9783813504897");
+            book7 = new BookService().MatchAuthors(authors, book7);
+
+            book7.IfSome(e =>
+            {
+                _context.Add(e);
+                library.AddNewBook(e, BookStatus.Active, "admin");
+            });
+            _context.SaveChanges();
+            var book8 = _service.FindBook("9783406757006");
+            book8 = new BookService().MatchAuthors(authors, book8);
+
+            book8.IfSome(e =>
+            {
+                _context.Add(e);
+                library.AddNewBook(e, BookStatus.Active, "admin");
+            });
 
 
             // _context.Libraries.Add(library);

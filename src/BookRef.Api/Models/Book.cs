@@ -26,6 +26,10 @@ namespace BookRef.Api.Models
         public string? Auflage { get; set; }
         public DateTime Created { get; set; }
 
+        public string? Etag { get; private set; }
+        public string? SelfLink { get; private set; }
+        public string? TextSnippet { get; private set; }
+
         public BookLanguage Language { get; set; }
 
         public string Creator { get; set; }
@@ -34,14 +38,16 @@ namespace BookRef.Api.Models
 
         public virtual ICollection<Author> Authors { get; private set; } = new List<Author>(); //! Start
 
-        public void SetAuthors(IEnumerable<Author> authors)
+        public Book SetAuthors(IEnumerable<Author> authors)
         {
             Authors = authors.ToList();
+            return this;
         }
 
-        public void AddAuthor(Author author)
+        public Book AddAuthor(Author author)
         {
             Authors.Add(author);
+            return this;
         }
 
         public void SetCategories(IEnumerable<Category> categories)
@@ -66,14 +72,22 @@ namespace BookRef.Api.Models
             BookCategories.Add(bc);
         }
 
-        public void RemoveCategory(Category category)
+        public Book RemoveCategory(Category category)
         {
             var bc = BookCategories.First(e => e.Category == category);
             if (bc is not null)
             {
                 BookCategories.Remove(bc);
             }
+            return this;
+        }
 
+        public Book SetAdditionalApiData(string etag, string selfLink, string? textSnippet)
+        {
+            Etag = etag;
+            SelfLink = selfLink;
+            TextSnippet = textSnippet;
+            return this;
         }
 
         public override string ToString()

@@ -4,44 +4,10 @@ using BookRef.Api.Models;
 using LanguageExt;
 using RestSharp;
 using System.Text.RegularExpressions;
+using BookRef.Api.Models.ValueObjects;
 
 namespace BookRef.Api.Services
 {
-
-    public record GApiResponse
-    {
-        public string Kind { get; init; }
-        public int TotalItems { get; init; }
-        public List<GApiItem> Items { get; init; }
-
-    }
-    public record GApiItem
-    {
-        public string Id { get; init; }
-        public string Etag { get; init; }
-        public string SelfLink { get; init; }
-        public GApiVolumeInfo VolumeInfo { get; init; }
-        public GApisSearchInfo SearchInfo { get; init; }
-    }
-
-    public record GApiVolumeInfo
-    {
-        public string Title { get; init; }
-        public string? Subtitle { get; init; }
-        public List<string> Authors { get; init; }
-        public List<GApiIndustryIdentifiers> IndustryIdentifiers { get; init; }
-    }
-
-    public record GApisSearchInfo
-    {
-        public string? TextSnippet { get; init; }
-    }
-
-    public record GApiIndustryIdentifiers
-    {
-        public string Type { get; init; }
-        public string Identifier { get; init; }
-    }
 
     // Example https://www.googleapis.com/books/v1/volumes?q=isbn:9783446260290
     public class GoogleBooksSerivce : IBookApiService
@@ -67,14 +33,54 @@ namespace BookRef.Api.Services
             1 => InitBook(data.Items.First()),
         };
 
-        private Book InitBook(GApiItem item) {
+        private Book InitBook(GApiItem item)
+        {
             var isbn = item.VolumeInfo.IndustryIdentifiers.First(e => e.Type == "ISBN_13").Identifier;
 
             var book = new Book(isbn, item.VolumeInfo.Title, "googleapis.com")
             {
-                Subtitle = item.VolumeInfo.Subtitle
-            };
+                Subtitle = item.VolumeInfo.Subtitle,
+            }
+            .SetAdditionalApiData(item.Etag, item.SelfLink, item.SearchInfo?.TextSnippet)
+            .SetAuthors(item.VolumeInfo.Authors.Select(e => new Author(e)));
+
             return book;
+        }
+
+
+        private record GApiResponse
+        {
+            public string Kind { get; init; }
+            public int TotalItems { get; init; }
+            public List<GApiItem> Items { get; init; }
+
+        }
+        private record GApiItem
+        {
+            public string Id { get; init; }
+            public string Etag { get; init; }
+            public string SelfLink { get; init; }
+            public GApiVolumeInfo VolumeInfo { get; init; }
+            public GApisSearchInfo SearchInfo { get; init; }
+        }
+
+        private record GApiVolumeInfo
+        {
+            public string Title { get; init; }
+            public string? Subtitle { get; init; }
+            public List<string> Authors { get; init; }
+            public List<GApiIndustryIdentifiers> IndustryIdentifiers { get; init; }
+        }
+
+        private record GApisSearchInfo
+        {
+            public string? TextSnippet { get; init; }
+        }
+
+        private record GApiIndustryIdentifiers
+        {
+            public string Type { get; init; }
+            public string Identifier { get; init; }
         }
     }
 }

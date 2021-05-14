@@ -7,6 +7,19 @@ namespace BookRef.Api.Tests.Services
     public class GoogleBooksSerivceTests
     {
 
+        [Fact]
+        public void FindBook_CustomTest_BookFound()
+        {
+            // Arrange
+            var srv = new GoogleBooksSerivce();
+
+            // Act
+            var book = srv.FindBook("9783936086355");
+
+            // Assert
+            book.IsSome.Should().BeTrue();
+        }
+
         // Add tests for failing isbn
         [Fact]
         public void FindBook_ByIsbn_BookFound()
@@ -20,6 +33,7 @@ namespace BookRef.Api.Tests.Services
             // Assert
             book.IsSome.Should().BeTrue();
             book.IfSome(x =>  x.Title.Should().Be("Böse"));
+            book.IfSome(x =>  x.Identifier.Should().Be("9783446260290"));
         }
 
         [Theory]
@@ -36,6 +50,7 @@ namespace BookRef.Api.Tests.Services
 
             // Assert
             book.IsSome.Should().BeTrue();
+            book.IfSome(x =>  x.Identifier.Should().Be(isbn));
         }
 
         [Fact]
