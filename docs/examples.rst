@@ -77,6 +77,23 @@ First we need the book itself, use the **addBook** mutation to create one. Save 
         }
     }
 
+Alternative by providing the isbn:
+
+.. code::
+
+    mutation {
+        addBookByIsbn(input: {isbn: "9783446419377"}) {
+            errors {
+                message
+                code
+            }
+                data {
+                    id
+                    title
+            }
+        }
+    }
+
 
 Secondly we need to put the book into our library using the **moveBookInLibrary** mutation.
 An error is returned when:

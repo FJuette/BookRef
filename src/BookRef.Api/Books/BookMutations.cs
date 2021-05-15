@@ -10,6 +10,7 @@ using BookRef.Api.Models;
 using BookRef.Api.Models.Relations;
 using BookRef.Api.Models.ValueObjects;
 using BookRef.Api.Persistence;
+using BookRef.Api.Services;
 using FluentValidation;
 using FluentValidation.Results;
 using HotChocolate;
@@ -19,6 +20,7 @@ using HotChocolate.Types.Relay;
 namespace BookRef.Api.Books
 {
     public record AddBookInput(string Identifier, string Title, string? Subtitle);
+    public record AddBookByIsbnInput(string Isbn);
     public record MoveBookToLibraryInput([ID(nameof(Book))] long BookId, BookStatus Status, string? ColorCode);
     public record AddBookRecommendationInput([ID(nameof(Book))] long SourceBookId, [ID(nameof(Book))] long TargetBookId, string? Note);
     public record AddPersonRecommendationInput([ID(nameof(Book))] long SourceBookId, [ID(nameof(Person))] long TargetPersonId, string? Note);
@@ -66,6 +68,34 @@ namespace BookRef.Api.Books
             var validationResult = new BookValidator().Validate(book);
             if (!validationResult.IsValid)
                 return new Payload<Book>(BuildErrorList(validationResult.Errors));
+
+            context.Books.Add(book);
+            await context.SaveChangesAsync();
+            return new Payload<Book>(book);
+        }
+
+        // BookAdded AND MyBookAdded
+        [UseApplicationDbContext]
+        public async Task<Payload<Book>> AddBookByIsbnAsync(
+             AddBookByIsbnInput input,
+             [Service] IGetClaimsProvider claimsProvider,
+             [Service] IBookApiService apiService,
+             [ScopedService] BookRefDbContext context)
+        {
+            if (context.Books.Any(e => e.Identifier == input.Isbn))
+                return new Payload<Book>(BuildSingleError(new BookException($"Book with isbn '{input.Isbn}' already in database.")));
+            var apiResult = apiService.FindBook(input.Isbn);
+            if (apiResult.IsNone)
+                return new Payload<Book>(BuildSingleError(new BookException($"{input.Isbn} not found in service")));
+
+            apiResult = new BookService().MatchAuthors(context.Authors.ToList(), apiResult);
+
+            var book = apiResult.IfNone(new Book("", "", ""));
+
+            var validationResult = new BookValidator().Validate(book);
+            if (!validationResult.IsValid)
+                return new Payload<Book>(BuildErrorList(validationResult.Errors));
+
 
             context.Books.Add(book);
             await context.SaveChangesAsync();
