@@ -191,6 +191,7 @@ Goal is to remove the book from the library for this user, not for all users.
 **data** ist *true* when mutation is successfull.
 
 .. code::
+
     mutation {
         remove (input: { personalBookId: "UGVyc29uYWxCb29rCmw2"}) {
             errors {
