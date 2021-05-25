@@ -201,3 +201,20 @@ Goal is to remove the book from the library for this user, not for all users.
             data
         }
     }
+
+Sorting the personal book library results
+-----------------------------------------
+
+The **lastChange** date is automatically set on each database operation (add/modify).
+e.g. to get the books sorted by change date use:
+
+.. code::
+    query {
+        books(order: {lastChanged: DESC}) {
+            lastChanged
+            book {
+                title
+                identifier
+            }
+        }
+    }

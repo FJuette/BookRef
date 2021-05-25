@@ -31,8 +31,8 @@ namespace BookRef.Api.Persistence
 
         public BookRefDbContext(DbContextOptions<BookRefDbContext> options)
         : base(options)
-    {
-    }
+        {
+        }
 
         protected override void OnModelCreating(
             ModelBuilder builder)
@@ -147,6 +147,37 @@ namespace BookRef.Api.Persistence
             //         .WithMany()
             //         .HasForeignKey(e => e.FriendUserId);
             // });
+        }
+
+        public override Task<int> SaveChangesAsync(
+                CancellationToken cancellationToken = new CancellationToken())
+        {
+            this.SetLastChangeDate();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override int SaveChanges()
+        {
+            this.SetLastChangeDate();
+            return base.SaveChanges();
+        }
+
+    }
+
+    public static class ContextExtensions
+    {
+        [SuppressMessage("Design", "CA1062:Validate arguments of public methods", Justification = "<Pending>")]
+        public static void SetLastChangeDate(
+            this DbContext context)
+        {
+            foreach (var entityEntry in context.ChangeTracker.Entries()
+                .Where(e => e.State == EntityState.Modified || e.State == EntityState.Added))
+            {
+                if (entityEntry.Entity is PersonalBook entityToMark)
+                {
+                    entityToMark.LastChanged = DateTime.Now;
+                }
+            }
         }
     }
 }

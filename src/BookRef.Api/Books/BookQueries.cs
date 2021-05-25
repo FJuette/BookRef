@@ -45,8 +45,8 @@ namespace BookRef.Api.Books
         // Personal books
         [UseApplicationDbContext]
         [UseFiltering(typeof(PersonalBookFilterInputType))]
-        //[UseSorting]
-        public Task<IReadOnlyList<PersonalBook>> GetBooksAsync(
+        [UseSorting]
+        public async Task<IQueryable<PersonalBook>> GetBooksAsync(
             PersonalBookByIdDataLoader dataLoader,
             [Service] IGetClaimsProvider claimsProvider,
             [ScopedService] BookRefDbContext context,
@@ -56,7 +56,7 @@ namespace BookRef.Api.Books
                     .Include(e => e.MyBooks)
                     .First(e => e.Id == claimsProvider.LibraryId)
                     .MyBooks.Select(e => e.Id);
-                return dataLoader.LoadAsync(ids.ToArray(), cancellationToken);
+                return (await dataLoader.LoadAsync(ids.ToArray(), cancellationToken)).AsQueryable();
             }
 
         [UseApplicationDbContext]
