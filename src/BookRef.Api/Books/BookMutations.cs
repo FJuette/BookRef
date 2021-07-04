@@ -31,6 +31,7 @@ namespace BookRef.Api.Books
     public record MoveBookStatusInput([ID(nameof(PersonalBook))] long PersonalBookId, BookStatus NewStatus);
     public record ChangeColorCodeInput([ID(nameof(PersonalBook))] long PersonalBookId, string ColorCode);
     public record RemoveFromLibraryInput([ID(nameof(PersonalBook))] long PersonalBookId);
+    public record UpdateNoteInput([ID(nameof(Note))] long noteId, string content);
 
     public class BookValidator : AbstractValidator<Book>
     {
@@ -274,6 +275,19 @@ namespace BookRef.Api.Books
 
             await context.SaveChangesAsync();
             return new Payload<bool>(true);
+        }
+
+        [UseApplicationDbContext]
+        public async Task<Payload<BookRecommedation>> UpdateNoteAsync(
+             UpdateNoteInput input,
+             [ScopedService] BookRefDbContext context,
+             [Service] IGetClaimsProvider claimsProvider)
+        {
+            var library = context.Libraries.First(e => e.Id == claimsProvider.LibraryId);
+            var recommedation = library.UpdateRecommendationNote(input.noteId, input.content);
+
+            await context.SaveChangesAsync();
+            return new Payload<BookRecommedation>(recommedation);
         }
 
         // [UseApplicationDbContext]

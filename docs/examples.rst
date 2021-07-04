@@ -219,3 +219,24 @@ e.g. to get the books sorted by change date use:
             }
         }
     }
+
+Update recommendations note
+---------------------------
+
+Find out the **noteId** with *recommendationsForBook* or *bookRecommendationsForBook*. (JWT Token requiered)
+
+.. code::
+
+    mutation {
+        updateNote(input: {noteId: "Tm90ZQpsMg==", content: "New content"}) {
+            data {
+                note {
+                    content
+                }
+            }
+            errors {
+                code
+                message
+            }
+        }
+    }

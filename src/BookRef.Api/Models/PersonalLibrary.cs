@@ -62,6 +62,15 @@ namespace BookRef.Api.Models
             PersonRecommedations.Add(rec);
         }
 
+        public BookRecommedation UpdateRecommendationNote(long noteId, string content)
+        {
+            var recommedation = BookRecommedations.SingleOrDefault(e => e.NoteId == noteId);
+            if (recommedation is null)
+                throw new LibraryException("Note not found");
+            recommedation.Note = new Note(content);
+            return recommedation;
+        }
+
         public PersonalBook ChangeBookStatus(long personalBookId, BookStatus newStatus)
         {
             var pb = MyBooks.First(e => e.Id == personalBookId);
