@@ -48,7 +48,7 @@ namespace BookRef.Api.Models
             BookRecommedations.Add(rec);
         }
 
-        public void AddPersonRecommendation(Book sourceBook, Person recommendedPerson, string note = "")
+        public void AddPersonRecommendation(Book sourceBook, Author recommendedPerson, string note = "")
         {
             if (!IsBookInLibrary(sourceBook))
                 throw new LibraryException("Source book not in library");

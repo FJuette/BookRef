@@ -90,7 +90,7 @@ namespace BookRef.Api.Tests.Unit
             //Given
             var library = GetEmptyLibrary();
             var sourceBook = new Book("123", "source book", "test");
-            var targetPerson = new Models.ValueObjects.Person("Tom Target");
+            var targetPerson = new Models.ValueObjects.Author("Tom Target");
 
             //When
             library.AddNewBook(sourceBook, BookStatus.Active, null);
@@ -106,7 +106,7 @@ namespace BookRef.Api.Tests.Unit
             //Given
             var library = GetEmptyLibrary();
             var sourceBook = new Book("123", "source book", "test");
-            var targetPerson = new Models.ValueObjects.Person("Tom Target");
+            var targetPerson = new Models.ValueObjects.Author("Tom Target");
 
             //When
             library.AddNewBook(sourceBook, BookStatus.Active, null);
@@ -122,7 +122,7 @@ namespace BookRef.Api.Tests.Unit
             //Given
             var library = GetEmptyLibrary();
             var sourceBook = new Book("123", "source book", "test");
-            var targetPerson = new Models.ValueObjects.Person("Tom Target");
+            var targetPerson = new Models.ValueObjects.Author("Tom Target");
 
             //When
             Action act = () => library.AddPersonRecommendation(sourceBook, targetPerson);

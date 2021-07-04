@@ -6,12 +6,12 @@ namespace BookRef.Api.Models
     {
         protected PersonRecommedation() { }
 
-        public PersonRecommedation(Person person)
+        public PersonRecommedation(Author person)
         {
             this.Type = RecommedationType.Person;
             RecommendedPerson = person;
         }
-        public virtual Person RecommendedPerson { get; private set; }
+        public virtual Author RecommendedPerson { get; private set; }
         public long RecommendedPersonId { get; private set; }
 
     }

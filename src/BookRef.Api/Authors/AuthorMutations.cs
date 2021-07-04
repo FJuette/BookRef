@@ -51,3 +51,23 @@
 //         public Author? Author { get; }
 //     }
 // }
+
+
+
+// public record AddPersonInput(string Name);
+
+//     [ExtendObjectType(Name = "Mutation")]
+//     public class PeopleMutations
+//     {
+//         [UseApplicationDbContext]
+//         public async Task<Payload<Person>> AddPersonAsync(
+//              AddPersonInput input,
+//              [ScopedService] BookRefDbContext context)
+//         {
+//             var person = new Person(input.Name);
+//             context.People.Add(person);
+//             await context.SaveChangesAsync();
+
+//             return new Payload<Person>(person);
+//         }
+//     }

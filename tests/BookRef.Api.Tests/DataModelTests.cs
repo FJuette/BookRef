@@ -23,7 +23,7 @@ namespace BookRef.Api.Tests
             // Act
             var authors = await _context.Authors.ToListAsync();
             var categories = await _context.Categories.ToListAsync();
-            var people = await _context.People.ToListAsync();
+            var people = await _context.Authors.ToListAsync();
             var speakers = await _context.Speakers.ToListAsync();
             var books = await _context.Books.ToListAsync();
             var libraries = await _context.Libraries.ToListAsync();
@@ -45,7 +45,7 @@ namespace BookRef.Api.Tests
             // Act
             var authors = await _context.Authors.ToListAsync();
             var categories = await _context.Categories.ToListAsync();
-            var people = await _context.People.ToListAsync();
+            var people = await _context.Authors.ToListAsync();
             var speakers = await _context.Speakers.ToListAsync();
             var books = await _context.Books.ToListAsync();
             var libraries = await _context.Libraries.ToListAsync();

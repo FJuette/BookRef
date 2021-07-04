@@ -23,7 +23,7 @@ namespace BookRef.Api.Books
     public record AddBookByIsbnInput(string Isbn);
     public record MoveBookToLibraryInput([ID(nameof(Book))] long BookId, BookStatus Status, string? ColorCode);
     public record AddBookRecommendationInput([ID(nameof(Book))] long SourceBookId, [ID(nameof(Book))] long TargetBookId, string? Note);
-    public record AddPersonRecommendationInput([ID(nameof(Book))] long SourceBookId, [ID(nameof(Person))] long TargetPersonId, string? Note);
+    public record AddPersonRecommendationInput([ID(nameof(Book))] long SourceBookId, [ID(nameof(Author))] long TargetPersonId, string? Note);
     public record AddNewAuthorInput([ID(nameof(Book))] long BookId, string Name);
     public record AddExistingAuthorInput([ID(nameof(Book))] long BookId, [ID(nameof(Author))] long AuthorId);
     public record AddCategoryInput([ID(nameof(Book))] long BookId, [ID(nameof(Category))] long CategoryId, bool IsPrimary);
@@ -157,7 +157,7 @@ namespace BookRef.Api.Books
         {
             var library = context.Libraries.First(e => e.Id == claimsProvider.LibraryId);
             var source = context.Books.First(e => e.Id == input.SourceBookId);
-            var target = context.People.First(e => e.Id == input.TargetPersonId);
+            var target = context.Authors.First(e => e.Id == input.TargetPersonId);
             try
             {
                 library.AddPersonRecommendation(source, target, input.Note != null ? input.Note : "");

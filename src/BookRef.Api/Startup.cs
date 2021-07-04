@@ -28,7 +28,6 @@ using Microsoft.EntityFrameworkCore;
 using BookRef.Api.Authors;
 using BookRef.Api.Books;
 using BookRef.Api.Categories;
-using BookRef.Api.People;
 using BookRef.Api.Speakers;
 using System.Text.Json.Serialization;
 using BookRef.Api.Services;
@@ -113,10 +112,8 @@ namespace BookRef.Api
                     .AddType<AuthorQueries>()
                     .AddType<CategoryQueries>()
                     .AddType<BookQueries>()
-                    .AddType<PersonQueries>()
                     .AddType<SpeakerQueries>()
                 .AddMutationType(d => d.Name("Mutation"))
-                    .AddTypeExtension<PeopleMutations>()
                     .AddTypeExtension<BookMutations>()
                     .AddTypeExtension<UserMutations>()
                 .AddType<AuthorType>()
@@ -126,7 +123,6 @@ namespace BookRef.Api
                 .AddType<NoteType>()
                 .AddType<PersonalBookType>()
                 .AddType<PersonRecommedationType>()
-                .AddType<PersonType>()
                 .AddType<SpeakerType>()
                 .AddAuthorization()
                 .EnableRelaySupport()
@@ -137,7 +133,6 @@ namespace BookRef.Api
                 .AddDataLoader<BookRecommendationByIdDataLoader>()
                 .AddDataLoader<CategoryByIdDataLoader>()
                 .AddDataLoader<NoteByIdDataLoader>()
-                .AddDataLoader<PersonByIdDataLoader>()
                 .AddDataLoader<PersonalBookByIdDataLoader>()
                 .AddDataLoader<PersonRecommendationByIdDataLoader>()
                 .AddDataLoader<SpeakerByIdDataLoader>();

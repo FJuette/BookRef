@@ -19,7 +19,6 @@ namespace BookRef.Api.Persistence
         public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Speaker> Speakers { get; set; }
-        public DbSet<Person> People { get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<BookCategory> BookCategories { get; set; }
         public DbSet<BookRecommedation> BookRecommedations { get; set; }
@@ -44,11 +43,6 @@ namespace BookRef.Api.Persistence
                     .IsRequired(true);
             });
             builder?.Entity<Category>(b =>
-            {
-                b.Property(e => e.Name)
-                    .IsRequired(true);
-            });
-            builder?.Entity<Person>(b =>
             {
                 b.Property(e => e.Name)
                     .IsRequired(true);

@@ -30,7 +30,7 @@ namespace BookRef.Api.Models.Types
 
             descriptor
                  .Field(t => t.RecommendedPersonId)
-                 .ID(nameof(Person));
+                 .ID(nameof(Author));
             descriptor
                  .Field(t => t.SourceBookId)
                  .ID(nameof(Book));
@@ -40,9 +40,9 @@ namespace BookRef.Api.Models.Types
         }
         private class PersonRecommedationResolvers
         {
-            public async Task<Person?> GetRecommendedPersonAsync(
+            public async Task<Author?> GetRecommendedPersonAsync(
                  PersonRecommedation bookRecommedation,
-                 PersonByIdDataLoader personById,
+                 AuthorByIdDataLoader personById,
                  CancellationToken cancellationToken)
             {
                 return await personById.LoadAsync(bookRecommedation.RecommendedPersonId, cancellationToken);

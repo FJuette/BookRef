@@ -49,8 +49,8 @@ namespace BookRef.Api.Extensions
             var categoryPsyche = categories.First(e => e.Name == "Persönliche Entwicklung");
             var categoryBoerse = categories.First(e => e.Name == "Persönliche Finanzen");
 
-            var charlsPerson = new Person("Charls Dunhig");
-            _context.People.Add(charlsPerson);
+            var charlsPerson = new Author("Charls Dunhig");
+            _context.Authors.Add(charlsPerson);
 
             var speakerRike = new Speaker("Rike Schmid");
             _context.Speakers.Add(speakerRike);
