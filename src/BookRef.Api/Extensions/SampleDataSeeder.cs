@@ -75,7 +75,6 @@ namespace BookRef.Api.Extensions
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/Denken-hilft-zwar-n%C3%BCtzt-nichts/dp/3426300885",
                 Created = new System.DateTime(2020, 05, 11),
-                Auflage = "Sechste",
                 Subtitle = "Warum wir immer wieder unvernünftige Entscheidungen"
             };
             book.SetAuthors(new List<Author> { danAuthor });
@@ -88,7 +87,6 @@ namespace BookRef.Api.Extensions
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/Das-tr%C3%BCgerische-Ged%C3%A4chtnis-Erinnerungen-f%C3%A4lscht/dp/3453604482",
                 Created = new System.DateTime(2020, 06, 12),
-                Auflage = "Erste",
                 Subtitle = "Wie unser Gehirn Erinnerungen fälscht"
             };
             book2.SetAuthors(new List<Author> { juliaAuthor, hansAuthor });
@@ -103,7 +101,6 @@ namespace BookRef.Api.Extensions
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/B%C3%B6se-Die-Psychologie-unserer-Abgr%C3%BCnde/dp/3446260293",
                 Created = new System.DateTime(2020, 07, 15),
-                Auflage = "Dritte",
                 Subtitle = "Die Psychologie unserer Abgründe"
             };
             book3.SetAuthors(new List<Author> { juliaAuthor });
@@ -116,7 +113,6 @@ namespace BookRef.Api.Extensions
                 Language = BookLanguage.German,
                 Link = "https://www.amazon.de/B%C3%B6se-Die-Psychologie-unserer-Abgr%C3%BCnde/dp/3446260293",
                 Created = new System.DateTime(2020, 07, 18),
-                Auflage = "Erste",
                 Subtitle = "Die Macht der Umstände und die Psychologie des Bösen"
             };
             book4.SetAuthors(new List<Author> { zimbardoAuthor });
@@ -129,7 +125,6 @@ namespace BookRef.Api.Extensions
                 Language = BookLanguage.English,
                 Link = "https://www.amazon.de/Massenpsychologie-Ich-Analyse-Sigmund-Freud/dp/3730604546",
                 Created = new System.DateTime(2020, 08, 20),
-                Auflage = "Erste",
                 //Creator = user
             };
             book5.SetAuthors(new List<Author> { freudAuthor });
@@ -142,7 +137,6 @@ namespace BookRef.Api.Extensions
                 Language = BookLanguage.English,
                 Link = "https://www.amazon.de/Propaganda-Die-Kunst-Public-Relations/dp/3936086354",
                 Created = new System.DateTime(2020, 09, 1),
-                Auflage = "Dritte",
                 Subtitle = "Die Kunst der Public Relations"
             };
             book6.SetAuthors(new List<Author> { bernaysAuthor });

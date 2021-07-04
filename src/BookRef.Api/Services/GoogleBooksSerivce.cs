@@ -5,6 +5,7 @@ using LanguageExt;
 using RestSharp;
 using System.Text.RegularExpressions;
 using BookRef.Api.Models.ValueObjects;
+using System;
 
 namespace BookRef.Api.Services
 {
@@ -41,7 +42,8 @@ namespace BookRef.Api.Services
             {
                 Subtitle = item.VolumeInfo.Subtitle,
             }
-            .SetAdditionalApiData(item.Etag, item.SelfLink, item.SearchInfo?.TextSnippet)
+            .SetAdditionalApiData(item.Etag, item.SelfLink, item.SearchInfo?.TextSnippet,
+                                  item.VolumeInfo.PublishedDate, item.VolumeInfo.PageCount)
             .SetAuthors(item.VolumeInfo.Authors.Select(e => new Author(e)));
 
             return book;
@@ -68,6 +70,8 @@ namespace BookRef.Api.Services
         {
             public string Title { get; init; }
             public string? Subtitle { get; init; }
+            public int PageCount { get; init; }
+            public DateTime? PublishedDate { get; init; }
             public List<string> Authors { get; init; }
             public List<GApiIndustryIdentifiers> IndustryIdentifiers { get; init; }
         }

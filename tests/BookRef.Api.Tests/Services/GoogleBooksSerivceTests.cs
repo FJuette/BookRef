@@ -67,17 +67,18 @@ namespace BookRef.Api.Tests.Services
             book.IfSome(x =>  x.Title.Should().Be("Böse"));
         }
 
-        [Fact]
-        public void FindBook_CorrectIsbn_NoBookFound()
-        {
-            // Arrange
-            var srv = new GoogleBooksSerivce();
+        // Google is updating their database, book is no in the database
+        // [Fact]
+        // public void FindBook_CorrectIsbn_NoBookFound()
+        // {
+        //     // Arrange
+        //     var srv = new GoogleBooksSerivce();
 
-            // Act
-            var book = srv.FindBook("9783442362851");
+        //     // Act
+        //     var book = srv.FindBook("9783442362851");
 
-            // Assert
-            book.IsSome.Should().BeFalse();
-        }
+        //     // Assert
+        //     book.IsSome.Should().BeFalse();
+        // }
     }
 }
