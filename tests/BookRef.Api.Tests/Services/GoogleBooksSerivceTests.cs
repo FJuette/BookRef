@@ -67,6 +67,34 @@ namespace BookRef.Api.Tests.Services
             book.IfSome(x =>  x.Title.Should().Be("Böse"));
         }
 
+        [Fact]
+        public void FindBook_ImageLink_LinkSet()
+        {
+            // Arrange
+            var srv = new GoogleBooksSerivce();
+
+            // Act
+            var book = srv.FindBook("9783662533253");
+
+            // Assert
+            book.IsSome.Should().BeTrue();
+            book.IfSome(x =>  x.Thumbnail.Should().Be("http://books.google.com/books/content?id=YTMovgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api"));
+        }
+
+        [Fact]
+        public void FindBook_MissingImageLink_DefaultSet()
+        {
+            // Arrange
+            var srv = new GoogleBooksSerivce();
+
+            // Act
+            var book = srv.FindBook("9783446260290");
+
+            // Assert
+            book.IsSome.Should().BeTrue();
+            book.IfSome(x =>  x.Thumbnail.Should().Be("https://books.google.de/googlebooks/images/no_cover_thumb.gif"));
+        }
+
         // Google is updating their database, book is no in the database
         // [Fact]
         // public void FindBook_CorrectIsbn_NoBookFound()

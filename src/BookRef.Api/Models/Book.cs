@@ -30,6 +30,7 @@ namespace BookRef.Api.Models
         public string? TextSnippet { get; private set; }
         public DateTime? PublishedDate { get; private set; }
         public int? PageCount { get; private set; }
+        public string Thumbnail { get; private set; } = "https://books.google.de/googlebooks/images/no_cover_thumb.gif";
 
         public BookLanguage Language { get; set; }
 
@@ -83,13 +84,15 @@ namespace BookRef.Api.Models
             return this;
         }
 
-        public Book SetAdditionalApiData(string etag, string selfLink, string? textSnippet, DateTime? publishedDate, int? pageCount)
+        public Book SetAdditionalApiData(string etag, string selfLink, string? textSnippet, DateTime? publishedDate, int? pageCount, string? thumbnail)
         {
             Etag = etag;
             SelfLink = selfLink;
             TextSnippet = textSnippet;
             PublishedDate = publishedDate;
             PageCount = pageCount;
+            if (thumbnail is not null)
+                Thumbnail = thumbnail;
             return this;
         }
 

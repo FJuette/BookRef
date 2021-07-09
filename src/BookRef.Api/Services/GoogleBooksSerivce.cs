@@ -43,7 +43,8 @@ namespace BookRef.Api.Services
                 Subtitle = item.VolumeInfo.Subtitle,
             }
             .SetAdditionalApiData(item.Etag, item.SelfLink, item.SearchInfo?.TextSnippet,
-                                  item.VolumeInfo.PublishedDate, item.VolumeInfo.PageCount)
+                                  item.VolumeInfo.PublishedDate, item.VolumeInfo.PageCount,
+                                  item.VolumeInfo.ImageLinks?.Thumbnail)
             .SetAuthors(item.VolumeInfo.Authors.Select(e => new Author(e)));
 
             return book;
@@ -74,6 +75,7 @@ namespace BookRef.Api.Services
             public DateTime? PublishedDate { get; init; }
             public List<string> Authors { get; init; }
             public List<GApiIndustryIdentifiers> IndustryIdentifiers { get; init; }
+            public GApiImageLinks? ImageLinks { get; init; }
         }
 
         private record GApisSearchInfo
@@ -85,6 +87,11 @@ namespace BookRef.Api.Services
         {
             public string Type { get; init; }
             public string Identifier { get; init; }
+        }
+
+        private record GApiImageLinks
+        {
+            public string Thumbnail { get; init; }
         }
     }
 }
